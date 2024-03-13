@@ -1,0 +1,20 @@
+abstract: This is my awesome software. It does very much.
+authors:
+  - alias: Alex
+    family-names: Ng
+    given-names: Jun Xiang
+    orcid: https://orcid.org/0009-0001-1641-9397
+identifiers:
+  - type: url
+    value: https://github.com/{{REPOSITORY}}/releases/tag/v1.0.0
+    description: The GitHub release URL of tag v1.0.0.
+cff-version: 1.2.0
+date-released: yyyy-mm-dd
+keywords:
+  - 
+license: MIT
+message: If you use this software, please cite it using these metadata.
+repository-code: https://github.com/{{REPOSITORY}}
+title: thread
+type: software
+version: 1.0.1
