@@ -1,0 +1,38 @@
+name: Sync with upstream template
+
+on:
+  schedule:
+    - cron: "0 0 * * 6" # Weekly on Saturday
+  workflow_dispatch:
+
+env:
+  UPSTREAM_BRANCH: main
+  UPSTREAM_REPO: caffeine-addictt/template
+
+jobs:
+  repo-sync:
+    runs-on: ubuntu-latest
+
+    # https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Skip if repository is the same as the template
+        if: github.repository == ${{ env.UPSTREAM_REPO }}
+        run: exit 0
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        # https://github.com/actions/checkout#usage
+        # uncomment if you use submodules within the source repository
+        # with:
+        #   submodules: true
+
+      - name: actions-template-sync
+        uses: AndreasAugustin/actions-template-sync@v1
+        with:
+          source_repo_path: ${{ env.UPSTREAM_REPO }}
+          upstream_branch: ${{ env.UPSTREAM_BRANCH }}
+          pr_labels: "CI: Template Sync"
