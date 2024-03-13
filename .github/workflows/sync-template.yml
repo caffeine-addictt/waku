@@ -31,6 +31,12 @@ jobs:
       - name: actions-template-sync
         uses: AndreasAugustin/actions-template-sync@v1
         with:
+          # We need "workflows" permissions to allow us to update .github/workflows/*
+          # Create a PAT with "contents:write", "workflows:write" and "metadata:read" permissions
+          # and write it to the "GITHUB_PAT" secret
+          # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token
+          # https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository
+          github_token: ${{ secrets.GITHUB_PAT }}
           source_repo_path: ${{ env.UPSTREAM_REPO }}
           upstream_branch: ${{ env.UPSTREAM_BRANCH }}
           pr_labels: "CI: Template Sync"
