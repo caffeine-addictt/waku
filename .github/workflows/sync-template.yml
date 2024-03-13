@@ -11,6 +11,8 @@ env:
 
 jobs:
   repo-sync:
+    # Skip if repository is the same as the template
+    if: github.repository != 'caffeine-addictt/template'
     runs-on: ubuntu-latest
 
     # https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
@@ -19,10 +21,6 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Skip if repository is the same as the template
-        if: github.repository == ${{ env.UPSTREAM_REPO }}
-        run: exit 0
-
       - name: Checkout
         uses: actions/checkout@v4
         # https://github.com/actions/checkout#usage
