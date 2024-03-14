@@ -1,0 +1,14 @@
+# This file is for the labeler workflow
+# Documentation https://github.com/marketplace/actions/labeler
+
+Documentation:
+  - docs/**/*
+  - .github/*
+  - ./*{.md,.mdx}
+
+"Type: Test":
+  - tests/**/*
+  - ./**/*test*
+
+"Type: CI":
+  - .github/workflows/*
