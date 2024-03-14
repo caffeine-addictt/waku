@@ -68,11 +68,13 @@ find ./ -type f \( -iname CODEOWNERS -o -iname CITATION.cff -o -iname \*.md \) -
 	-e "s/{{PROJECT_LONG_DESCRIPTION}}/$proj_long_desc/g" \
 	-e "s/{{DOCS_URL}}/$docs_url/g" \
 	-e "s/assignees: caffeine-addictt/$username/g" \
-	-e "s/contact@ngjx.org/$email/g" \
-	-e "s/ Alex /$name/g"
+	-e "s/contact@ngjx.org/$email/g"
 
 # Write License
 sed -i -e "s/Jun Xiang/$name/g" ./LICENSE
 
 # Write CODEOWNERS
 sed -i -e "s/caffeine-addictt/$username/g" .github/CODEOWNERS
+
+# Write README
+sed -i -e "s/Alex/$name/g" README.md
