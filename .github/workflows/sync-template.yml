@@ -29,7 +29,7 @@ jobs:
         #   submodules: true
 
       - name: actions-template-sync
-        uses: AndreasAugustin/actions-template-sync@v1
+        uses: AndreasAugustin/actions-template-sync@v2
         with:
           # We need "workflows" permissions to allow us to update .github/workflows/*
           # Create a PAT with "contents:write", "workflows:write" and "metadata:read" permissions
