@@ -1,12 +1,15 @@
 <!--
-You can use this template to create your own README.md file by overriding all occurrences of the following values.
+You can use this template to create your own README.md file by running the following command in your terminal:
 
-{{PROJECT_NAME}}
-{{PROJECT_SHORT_DESCRIPTION}}
-{{PROJECT_LONG_DESCRIPTION}}
-{{PROJECT_DOCUMENTATION_URL}}
-{{REPOSITORY}} # <name>/<repo>
+```sh
+chmod +x setup.sh
+./setup.sh
+```
 
+Follow the prompts and the files will be automatically updated.
+
+
+Create a folder called images and add your images to have them show up.
 images/logo.png # logo
 images/socialcard.png # social card
 -->
