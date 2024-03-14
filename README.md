@@ -1,5 +1,5 @@
 <!--
-You can use this template to create your own README.md file by overriding all occurences of the following values.
+You can use this template to create your own README.md file by overriding all occurrences of the following values.
 
 {{PROJECT_NAME}}
 {{PROJECT_SHORT_DESCRIPTION}}
