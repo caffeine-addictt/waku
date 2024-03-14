@@ -2,13 +2,14 @@
 # Documentation https://github.com/marketplace/actions/labeler
 
 Documentation:
-  - docs/**/*
-  - .github/*
-  - ./*{.md,.mdx}
+  - changed-files:
+      - any-glob-to-any-file: [docs/**, .github/**, "./*.{md,mdx}"]
+      - any-globs-to-all-files: "!.github/workflows/*"
 
 "Type: Test":
-  - tests/**/*
-  - ./**/*test*
+  - changed-files:
+      - any-glob-to-any-file: [tests/**, ./*test*]
 
 "Type: CI":
-  - .github/workflows/*
+  - changed-files:
+      - any-glob-to-any-file: [.github/workflows/**]
