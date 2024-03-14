@@ -62,7 +62,7 @@ echo
 echo "Writing files..."
 
 # Writing general stuff
-find ./ -type f \( -iname CODEOWNERS -o -iname CITATION.cff -o -iname \*.md \) -print0 | xargs -0 sed -i -e "s/{{REPOSITORY}}/$username/$repository/g" \
+find ./ -type f \( -iname CODEOWNERS -o -iname CITATION.cff -o -iname \*.md \) -print0 | xargs -0 sed -i -e "s/{{REPOSITORY}}/$username\/$repository/g" \
 	-e "s/{{PROJECT_NAME}}/$proj_name/g" \
 	-e "s/{{PROJECT_SHORT_DESCRIPTION}}/$proj_short_desc/g" \
 	-e "s/{{PROJECT_LONG_DESCRIPTION}}/$proj_long_desc/g" \
