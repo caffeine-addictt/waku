@@ -8,6 +8,10 @@
 # To counteract this, please block force pushing and enable "Require CODE OWNER Approval" for Pull Requests to the main branch.
 
 labels:
+  - name: "Type: CI"
+    color: 54b2ff
+    description: A problem or enhancement related to continuous integration.
+
   - name: "Type: Breaking"
     color: a90000
     description: A problem or enhancement related to a breaking change.
