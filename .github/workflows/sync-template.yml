@@ -11,8 +11,6 @@ env:
 
 jobs:
   repo-sync:
-    # Skip if repository is the same as the template
-    if: github.repository != 'caffeine-addictt/template'
     runs-on: ubuntu-latest
 
     # https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
@@ -23,6 +21,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        if: github.repository != env.UPSTREAM_REPO
         # https://github.com/actions/checkout#usage
         # uncomment if you use submodules within the source repository
         # with:
@@ -30,6 +29,7 @@ jobs:
 
       - name: actions-template-sync
         uses: AndreasAugustin/actions-template-sync@v2
+        if: github.repository != env.UPSTREAM_REPO
         with:
           # We need "workflows" permissions to allow us to update .github/workflows/*
           # Create a PAT with "contents:write", "workflows:write" and "metadata:read" permissions
