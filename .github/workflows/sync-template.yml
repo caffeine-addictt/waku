@@ -9,10 +9,19 @@ env:
   UPSTREAM_BRANCH: main
   UPSTREAM_REPO: caffeine-addictt/template
 
+# Setup
+# 1. Ensure you have a PAT with "contents:write", "workflows:write" and "metadata:read" permissions
+#   https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token
+#
+# 2. Write the PAT to the "PERSONAL_ACCESS_TOKEN" secret
+#   https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository
+#
+# 3. Ensure that GHactions can write Pull Requests (PRs) to the repository
+#   Repository Settings -> Actions -> General -> Workflow permissions
+#   Check "Allow GitHub Actions to create and approve pull requests"
+
 jobs:
   repo-sync:
-    # Skip if repository is the same as the template
-    if: github.repository != 'caffeine-addictt/template'
     runs-on: ubuntu-latest
 
     # https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
@@ -23,19 +32,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        if: github.repository != env.UPSTREAM_REPO
         # https://github.com/actions/checkout#usage
-        # uncomment if you use submodules within the source repository
-        # with:
-        #   submodules: true
+        with:
+          # uncomment if you use submodules within the source repository
+          # submodules: true
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: actions-template-sync
-        uses: AndreasAugustin/actions-template-sync@v1
+        uses: AndreasAugustin/actions-template-sync@v2
+        if: github.repository != env.UPSTREAM_REPO
         with:
-          # We need "workflows" permissions to allow us to update .github/workflows/*
-          # Create a PAT with "contents:write", "workflows:write" and "metadata:read" permissions
-          # and write it to the "PERSONAL_ACCESS_TOKEN" secret
-          # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token
-          # https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           source_repo_path: ${{ env.UPSTREAM_REPO }}
           upstream_branch: ${{ env.UPSTREAM_BRANCH }}
