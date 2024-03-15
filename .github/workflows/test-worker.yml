@@ -92,6 +92,7 @@ jobs:
           echo "Testing project"
           # Place your code to test your project here
 
+  # It is recommended to require this check to pass before merging a pull request
   check:
     if: always()
     name: Tests Successful
