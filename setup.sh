@@ -67,7 +67,7 @@ find ./ -type f \( -iname CODEOWNERS -o -iname CITATION.cff -o -iname \*.md \) -
 	-e "s/{{PROJECT_SHORT_DESCRIPTION}}/$proj_short_desc/g" \
 	-e "s/{{PROJECT_LONG_DESCRIPTION}}/$proj_long_desc/g" \
 	-e "s/{{DOCS_URL}}/$docs_url/g" \
-	-e "s/assignees: caffeine-addictt/$username/g" \
+	-e "s/assignees: caffeine-addictt/assignees: $username/g" \
 	-e "s/contact@ngjx.org/$email/g"
 
 # Write License
