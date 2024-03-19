@@ -101,3 +101,14 @@ README.md" >>.templatesyncignore
 	rm .github/workflows/sync-template.yml
 } ;;
 esac
+
+read -p "Would you like to keep this setup script? (y/n)
+=> " keep_script
+
+case $keep_script in
+[Yy]*) {
+	echo "Removing setup script..."
+	rm ./setup.sh
+} ;;
+*) echo "Okay." ;;
+esac
