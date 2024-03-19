@@ -78,3 +78,41 @@ sed -i -e "s/caffeine-addictt/$username/g" .github/CODEOWNERS
 
 # Write README
 sed -i -e "s/Alex/$name/g" README.md
+
+# Optional keep up-to-date
+read -p "Would you like to keep up-to-date with the template? (y/n)
+=> " up_to_date
+
+case $up_to_date in
+[Yy]*) {
+	echo "Writing ignore file..."
+	echo ".github/ISSUE_TEMPLATE/*
+.github/CODEOWNERS
+.github/CODESTYLE.md
+.github/PULL_REQUEST_TEMPLATE.md
+.github/SECURITY.md
+CITATION.cff
+LICENSE
+README.md" >>.templatesyncignore
+	echo "You can view more configuration here: https://github.com/AndreasAugustin/actions-template-sync"
+} ;;
+*) {
+	echo "Removing syncing workflow..."
+	rm .github/workflows/sync-template.yml
+} ;;
+esac
+
+read -p "Would you like to keep this setup script? (y/n)
+=> " keep_script
+
+case $keep_script in
+[Yy]*) {
+	echo "Removing setup script..."
+	rm ./setup.sh
+} ;;
+*) echo "Okay." ;;
+esac
+
+echo
+echo "Done!
+If you encounter any issues, please report it here: https://github.com/caffeine-addictt/template/issues/new?assignees=caffeine-addictt&labels=Type%3A+Bug&projects=&template=1-bug-report.md&title=[Bug]+"

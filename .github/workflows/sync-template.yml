@@ -37,13 +37,13 @@ jobs:
         with:
           # uncomment if you use submodules within the source repository
           # submodules: true
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN || secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: actions-template-sync
         uses: AndreasAugustin/actions-template-sync@v2
         if: github.repository != env.UPSTREAM_REPO
         with:
-          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN || secrets.PERSONAL_ACCESS_TOKEN }}
           source_repo_path: ${{ env.UPSTREAM_REPO }}
           upstream_branch: ${{ env.UPSTREAM_BRANCH }}
           pr_title: "[CI] Sync with upstream template"
