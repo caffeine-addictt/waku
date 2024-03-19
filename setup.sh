@@ -115,4 +115,4 @@ esac
 
 echo
 echo "Done!
-If you encounter any issues, please report it here: https://github.com/caffeine-addictt/template/issues/new"
+If you encounter any issues, please report it here: https://github.com/caffeine-addictt/template/issues/new?assignees=caffeine-addictt&labels=Type%3A+Bug&projects=&template=1-bug-report.md&title=[Bug]+"
