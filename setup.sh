@@ -112,3 +112,7 @@ case $keep_script in
 } ;;
 *) echo "Okay." ;;
 esac
+
+echo
+echo "Done!
+If you encounter any issues, please report it here: https://github.com/caffeine-addictt/template/issues/new"
