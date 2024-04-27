@@ -112,7 +112,7 @@ read -p "Would you like to keep this setup script? (y/n)
 => " keep_script
 
 case $keep_script in
-[Yy]*) {
+[Nn]*) {
 	echo "Removing setup script..."
 	rm -- "$0"
 } ;;
