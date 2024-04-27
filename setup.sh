@@ -62,7 +62,7 @@ echo
 echo "Writing files..."
 
 # Writing general stuff
-find ./template/ -type f \( -iname CODEOWNERS -o -iname CITATION.cff -o -iname \*.md \) -print0 | xargs -0 sed -i -e "s/{{REPOSITORY}}/$username\/$repository/g" \
+find ./template/ -type f \( -iname CITATION.cff -o -iname \*.md \) -print0 | xargs -0 sed -i -e "s/{{REPOSITORY}}/$username\/$repository/g" \
 	-e "s/{{PROJECT_NAME}}/$proj_name/g" \
 	-e "s/{{PROJECT_SHORT_DESCRIPTION}}/$proj_short_desc/g" \
 	-e "s/{{PROJECT_LONG_DESCRIPTION}}/$proj_long_desc/g" \
@@ -75,7 +75,7 @@ find ./template/ -type f \( -iname CODEOWNERS -o -iname CITATION.cff -o -iname \
 sed -i -e "s/Jun Xiang/$name/g" ./template/LICENSE
 
 # Write CODEOWNERS
-sed -i -e "s/caffeine-addictt/$username/g" ./template/.github/CODEOWNERS
+echo "* @$username" >>./template/.github/CODEOWNERS
 
 # Write README
 sed -i -e "s/Alex/$name/g" template/README.md
