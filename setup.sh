@@ -62,22 +62,17 @@ echo
 echo "Writing files..."
 
 # Writing general stuff
-find ./ -type f \( -iname CODEOWNERS -o -iname CITATION.cff -o -iname \*.md \) -print0 | xargs -0 sed -i -e "s/{{REPOSITORY}}/$username\/$repository/g" \
+find ./template/ -type f \( -iname LICENSE -o -iname CITATION.cff -o -iname \*.md \) -print0 | xargs -0 sed -i -e "s/{{REPOSITORY}}/$username\/$repository/g" \
 	-e "s/{{PROJECT_NAME}}/$proj_name/g" \
 	-e "s/{{PROJECT_SHORT_DESCRIPTION}}/$proj_short_desc/g" \
 	-e "s/{{PROJECT_LONG_DESCRIPTION}}/$proj_long_desc/g" \
 	-e "s/{{DOCS_URL}}/$docs_url/g" \
-	-e "s/assignees: caffeine-addictt/assignees: $username/g" \
-	-e "s/contact@ngjx.org/$email/g"
-
-# Write License
-sed -i -e "s/Jun Xiang/$name/g" ./LICENSE
+	-e "s/{{EMAIL}}/$email/g" \
+	-e "s/{{USERNAME}}/$username/g" \
+	-e "s/{{NAME}}/$name/g"
 
 # Write CODEOWNERS
-sed -i -e "s/caffeine-addictt/$username/g" .github/CODEOWNERS
-
-# Write README
-sed -i -e "s/Alex/$name/g" README.md
+echo "* @$username" >>./template/.github/CODEOWNERS
 
 # Optional keep up-to-date
 read -p "Would you like to keep up-to-date with the template? (y/n)
@@ -93,22 +88,28 @@ case $up_to_date in
 .github/SECURITY.md
 CITATION.cff
 LICENSE
-README.md" >>.templatesyncignore
+README.md" >>./template/.templatesyncignore
+	mv -f template/.templatesyncignore .
 	echo "You can view more configuration here: https://github.com/AndreasAugustin/actions-template-sync"
 } ;;
 *) {
 	echo "Removing syncing workflow..."
-	rm .github/workflows/sync-template.yml
+	rm ./template/.github/workflows/sync-template.yml
 } ;;
 esac
+
+# Move from template
+find template/* -print0 | xargs -0 mv -t .
+rm -rf .github && mv -i template/.github .
+rm -rf template
 
 read -p "Would you like to keep this setup script? (y/n)
 => " keep_script
 
 case $keep_script in
-[Yy]*) {
+[Nn]*) {
 	echo "Removing setup script..."
-	rm ./setup.sh
+	rm -- "$0"
 } ;;
 *) echo "Okay." ;;
 esac
