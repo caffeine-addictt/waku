@@ -62,17 +62,15 @@ echo
 echo "Writing files..."
 
 # Writing general stuff
-find ./template/ -type f \( -iname CITATION.cff -o -iname \*.md \) -print0 | xargs -0 sed -i -e "s/{{REPOSITORY}}/$username\/$repository/g" \
+find ./template/ -type f \( -iname LICENSE -o -iname CITATION.cff -o -iname \*.md \) -print0 | xargs -0 sed -i -e "s/{{REPOSITORY}}/$username\/$repository/g" \
 	-e "s/{{PROJECT_NAME}}/$proj_name/g" \
 	-e "s/{{PROJECT_SHORT_DESCRIPTION}}/$proj_short_desc/g" \
 	-e "s/{{PROJECT_LONG_DESCRIPTION}}/$proj_long_desc/g" \
 	-e "s/{{DOCS_URL}}/$docs_url/g" \
 	-e "s/assignees: caffeine-addictt/assignees: $username/g" \
 	-e "s/contact@ngjx.org/$email/g" \
-	-e "s/{{USERNAME}}/$username/g"
-
-# Write License
-sed -i -e "s/Jun Xiang/$name/g" ./template/LICENSE
+	-e "s/{{USERNAME}}/$username/g" \
+	-e "s/{{NAME}}/$name/g"
 
 # Write CODEOWNERS
 echo "* @$username" >>./template/.github/CODEOWNERS

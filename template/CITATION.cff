@@ -1,6 +1,6 @@
 abstract: {{PROJECT_NAME}}
 authors:
-  - alias: {{USERNAME}}
+  - alias: {{NAME}}
 identifiers:
   - type: url
     value: https://github.com/{{REPOSITORY}}/releases/tag/v0.0.0
