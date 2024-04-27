@@ -94,6 +94,7 @@ case $up_to_date in
 CITATION.cff
 LICENSE
 README.md" >>./template/.templatesyncignore
+	mv -f template/.templatesyncignore .
 	echo "You can view more configuration here: https://github.com/AndreasAugustin/actions-template-sync"
 } ;;
 *) {
@@ -104,7 +105,6 @@ esac
 
 # Move from template
 find template/* -print0 | xargs -0 mv -t .
-mv -f template/.templatesyncignore .
 mv -f template/.github .
 rm -rf template
 
