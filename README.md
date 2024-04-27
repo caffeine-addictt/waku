@@ -26,21 +26,15 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/{{REPOSITORY}}">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
-  <h3 align="center">{{PROJECT_NAME}}</h3>
+  <h3 align="center">Repository Template</h3>
 
   <p align="center">
-    {{PROJECT_SHORT_DESCRIPTION}}
-    <br />
-    <a href="{{DOCS_URL}}"><strong>Explore the docs »</strong></a>
+    Simple repository template to get started with GitHub.
     <br />
     <br />
-    <a href="https://github.com/{{REPOSITORY}}/issues">Report Bug</a>
+    <a href="https://github.com/caffeine-addictt/template/issues">Report Bug</a>
     ·
-    <a href="https://github.com/{{REPOSITORY}}/issues">Request Feature</a>
+    <a href="https://github.com/caffeine-addictt/template/issues">Request Feature</a>
   </p>
 </div>
 
@@ -49,41 +43,15 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![Social Card](images/socialcard.png)
+A simple repository template to get started with GitHub.
 
-{{PROJECT_LONG_DESCRIPTION}}
+Run the setup script to get started!
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- GETTING STARTED -->
-## Getting Started
-
-This is an example of how you can set up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-*
-
-### Installation
-
-_Below is an example of how you can install and use {{PROJECT_NAME}}._
-
-1.
-2.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- DOCS -->
-## Documentation
-
-Our docs are [here]({{PROJECT_DOCUMENTATION_URL}})!
-
-See the [open issues](https://github.com/{{REPOSITORY}}/issues) for a full list of proposed features (and known issues).
+```sh
+# Mark setup as executable
+chmod +x ./setup.sh
+./setup.sh
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -128,7 +96,6 @@ Alex - [contact@ngjx.org](mailto:contact@ngjx.org)
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* [Repository Template](https://github.com/caffeine-addictt/template)
 * [Choose an Open Source License](https://choosealicense.com)
 * [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
 * [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
@@ -141,9 +108,9 @@ Alex - [contact@ngjx.org](mailto:contact@ngjx.org)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[forks-shield]: https://img.shields.io/github/forks/{{REPOSITORY}}.svg?style=for-the-badge
-[forks-url]: https://github.com/{{REPOSITORY}}/network/members
-[stars-shield]: https://img.shields.io/github/stars/{{REPOSITORY}}.svg?style=for-the-badge&color=yellow
-[stars-url]: https://github.com/{{REPOSITORY}}/stargazers
-[license-shield]: https://img.shields.io/github/license/{{REPOSITORY}}.svg?style=for-the-badge
-[license-url]: https://github.com/{{REPOSITORY}}/blob/master/LICENSE.txt
+[forks-shield]: https://img.shields.io/github/forks/caffeine-addictt/template.svg?style=for-the-badge
+[forks-url]: https://github.com/caffeine-addictt/template/network/members
+[stars-shield]: https://img.shields.io/github/stars/caffeine-addictt/template.svg?style=for-the-badge&color=yellow
+[stars-url]: https://github.com/caffeine-addictt/template/stargazers
+[license-shield]: https://img.shields.io/github/license/caffeine-addictt/template.svg?style=for-the-badge
+[license-url]: https://github.com/caffeine-addictt/template/blob/master/LICENSE.txt
