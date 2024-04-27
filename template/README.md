@@ -97,7 +97,7 @@ _Below is an example of how you can install and use {{PROJECT_NAME}}._
 <!-- DOCS -->
 ## Documentation
 
-Our docs are [here]({{PROJECT_DOCUMENTATION_URL}})!
+Our docs are [here]({{DOCS_URL}})!
 
 See the [open issues](https://github.com/{{REPOSITORY}}/issues) for a full list of proposed features (and known issues).
 
