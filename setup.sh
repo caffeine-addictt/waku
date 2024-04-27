@@ -62,7 +62,7 @@ echo
 echo "Writing files..."
 
 # Writing general stuff
-find ./ -type f \( -iname CODEOWNERS -o -iname CITATION.cff -o -iname \*.md \) -print0 | xargs -0 sed -i -e "s/{{REPOSITORY}}/$username\/$repository/g" \
+find ./template/ -type f \( -iname CODEOWNERS -o -iname CITATION.cff -o -iname \*.md \) -print0 | xargs -0 sed -i -e "s/{{REPOSITORY}}/$username\/$repository/g" \
 	-e "s/{{PROJECT_NAME}}/$proj_name/g" \
 	-e "s/{{PROJECT_SHORT_DESCRIPTION}}/$proj_short_desc/g" \
 	-e "s/{{PROJECT_LONG_DESCRIPTION}}/$proj_long_desc/g" \
@@ -71,13 +71,13 @@ find ./ -type f \( -iname CODEOWNERS -o -iname CITATION.cff -o -iname \*.md \) -
 	-e "s/contact@ngjx.org/$email/g"
 
 # Write License
-sed -i -e "s/Jun Xiang/$name/g" ./LICENSE
+sed -i -e "s/Jun Xiang/$name/g" ./template/LICENSE
 
 # Write CODEOWNERS
-sed -i -e "s/caffeine-addictt/$username/g" .github/CODEOWNERS
+sed -i -e "s/caffeine-addictt/$username/g" ./template/.github/CODEOWNERS
 
 # Write README
-sed -i -e "s/Alex/$name/g" README.md
+sed -i -e "s/Alex/$name/g" template/README.md
 
 # Optional keep up-to-date
 read -p "Would you like to keep up-to-date with the template? (y/n)
@@ -93,12 +93,12 @@ case $up_to_date in
 .github/SECURITY.md
 CITATION.cff
 LICENSE
-README.md" >>.templatesyncignore
+README.md" >>./template/.templatesyncignore
 	echo "You can view more configuration here: https://github.com/AndreasAugustin/actions-template-sync"
 } ;;
 *) {
 	echo "Removing syncing workflow..."
-	rm .github/workflows/sync-template.yml
+	rm ./template/.github/workflows/sync-template.yml
 } ;;
 esac
 
