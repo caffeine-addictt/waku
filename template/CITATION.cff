@@ -1,9 +1,6 @@
 abstract: {{PROJECT_NAME}}
 authors:
-  - alias: Alex
-    family-names: Ng
-    given-names: Jun Xiang
-    orcid: https://orcid.org/0009-0001-1641-9397
+  - alias: {{USERNAME}}
 identifiers:
   - type: url
     value: https://github.com/{{REPOSITORY}}/releases/tag/v0.0.0

@@ -3,7 +3,7 @@ name: "Failing Test"
 about: "Report failing tests or CI jobs."
 title: "[Test] "
 labels: "Type: Test"
-assignees: caffeine-addictt
+assignees: {{USERNAME}}
 
 ---
 

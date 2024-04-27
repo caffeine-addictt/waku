@@ -68,7 +68,8 @@ find ./template/ -type f \( -iname CODEOWNERS -o -iname CITATION.cff -o -iname \
 	-e "s/{{PROJECT_LONG_DESCRIPTION}}/$proj_long_desc/g" \
 	-e "s/{{DOCS_URL}}/$docs_url/g" \
 	-e "s/assignees: caffeine-addictt/assignees: $username/g" \
-	-e "s/contact@ngjx.org/$email/g"
+	-e "s/contact@ngjx.org/$email/g" \
+	-e "s/{{USERNAME}}/$username/g"
 
 # Write License
 sed -i -e "s/Jun Xiang/$name/g" ./template/LICENSE
