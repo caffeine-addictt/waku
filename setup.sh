@@ -108,7 +108,7 @@ read -p "Would you like to keep this setup script? (y/n)
 case $keep_script in
 [Yy]*) {
 	echo "Removing setup script..."
-	rm ./setup.sh
+	rm -- "$0"
 } ;;
 *) echo "Okay." ;;
 esac
