@@ -1,3 +1,15 @@
+<!-- Ignore line-length -->
+<!-- markdownlint-disable MD013 -->
+
+<!-- Allow HTML -->
+<!-- markdownlint-disable MD033 -->
+
+<!-- Allow multiple empty lines -->
+<!-- markdownlint-disable MD012 -->
+
+<!-- Allow HTML top-level heading -->
+<!-- markdownlint-disable MD041 -->
+
 <!--
 You can use this template to create your own README.md file by running the following command in your terminal:
 
@@ -69,14 +81,14 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-* 
+*
 
 ### Installation
 
 _Below is an example of how you can install and use {{PROJECT_NAME}}._
 
-1. 
-2. 
+1.
+2.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
