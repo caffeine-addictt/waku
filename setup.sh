@@ -105,7 +105,7 @@ esac
 
 # Move from template
 find template/* -print0 | xargs -0 mv -t .
-mv -f template/.github .
+rm -rf .github && mv -i template/.github .
 rm -rf template
 
 read -p "Would you like to keep this setup script? (y/n)
