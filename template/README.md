@@ -135,7 +135,7 @@ Distributed under the MIT License. See [LICENSE.txt](./LICENSE.txt) for more inf
 <!-- CONTACT -->
 ## Contact
 
-Alex - [contact@ngjx.org](mailto:contact@ngjx.org)
+{{NAME}} - [{{EMAIL}}](mailto:{{EMAIL}})
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

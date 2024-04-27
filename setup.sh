@@ -67,16 +67,12 @@ find ./template/ -type f \( -iname LICENSE -o -iname CITATION.cff -o -iname \*.m
 	-e "s/{{PROJECT_SHORT_DESCRIPTION}}/$proj_short_desc/g" \
 	-e "s/{{PROJECT_LONG_DESCRIPTION}}/$proj_long_desc/g" \
 	-e "s/{{DOCS_URL}}/$docs_url/g" \
-	-e "s/assignees: caffeine-addictt/assignees: $username/g" \
-	-e "s/contact@ngjx.org/$email/g" \
+	-e "s/{{EMAIL}}/$email/g" \
 	-e "s/{{USERNAME}}/$username/g" \
 	-e "s/{{NAME}}/$name/g"
 
 # Write CODEOWNERS
 echo "* @$username" >>./template/.github/CODEOWNERS
-
-# Write README
-sed -i -e "s/Alex/$name/g" template/README.md
 
 # Optional keep up-to-date
 read -p "Would you like to keep up-to-date with the template? (y/n)
