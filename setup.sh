@@ -47,13 +47,13 @@ echo "================"
 
 # Ask for confirmation
 while true; do
-	read -p "Confirm? (y/n)
+  read -p "Confirm? (y/n)
 => " confirm
-	case $confirm in
-	[Yy]*) break ;;
-	[Nn]*) exit ;;
-	*) echo "Please answer yes or no." ;;
-	esac
+  case $confirm in
+  [Yy]*) break ;;
+  [Nn]*) exit ;;
+  *) echo "Please answer yes or no." ;;
+  esac
 done
 
 # Write files
@@ -63,13 +63,13 @@ echo "Writing files..."
 
 # Writing general stuff
 find ./template/ -type f \( -iname LICENSE -o -iname CITATION.cff -o -iname \*.md \) -print0 | xargs -0 sed -i -e "s/{{REPOSITORY}}/$username\/$repository/g" \
-	-e "s/{{PROJECT_NAME}}/$proj_name/g" \
-	-e "s/{{PROJECT_SHORT_DESCRIPTION}}/$proj_short_desc/g" \
-	-e "s/{{PROJECT_LONG_DESCRIPTION}}/$proj_long_desc/g" \
-	-e "s/{{DOCS_URL}}/$docs_url/g" \
-	-e "s/{{EMAIL}}/$email/g" \
-	-e "s/{{USERNAME}}/$username/g" \
-	-e "s/{{NAME}}/$name/g"
+  -e "s/{{PROJECT_NAME}}/$proj_name/g" \
+  -e "s/{{PROJECT_SHORT_DESCRIPTION}}/$proj_short_desc/g" \
+  -e "s/{{PROJECT_LONG_DESCRIPTION}}/$proj_long_desc/g" \
+  -e "s/{{DOCS_URL}}/$docs_url/g" \
+  -e "s/{{EMAIL}}/$email/g" \
+  -e "s/{{USERNAME}}/$username/g" \
+  -e "s/{{NAME}}/$name/g"
 
 # Write CODEOWNERS
 echo "* @$username" >>./template/.github/CODEOWNERS
@@ -80,8 +80,8 @@ read -p "Would you like to keep up-to-date with the template? (y/n)
 
 case $up_to_date in
 [Yy]*) {
-	echo "Writing ignore file..."
-	echo ".github/ISSUE_TEMPLATE/*
+  echo "Writing ignore file..."
+  echo ".github/ISSUE_TEMPLATE/*
 .github/CODEOWNERS
 .github/CODESTYLE.md
 .github/PULL_REQUEST_TEMPLATE.md
@@ -89,12 +89,12 @@ case $up_to_date in
 CITATION.cff
 LICENSE
 README.md" >>./template/.templatesyncignore
-	mv -f template/.templatesyncignore .
-	echo "You can view more configuration here: https://github.com/AndreasAugustin/actions-template-sync"
+  mv -f template/.templatesyncignore .
+  echo "You can view more configuration here: https://github.com/AndreasAugustin/actions-template-sync"
 } ;;
 *) {
-	echo "Removing syncing workflow..."
-	rm ./template/.github/workflows/sync-template.yml
+  echo "Removing syncing workflow..."
+  rm ./template/.github/workflows/sync-template.yml
 } ;;
 esac
 
@@ -108,8 +108,8 @@ read -p "Would you like to keep this setup script? (y/n)
 
 case $keep_script in
 [Nn]*) {
-	echo "Removing setup script..."
-	rm -- "$0"
+  echo "Removing setup script..."
+  rm -- "$0"
 } ;;
 *) echo "Okay." ;;
 esac

@@ -28,14 +28,12 @@ images/socialcard.png # social card
 
 <a name="readme-top"></a>
 
-
-
 <!-- PROJECT SHIELDS -->
 <div align="center">
 
-  <a href="[forks-url]">[![Forks][forks-shield]][forks-url]</a>
-  <a href="[stars-url]">[![Stargazers][stars-shield]][stars-url]</a>
-  <a href="[license-url]">[![MIT License][license-shield]][license-url]</a>
+<a href="[forks-url]">[![Forks][forks-shield]][forks-url]</a>
+<a href="[stars-url]">[![Stargazers][stars-shield]][stars-url]</a>
+<a href="[license-url]">[![MIT License][license-shield]][license-url]</a>
 
 </div>
 
@@ -60,9 +58,8 @@ images/socialcard.png # social card
   </p>
 </div>
 
-
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 ![Social Card](images/socialcard.png)
@@ -71,9 +68,8 @@ images/socialcard.png # social card
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 This is an example of how you can set up your project locally.
@@ -81,7 +77,7 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-*
+-
 
 ### Installation
 
@@ -92,9 +88,8 @@ _Below is an example of how you can install and use {{PROJECT_NAME}}._
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- DOCS -->
+
 ## Documentation
 
 Our docs are [here]({{DOCS_URL}})!
@@ -103,9 +98,8 @@ See the [open issues](https://github.com/{{REPOSITORY}}/issues) for a full list 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**. ( ˶ˆᗜˆ˵ )
@@ -121,42 +115,38 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- LICENSE -->
+
 ## License
 
 Distributed under the MIT License. See [LICENSE.txt](./LICENSE.txt) for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- CONTACT -->
+
 ## Contact
 
 {{NAME}} - [{{EMAIL}}](mailto:{{EMAIL}})
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- ACKNOWLEDGMENTS -->
+
 ## Acknowledgments
 
-* [Repository Template](https://github.com/caffeine-addictt/template)
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
+- [Repository Template](https://github.com/caffeine-addictt/template)
+- [Choose an Open Source License](https://choosealicense.com)
+- [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
+- [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
+- [Malven's Grid Cheatsheet](https://grid.malven.co/)
+- [Img Shields](https://shields.io)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [forks-shield]: https://img.shields.io/github/forks/{{REPOSITORY}}.svg?style=for-the-badge
 [forks-url]: https://github.com/{{REPOSITORY}}/network/members
 [stars-shield]: https://img.shields.io/github/stars/{{REPOSITORY}}.svg?style=for-the-badge&color=yellow
