@@ -108,6 +108,10 @@ labels:
     color: 008672
     description: Help wanted
 
+  - name: 'good first issue'
+    color: 008672
+    description: Good first issue
+
   - name: 'CI: Template Sync'
     color: AEB1C2
     description: Sync with upstream template
