@@ -104,6 +104,3 @@ labels:
     color: 008672
     description: Help wanted
 
-  - name: 'CI: Template Sync'
-    color: AEB1C2
-    description: Sync with upstream template
