@@ -1,0 +1,10 @@
+{
+  "name": "repository_template",
+  "scripts": {
+    "lint": "prettier --check --cache .",
+    "lint:fix": "prettier --write --cache ."
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5"
+  }
+}
