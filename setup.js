@@ -12,13 +12,8 @@ function executeSystemCommand(command) {
   try {
     execSync(command, { stdio: 'inherit' });
   } catch (error) {
-    if (error.code === 'ENOENT' || error.code === 'EEXIST') {
-      console.error(error.message);
-      // Try to continue execution even if some non-critical issues occur
-    } else {
-      console.error(error);
-      process.exit(1);
-    }
+    console.error(error);
+    process.exit(1);
   }
 }
 
@@ -51,10 +46,8 @@ rl.question('Name? (This will go on the LICENSE)\n=> ', (name) => {
                       fs.unlinkSync('package-lock.json');
                       fs.rmdirSync('node_modules', { recursive: true });
                     } catch (error) {
-                      if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
                         console.error(error);
                         process.exit(1);
-                      }
                     }
 
                     // Writing general stuff
@@ -75,12 +68,8 @@ rl.question('Name? (This will go on the LICENSE)\n=> ', (name) => {
                           .replace(/{{NAME}}/g, name);
                         fs.writeFileSync(`./template/${fileName}`, fileContent);
                       } catch (error) {
-                        if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
-                          console.error(error);
-                          process.exit(1);
-                        } else {
-                            console.log(`File ${fileName} not found.`);
-                        }
+                        console.error(error);
+                        process.exit(1);
                       }
                     });
 
@@ -88,12 +77,8 @@ rl.question('Name? (This will go on the LICENSE)\n=> ', (name) => {
                     try {
                       fs.appendFileSync('./template/.github/CODEOWNERS', `* @${username}`);
                     } catch (error) {
-                      if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
                         console.error(error);
                         process.exit(1);
-                      } else {
-                        fs.renameSync('./template/.github/CODEOWNERS', '.github/CODEOWNERS');
-                      }
                     }
 
                     // Optional keep up-to-date
@@ -118,20 +103,16 @@ README.md`);
                           fs.renameSync('./template/.templatesyncignore', '.templatesyncignore');
                           console.log('You can view more configuration here: https://github.com/AndreasAugustin/actions-template-sync');
                         } catch (error) {
-                          if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
                             console.error(error);
                             process.exit(1);
-                          }
                         }
                       } else {
                         console.log('Removing syncing workflow...');
                         try {
                           fs.unlinkSync('./template/.github/workflows/sync-template.yml');
                         } catch (error) {
-                          if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
                             console.error(error);
                             process.exit(1);
-                          }
                         }
                       }
 
@@ -145,10 +126,8 @@ README.md`);
                         fs.rmdirSync('.github', { recursive: true });
                         fs.renameSync('./template/.github', '.github');
                       } catch (error) {
-                        if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
-                          console.error(error);
-                          process.exit(1);
-                        }
+                            console.error(error);
+                            process.exit(1);
                       }
 
                       rl.question('Would you like to keep this setup script? (y/n)\n=> ', (keep_script) => {
@@ -157,10 +136,8 @@ README.md`);
                           try {
                             fs.unlinkSync(__filename);
                           } catch (error) {
-                            if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
-                              console.error(error);
-                              process.exit(1);
-                            }
+                                console.error(error);
+                                process.exit(1);
                           }
                         } else {
                           console.log('Okay.');
