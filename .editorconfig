@@ -1,0 +1,22 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# All
+[*]
+end_of_line = lf
+trim_trailing_whitespace = true
+insert_final_newline = true
+indent_size = 2
+indent_style = space
+quote_type = single
+
+# Programming languages
+[*.{py,js,ts,jsx,tsx}]
+charset = utf-8
+
+# Python
+[*.py]
+indent_style = space
+indent_size = 4
