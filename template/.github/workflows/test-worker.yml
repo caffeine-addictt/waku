@@ -18,8 +18,8 @@ concurrency:
 jobs:
   # This test suite will run for every language version for every OS defined in the matrix
   tests-os-matrix:
-    name: "${{ matrix.language_version }} on ${{ matrix.os }}"
-    runs-on: "${{ matrix.os }}-latest"
+    name: '${{ matrix.language_version }} on ${{ matrix.os }}'
+    runs-on: '${{ matrix.os }}-latest'
 
     strategy:
       fail-fast: false
@@ -29,7 +29,7 @@ jobs:
           - windows
           - macos
         # Place your language versions you want to test
-        language_version: ["v1.0.0", "v2.0.0"]
+        language_version: ['v1.0.0', 'v2.0.0']
 
     steps:
       - name: Checkout repository
@@ -61,7 +61,7 @@ jobs:
 
   # This test will run once
   tests:
-    name: "Testing"
+    name: 'Testing'
     runs-on: ubuntu-latest
 
     steps:
