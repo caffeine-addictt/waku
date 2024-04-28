@@ -49,7 +49,7 @@ rl.question('Name? (This will go on the LICENSE)\n=> ', (name) => {
                     try {
                       fs.unlinkSync('package.json');
                       fs.unlinkSync('package-lock.json');
-                      fs.rm('node_modules', { recursive: true });
+                      fs.rmSync('node_modules', { recursive: true });
                     } catch (error) {
                       if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
                         console.error(error);
@@ -141,8 +141,8 @@ README.md`);
                         filesToMove.forEach((file) => {
                           fs.renameSync(`./template/${file}`, `./${file}`);
                         });
-                        fs.rm('./template', { recursive: true });
-                        fs.rm('.github', { recursive: true });
+                        fs.rmSync('./template', { recursive: true });
+                        fs.rmSync('.github', { recursive: true });
                         fs.renameSync('./template/.github', '.github');
                       } catch (error) {
                         if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
