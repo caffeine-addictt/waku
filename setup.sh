@@ -61,6 +61,11 @@ echo
 echo
 echo "Writing files..."
 
+# Remove prettier stuff
+rm -f package.json
+rm -f package-lock.json
+rm -rf node_modules
+
 # Writing general stuff
 find ./template/ -type f \( -iname LICENSE -o -iname CITATION.cff -o -iname \*.md \) -print0 | xargs -0 sed -i -e "s/{{REPOSITORY}}/$username\/$repository/g" \
   -e "s/{{PROJECT_NAME}}/$proj_name/g" \
