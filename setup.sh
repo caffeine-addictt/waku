@@ -94,6 +94,11 @@ case $up_to_date in
 CITATION.cff
 LICENSE
 README.md" >>./template/.templatesyncignore
+  echo "
+  - name: 'CI: Template Sync'
+    color: AEB1C2
+    description: Sync with upstream template
+  " >>./template/.github/settings.yml
   mv -f template/.templatesyncignore .
   echo "You can view more configuration here: https://github.com/AndreasAugustin/actions-template-sync"
 } ;;

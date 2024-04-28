@@ -56,6 +56,10 @@ labels:
     color: 66b38a
     description: Has had no activity for some time.
 
+  - name: 'Status: DO NOT MERGE'
+    color: E80C0C
+    description: Will not be merged.
+
   - name: 'Duplicate'
     color: EB862D
     description: Duplicate of another issue.
@@ -104,6 +108,6 @@ labels:
     color: 008672
     description: Help wanted
 
-  - name: 'CI: Template Sync'
-    color: AEB1C2
-    description: Sync with upstream template
+  - name: 'good first issue'
+    color: 008672
+    description: Good first issue
