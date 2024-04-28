@@ -1,6 +1,6 @@
-abstract: { { PROJECT_NAME } }
+abstract: {{PROJECT_NAME}}
 authors:
-  - alias: { { NAME } }
+  - alias: {{NAME}}
 identifiers:
   - type: url
     value: https://github.com/{{REPOSITORY}}/releases/tag/v0.0.0
@@ -12,6 +12,6 @@ keywords:
 license: MIT
 message: If you use this software, please cite it using these metadata.
 repository-code: https://github.com/{{REPOSITORY}}
-title: { { PROJECT_NAME } }
+title: {{PROJECT_NAME}}
 type: software
 version: 0.0.0
