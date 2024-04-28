@@ -65,7 +65,6 @@ rl.question('Name? (This will go on the LICENSE)\n=> ', (name) => {
                     filesToUpdate.forEach((fileName) => {
                       try {
                         let fileContent = fs.readFileSync(`./template/${fileName}`, 'utf8');
-                        // Perhaps we should try using strings and replace them instead of regex
                         fileContent = fileContent.replace(/{{REPOSITORY}}/g, `${username}/${repository}`)
                           .replace(/{{PROJECT_NAME}}/g, proj_name)
                           .replace(/{{PROJECT_SHORT_DESCRIPTION}}/g, proj_short_desc)
