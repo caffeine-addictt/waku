@@ -38,19 +38,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs_1 = require("fs");
 var path_1 = require("path");
-var stream_1 = require("stream");
 var readline_1 = require("readline");
+var io_util_1 = require("./io-util");
+var error_1 = require("./error");
 // Constants
 var templateSyncIgnore = "\n.github/ISSUE_TEMPLATE/*\n.github/CODEOWNERS\n.github/CODESTYLE.md\n.github/PULL_REQUEST_TEMPLATE.md\n.github/SECURITY.md\nCITATION.cff\nLICENSE\nREADME.md";
 var templateSyncLabel = "\n  - name: 'CI: Template Sync'\n  color: AEB1C2\n  description: Sync with upstream template\n";
-/** Handle errors and conditionally exit program */
-var handleError = function (error) {
-    if ((error === null || error === void 0 ? void 0 : error.code) !== 'ENOENT' &&
-        (error === null || error === void 0 ? void 0 : error.code) !== 'EEXIST') {
-        console.error(error);
-        process.exit(1);
-    }
-};
 /**
  * For interacting with stdin/stdout
  */
@@ -61,55 +54,6 @@ var rl = readline_1.default.createInterface({
 /** Prompt user for input */
 var question = function (query) {
     return new Promise(function (resolve) { return rl.question(query, resolve); });
-};
-var withTempDir = function (prefix, func) {
-    var dirPath;
-    var cleanup = function () { return dirPath && fs_1.default.rmdirSync(dirPath); };
-    return {
-        cleanup: cleanup,
-        func: function () {
-            dirPath = fs_1.default.mkdtempSync(prefix);
-            try {
-                var returnVal = func(dirPath);
-                cleanup();
-                return returnVal;
-            }
-            catch (e) {
-                handleError(e);
-            }
-        },
-    };
-};
-/** Replace string in file buffer */
-var replaceInFile = function (filePath, tempDir, data) {
-    return new Promise(function (resolve) {
-        var outputPath = path_1.default.join(tempDir, path_1.default.basename(filePath));
-        fs_1.default.writeFileSync(outputPath, '');
-        var inStream = fs_1.default.createReadStream(filePath);
-        var outStream = new stream_1.default.Writable();
-        readline_1.default
-            .createInterface({
-            input: inStream,
-            output: outStream,
-            terminal: false,
-        })
-            .on('line', function (line) {
-            fs_1.default.appendFileSync(outputPath, line
-                .replace(/{{REPOSITORY}}/g, "".concat(data.username, "/").concat(data.repository))
-                .replace(/{{PROJECT_NAME}}/g, data.proj_name)
-                .replace(/{{PROJECT_SHORT_DESCRIPTION}}/g, data.proj_short_desc)
-                .replace(/{{PROJECT_LONG_DESCRIPTION}}/g, data.proj_long_desc)
-                .replace(/{{DOCS_URL}}/g, data.docs_url)
-                .replace(/{{EMAIL}}/g, data.email)
-                .replace(/{{USERNAME}}/g, data.username)
-                .replace(/{{NAME}}/g, data.name) + '\n');
-        })
-            .on('close', function () {
-            // Move from temp back to original
-            fs_1.default.renameSync(outputPath, filePath);
-            resolve();
-        });
-    });
 };
 /** Ask for project information */
 var fetchInfo = function (cleanup) { return __awaiter(void 0, void 0, void 0, function () {
@@ -174,7 +118,7 @@ var fetchInfo = function (cleanup) { return __awaiter(void 0, void 0, void 0, fu
 /**
  * The main logic
  */
-var main = withTempDir('caffeine-addictt-template-', function (tempDir) { return __awaiter(void 0, void 0, void 0, function () {
+var main = (0, io_util_1.withTempDir)('caffeine-addictt-template-', function (tempDir) { return __awaiter(void 0, void 0, void 0, function () {
     var data, filesToUpdate, filesToMove;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -186,7 +130,7 @@ var main = withTempDir('caffeine-addictt-template-', function (tempDir) { return
                     recursive: true,
                 });
                 filesToUpdate.forEach(function (relativePath) { return __awaiter(void 0, void 0, void 0, function () {
-                    var filePath, fileInfo, error_1;
+                    var filePath, fileInfo, error_2;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0:
@@ -198,16 +142,16 @@ var main = withTempDir('caffeine-addictt-template-', function (tempDir) { return
                                 if (fileInfo.isDirectory()) {
                                     return [2 /*return*/];
                                 }
-                                return [4 /*yield*/, replaceInFile(filePath, tempDir, data)];
+                                return [4 /*yield*/, (0, io_util_1.replaceInFile)(filePath, tempDir, data)];
                             case 2:
                                 _a.sent();
                                 return [3 /*break*/, 4];
                             case 3:
-                                error_1 = _a.sent();
+                                error_2 = _a.sent();
                                 // it's a bit different here, won't touch this for now
-                                if ((error_1 === null || error_1 === void 0 ? void 0 : error_1.code) !== 'ENOENT' &&
-                                    (error_1 === null || error_1 === void 0 ? void 0 : error_1.code) !== 'EEXIST') {
-                                    console.error(error_1);
+                                if ((error_2 === null || error_2 === void 0 ? void 0 : error_2.code) !== 'ENOENT' &&
+                                    (error_2 === null || error_2 === void 0 ? void 0 : error_2.code) !== 'EEXIST') {
+                                    console.error(error_2);
                                     process.exit(1);
                                 }
                                 else {
@@ -245,7 +189,7 @@ var main = withTempDir('caffeine-addictt-template-', function (tempDir) { return
                         console.log('You can view more configuration here: https://github.com/AndreasAugustin/actions-template-sync');
                     }
                     catch (error) {
-                        handleError(error);
+                        (0, error_1.handleError)(error);
                     }
                 }
                 else {
@@ -254,7 +198,7 @@ var main = withTempDir('caffeine-addictt-template-', function (tempDir) { return
                         fs_1.default.unlinkSync('./template/.github/workflows/sync-template.yml');
                     }
                     catch (error) {
-                        handleError(error);
+                        (0, error_1.handleError)(error);
                     }
                 }
                 // Move from template
@@ -269,7 +213,7 @@ var main = withTempDir('caffeine-addictt-template-', function (tempDir) { return
                     fs_1.default.renameSync('./template/.github', '.github');
                 }
                 catch (error) {
-                    handleError(error);
+                    (0, error_1.handleError)(error);
                 }
                 // Clean up development stuff
                 console.log('Cleaning up...');
@@ -290,7 +234,7 @@ var main = withTempDir('caffeine-addictt-template-', function (tempDir) { return
                     fs_1.default.rmSync('node_modules', { recursive: true });
                 }
                 catch (error) {
-                    handleError(error);
+                    (0, error_1.handleError)(error);
                 }
                 // Clean up dist
                 try {
@@ -298,7 +242,7 @@ var main = withTempDir('caffeine-addictt-template-', function (tempDir) { return
                     fs_1.default.rmSync('dist', { recursive: true });
                 }
                 catch (error) {
-                    handleError(error);
+                    (0, error_1.handleError)(error);
                 }
                 // Final stdout
                 console.log('\nDone!\nIf you encounter any issues, please report it here: https://github.com/caffeine-addictt/template/issues/new?assignees=caffeine-addictt&labels=Type%3A+Bug&projects=&template=1-bug-report.md&title=[Bug]+');
