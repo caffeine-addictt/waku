@@ -1,5 +1,6 @@
-const readline = require('readline');
 const fs = require('fs');
+const path = require('path');
+const readline = require('readline');
 
 const templateSyncIgnore = `
 .github/ISSUE_TEMPLATE/*
@@ -97,10 +98,16 @@ const question = (query) =>
   }
 
   // Writing general stuff
-  const filesToUpdate = ['LICENSE', 'CITATION.cff'];
-  filesToUpdate.forEach((fileName) => {
+  const filesToUpdate = fs.readdirSync('./template', { recursive: true });
+  filesToUpdate.forEach((/** @type {string} */ relativePath) => {
+    const filePath = path.join('./template', relativePath);
     try {
-      let fileContent = fs.readFileSync(`./template/${fileName}`, 'utf8');
+      const fileInfo = fs.statSync(filePath);
+      if (fileInfo.isDirectory()) {
+        return;
+      }
+
+      let fileContent = fs.readFileSync(filePath, 'utf8');
       fileContent = fileContent
         .replace(/{{REPOSITORY}}/g, `${username}/${repository}`)
         .replace(/{{PROJECT_NAME}}/g, proj_name)
@@ -110,14 +117,15 @@ const question = (query) =>
         .replace(/{{EMAIL}}/g, email)
         .replace(/{{USERNAME}}/g, username)
         .replace(/{{NAME}}/g, name);
-      fs.writeFileSync(`./template/${fileName}`, fileContent);
+
+      fs.writeFileSync(filePath, fileContent);
     } catch (error) {
       // it's a bit different here, won't touch this for now
       if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
         console.error(error);
         process.exit(1);
       } else {
-        console.log(`File ${fileName} not found.`);
+        console.log(`File ${filePath} not found.`);
       }
     }
   });
