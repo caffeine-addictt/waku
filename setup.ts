@@ -51,6 +51,39 @@ const question = (query) =>
   });
 
 /**
+ * Create a temp directory with automatic cleanup
+ *
+ * @param {string} prefix
+ * @param {(dirPath: string) => T} func
+ * @returns {{cleanup: () => void, func: () => T}}
+ * @template T
+ */
+function withTempDir(prefix, func) {
+  /** @type {string?} */
+  let dirPath;
+
+  const cleanup = () => dirPath && fs.rmdirSync(dirPath);
+
+  return {
+    cleanup: cleanup,
+    func: () => {
+      dirPath = fs.mkdtempSync(prefix);
+      try {
+        const returnVal = func(dirPath);
+        cleanup();
+        return returnVal;
+      } catch (e) {
+        handleError(e);
+      }
+    },
+  };
+}
+
+/**
+ * Make 1
+ */
+
+/**
  * Ask for project information
  *
  * @param {() => unknown} cleanup
@@ -130,6 +163,8 @@ function fetchInfo(cleanup) {
   }
 
   // Writing general stuff
+  const tempDir = fs.mkdtempSync('caffeine-addictt-template-');
+
   const filesToUpdate = fs.readdirSync('./template', { recursive: true });
   filesToUpdate.forEach((/** @type {string} */ relativePath) => {
     const filePath = path.join('./template', relativePath);
@@ -139,16 +174,18 @@ function fetchInfo(cleanup) {
         return;
       }
 
+      const readBuffer = fs.readAs;
+
       let fileContent = fs.readFileSync(filePath, 'utf8');
       fileContent = fileContent
-        .replace(/{{REPOSITORY}}/g, `${username}/${repository}`)
-        .replace(/{{PROJECT_NAME}}/g, proj_name)
-        .replace(/{{PROJECT_SHORT_DESCRIPTION}}/g, proj_short_desc)
-        .replace(/{{PROJECT_LONG_DESCRIPTION}}/g, proj_long_desc)
-        .replace(/{{DOCS_URL}}/g, docs_url)
-        .replace(/{{EMAIL}}/g, email)
-        .replace(/{{USERNAME}}/g, username)
-        .replace(/{{NAME}}/g, name);
+        .replace(/{{REPOSITORY}}/g, `${data.username}/${data.repository}`)
+        .replace(/{{PROJECT_NAME}}/g, data.proj_name)
+        .replace(/{{PROJECT_SHORT_DESCRIPTION}}/g, data.proj_short_desc)
+        .replace(/{{PROJECT_LONG_DESCRIPTION}}/g, data.proj_long_desc)
+        .replace(/{{DOCS_URL}}/g, data.docs_url)
+        .replace(/{{EMAIL}}/g, data.email)
+        .replace(/{{USERNAME}}/g, data.username)
+        .replace(/{{NAME}}/g, data.name);
 
       fs.writeFileSync(filePath, fileContent);
     } catch (error) {
@@ -164,7 +201,7 @@ function fetchInfo(cleanup) {
 
   // Write CODEOWNERS
   try {
-    fs.appendFileSync('./template/.github/CODEOWNERS', `* @${username}`);
+    fs.appendFileSync('./template/.github/CODEOWNERS', `* @${data.username}`);
   } catch (error) {
     // also different here
     if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
