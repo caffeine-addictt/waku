@@ -6,6 +6,9 @@ import { configs as _configs } from 'typescript-eslint';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default [
+  {
+    ignores: ['dist/*'],
+  },
   configs.recommended,
   ..._configs.recommended,
   eslintPluginPrettierRecommended,
