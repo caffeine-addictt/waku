@@ -71,124 +71,123 @@ const question = (query) =>
   console.log('Docs URL:', docs_url);
   console.log('================');
 
-  const confirm = await question('Confirm? (y/n)\n=> ');
-
-  if (confirm.toLowerCase() !== 'y') {
+  // Guard clause for confirmation
+  if ((await question('Confirm? (y/n)\n=> ')).toLowerCase() !== 'y') {
     console.log('Aborted.');
     rl.close();
     return;
-  } else {
-    console.log('\nWriting files...');
+  }
 
-    // Remove prettier stuff
+  console.log('\nWriting files...');
+
+  // Remove prettier stuff
+  try {
+    fs.unlinkSync('package.json');
+    fs.unlinkSync('package-lock.json');
+    fs.rmSync('node_modules', { recursive: true });
+  } catch (error) {
+    handleError(error);
+  }
+
+  // Writing general stuff
+  const filesToUpdate = ['LICENSE', 'CITATION.cff'];
+  filesToUpdate.forEach((fileName) => {
     try {
-      fs.unlinkSync('package.json');
-      fs.unlinkSync('package-lock.json');
-      fs.rmSync('node_modules', { recursive: true });
+      let fileContent = fs.readFileSync(`./template/${fileName}`, 'utf8');
+      fileContent = fileContent
+        .replace(/{{REPOSITORY}}/g, `${username}/${repository}`)
+        .replace(/{{PROJECT_NAME}}/g, proj_name)
+        .replace(/{{PROJECT_SHORT_DESCRIPTION}}/g, proj_short_desc)
+        .replace(/{{PROJECT_LONG_DESCRIPTION}}/g, proj_long_desc)
+        .replace(/{{DOCS_URL}}/g, docs_url)
+        .replace(/{{EMAIL}}/g, email)
+        .replace(/{{USERNAME}}/g, username)
+        .replace(/{{NAME}}/g, name);
+      fs.writeFileSync(`./template/${fileName}`, fileContent);
     } catch (error) {
-      handleError(error);
-    }
-
-    // Writing general stuff
-    const filesToUpdate = ['LICENSE', 'CITATION.cff'];
-    filesToUpdate.forEach((fileName) => {
-      try {
-        let fileContent = fs.readFileSync(`./template/${fileName}`, 'utf8');
-        fileContent = fileContent
-          .replace(/{{REPOSITORY}}/g, `${username}/${repository}`)
-          .replace(/{{PROJECT_NAME}}/g, proj_name)
-          .replace(/{{PROJECT_SHORT_DESCRIPTION}}/g, proj_short_desc)
-          .replace(/{{PROJECT_LONG_DESCRIPTION}}/g, proj_long_desc)
-          .replace(/{{DOCS_URL}}/g, docs_url)
-          .replace(/{{EMAIL}}/g, email)
-          .replace(/{{USERNAME}}/g, username)
-          .replace(/{{NAME}}/g, name);
-        fs.writeFileSync(`./template/${fileName}`, fileContent);
-      } catch (error) {
-        // it's a bit different here, won't touch this for now
-        if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
-          console.error(error);
-          process.exit(1);
-        } else {
-          console.log(`File ${fileName} not found.`);
-        }
-      }
-    });
-
-    // Write CODEOWNERS
-    try {
-      fs.appendFileSync('./template/.github/CODEOWNERS', `* @${username}`);
-    } catch (error) {
-      // also different here
+      // it's a bit different here, won't touch this for now
       if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
         console.error(error);
         process.exit(1);
       } else {
-        fs.renameSync('./template/.github/CODEOWNERS', '.github/CODEOWNERS');
+        console.log(`File ${fileName} not found.`);
       }
     }
+  });
 
-    // Optional keep up-to-date
-    const up_to_date = await question(
-      'Would you like to keep up-to-date with the template? (y/n)\n=> ',
-    );
-    if (up_to_date.toLowerCase() === 'y') {
-      console.log('Writing ignore file...');
-      try {
-        fs.appendFileSync('./template/.templatesyncignore', templateSync);
-        fs.appendFileSync(
-          './template/.github/settings.yml',
-          `
-        - name: 'CI: Template Sync'
-        color: AEB1C2
-        description: Sync with upstream template
-        `,
-        );
-        fs.renameSync('./template/.templatesyncignore', '.templatesyncignore');
-        console.log(
-          'You can view more configuration here: https://github.com/AndreasAugustin/actions-template-sync',
-        );
-      } catch (error) {
-        handleError(error);
-      }
+  // Write CODEOWNERS
+  try {
+    fs.appendFileSync('./template/.github/CODEOWNERS', `* @${username}`);
+  } catch (error) {
+    // also different here
+    if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
+      console.error(error);
+      process.exit(1);
     } else {
-      console.log('Removing syncing workflow...');
-      try {
-        fs.unlinkSync('./template/.github/workflows/sync-template.yml');
-      } catch (error) {
-        handleError(error);
-      }
+      fs.renameSync('./template/.github/CODEOWNERS', '.github/CODEOWNERS');
     }
+  }
 
-    // Move from template
+  // Optional keep up-to-date
+  const up_to_date = await question(
+    'Would you like to keep up-to-date with the template? (y/n)\n=> ',
+  );
+  if (up_to_date.toLowerCase() === 'y') {
+    console.log('Writing ignore file...');
     try {
-      const filesToMove = fs.readdirSync('./template');
-      filesToMove.forEach((file) => {
-        fs.renameSync(`./template/${file}`, `./${file}`);
-      });
-      fs.rmSync('./template', { recursive: true });
-      fs.rmSync('.github', { recursive: true });
-      fs.renameSync('./template/.github', '.github');
+      fs.appendFileSync('./template/.templatesyncignore', templateSync);
+      fs.appendFileSync(
+        './template/.github/settings.yml',
+        `
+      - name: 'CI: Template Sync'
+      color: AEB1C2
+      description: Sync with upstream template
+      `,
+      );
+      fs.renameSync('./template/.templatesyncignore', '.templatesyncignore');
+      console.log(
+        'You can view more configuration here: https://github.com/AndreasAugustin/actions-template-sync',
+      );
     } catch (error) {
       handleError(error);
     }
-
-    const keep_script = await question(
-      'Would you like to keep this setup script? (y/n)\n=> ',
-    );
-    if (keep_script.toLowerCase() !== 'y') {
-      console.log('Removing setup script...');
-      try {
-        fs.unlinkSync(__filename);
-      } catch (error) {
-        handleError(error);
-      }
-    } else {
-      console.log('Okay.');
+  } else {
+    console.log('Removing syncing workflow...');
+    try {
+      fs.unlinkSync('./template/.github/workflows/sync-template.yml');
+    } catch (error) {
+      handleError(error);
     }
-    console.log(
-      '\nDone!\nIf you encounter any issues, please report it here: https://github.com/caffeine-addictt/template/issues/new?assignees=caffeine-addictt&labels=Type%3A+Bug&projects=&template=1-bug-report.md&title=[Bug]+',
-    );
-    rl.close();
   }
+
+  // Move from template
+  try {
+    const filesToMove = fs.readdirSync('./template');
+    filesToMove.forEach((file) => {
+      fs.renameSync(`./template/${file}`, `./${file}`);
+    });
+    fs.rmSync('./template', { recursive: true });
+    fs.rmSync('.github', { recursive: true });
+    fs.renameSync('./template/.github', '.github');
+  } catch (error) {
+    handleError(error);
+  }
+
+  const keep_script = await question(
+    'Would you like to keep this setup script? (y/n)\n=> ',
+  );
+  if (keep_script.toLowerCase() !== 'y') {
+    console.log('Removing setup script...');
+    try {
+      fs.unlinkSync(__filename);
+    } catch (error) {
+      handleError(error);
+    }
+  } else {
+    console.log('Okay.');
+  }
+  console.log(
+    '\nDone!\nIf you encounter any issues, please report it here: https://github.com/caffeine-addictt/template/issues/new?assignees=caffeine-addictt&labels=Type%3A+Bug&projects=&template=1-bug-report.md&title=[Bug]+',
+  );
+  rl.close();
 })();
