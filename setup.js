@@ -2,6 +2,13 @@ const readline = require('readline');
 const fs = require('fs');
 const { execSync } = require('child_process');
 
+function handleError(error) {
+  if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
+    console.error(error);
+    process.exit(1);
+  }
+}
+
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
@@ -51,10 +58,7 @@ rl.question('Name? (This will go on the LICENSE)\n=> ', (name) => {
                       fs.unlinkSync('package-lock.json');
                       fs.rmSync('node_modules', { recursive: true });
                     } catch (error) {
-                      if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
-                        console.error(error);
-                        process.exit(1);
-                      }
+                      handleError(error);
                     }
 
                     // Writing general stuff
@@ -75,6 +79,7 @@ rl.question('Name? (This will go on the LICENSE)\n=> ', (name) => {
                           .replace(/{{NAME}}/g, name);
                         fs.writeFileSync(`./template/${fileName}`, fileContent);
                       } catch (error) {
+                        // it's a bit different here, won't touch this for now
                         if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
                           console.error(error);
                           process.exit(1);
@@ -88,6 +93,7 @@ rl.question('Name? (This will go on the LICENSE)\n=> ', (name) => {
                     try {
                       fs.appendFileSync('./template/.github/CODEOWNERS', `* @${username}`);
                     } catch (error) {
+                      // also different here
                       if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
                         console.error(error);
                         process.exit(1);
@@ -118,20 +124,14 @@ README.md`);
                           fs.renameSync('./template/.templatesyncignore', '.templatesyncignore');
                           console.log('You can view more configuration here: https://github.com/AndreasAugustin/actions-template-sync');
                         } catch (error) {
-                          if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
-                            console.error(error);
-                            process.exit(1);
-                          }
+                          handleError(error);
                         }
                       } else {
                         console.log('Removing syncing workflow...');
                         try {
                           fs.unlinkSync('./template/.github/workflows/sync-template.yml');
                         } catch (error) {
-                          if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
-                            console.error(error);
-                            process.exit(1);
-                          }
+                          handleError(error);
                         }
                       }
 
@@ -145,10 +145,7 @@ README.md`);
                         fs.rmSync('.github', { recursive: true });
                         fs.renameSync('./template/.github', '.github');
                       } catch (error) {
-                        if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
-                          console.error(error);
-                          process.exit(1);
-                        }
+                        handleError(error);
                       }
 
                       rl.question('Would you like to keep this setup script? (y/n)\n=> ', (keep_script) => {
@@ -157,10 +154,7 @@ README.md`);
                           try {
                             fs.unlinkSync(__filename);
                           } catch (error) {
-                            if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
-                              console.error(error);
-                              process.exit(1);
-                            }
+                            handleError(error);
                           }
                         } else {
                           console.log('Okay.');
