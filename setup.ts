@@ -19,18 +19,20 @@ const templateSyncLabel = `
   description: Sync with upstream template
 ` as const;
 
-/**
- * Handle errors and conditionally exit program
- *
- * @param {Error} error
- * @returns {void}
- */
-function handleError(error) {
-  if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
+// Errors
+interface NodeErrorMaybe extends Error {
+  code?: string;
+}
+/** Handle errors and conditionally exit program */
+const handleError = (error: Error | unknown) => {
+  if (
+    (error as NodeErrorMaybe)?.code !== 'ENOENT' &&
+    (error as NodeErrorMaybe)?.code !== 'EEXIST'
+  ) {
     console.error(error);
     process.exit(1);
   }
-}
+};
 
 /**
  * For interacting with stdin/stdout
@@ -51,17 +53,13 @@ const question = (query) =>
     rl.question(query, resolve);
   });
 
-/**
- * Create a temp directory with automatic cleanup
- *
- * @param {string} prefix
- * @param {(dirPath: string) => T} func
- * @returns {{cleanup: () => void, func: () => T}}
- * @template T
- */
-function withTempDir(prefix, func) {
-  /** @type {string?} */
-  let dirPath;
+/** Create a temp directory with automatic cleanup */
+type withTempDirFunc<T = unknown> = (
+  prefix: string,
+  func: (dirPath: string) => T,
+) => { cleanup: () => void; func: () => T };
+const withTempDir: withTempDirFunc = (prefix, func) => {
+  let dirPath: string;
 
   const cleanup = () => dirPath && fs.rmdirSync(dirPath);
 
@@ -78,27 +76,12 @@ function withTempDir(prefix, func) {
       }
     },
   };
-}
+};
 
 /**
  * Make 1
  */
 
-/**
- * Ask for project information
- *
- * @param {() => unknown} cleanup
- * @returns {{
- *   name: string;
- *   email: string;
- *   username: string;
- *   repository: string;
- *   proj_name: string;
- *   proj_short_desc: string;
- *   proj_long_desc: string;
- *   docs_url: string;
- * }}
- */
 function fetchInfo(cleanup) {
   return (async () => {
     const name = await question('Name? (This will go on the LICENSE)\n=> ');
