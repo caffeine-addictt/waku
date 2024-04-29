@@ -2,6 +2,16 @@ const readline = require('readline');
 const fs = require('fs');
 const { execSync } = require('child_process');
 
+const templateSync = `
+.github/ISSUE_TEMPLATE/*
+.github/CODEOWNERS
+.github/CODESTYLE.md
+.github/PULL_REQUEST_TEMPLATE.md
+.github/SECURITY.md
+CITATION.cff
+LICENSE
+README.md`;
+
 function handleError(error) {
   if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
     console.error(error);
@@ -103,15 +113,7 @@ const question = (query) => new Promise((resolve) => {
     if (up_to_date.toLowerCase() === 'y') {
       console.log('Writing ignore file...');
       try {
-        fs.appendFileSync('./template/.templatesyncignore', `
-        .github/ISSUE_TEMPLATE/*
-        .github/CODEOWNERS
-        .github/CODESTYLE.md
-        .github/PULL_REQUEST_TEMPLATE.md
-        .github/SECURITY.md
-        CITATION.cff
-        LICENSE
-        README.md`);
+        fs.appendFileSync('./template/.templatesyncignore', templateSync);
         fs.appendFileSync('./template/.github/settings.yml', `
         - name: 'CI: Template Sync'
         color: AEB1C2
