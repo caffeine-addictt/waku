@@ -17,8 +17,8 @@ concurrency:
 
 jobs:
   tests:
-    name: "Node.Js ${{ matrix.node_version }} on ${{ matrix.os }}"
-    runs-on: "${{ matrix.os }}-latest"
+    name: 'Node.Js ${{ matrix.node_version }} on ${{ matrix.os }}'
+    runs-on: '${{ matrix.os }}-latest'
 
     strategy:
       fail-fast: false
