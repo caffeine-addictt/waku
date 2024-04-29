@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import readline from 'readline';
 
+// Constants
 const templateSyncIgnore = `
 .github/ISSUE_TEMPLATE/*
 .github/CODEOWNERS
@@ -10,13 +11,13 @@ const templateSyncIgnore = `
 .github/SECURITY.md
 CITATION.cff
 LICENSE
-README.md`;
+README.md` as const;
 
 const templateSyncLabel = `
   - name: 'CI: Template Sync'
   color: AEB1C2
   description: Sync with upstream template
-`;
+` as const;
 
 /**
  * Handle errors and conditionally exit program
