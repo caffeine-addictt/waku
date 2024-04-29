@@ -180,16 +180,6 @@ const { func: main } = withTempDir(
 
     console.log('\nWriting files...');
 
-    // Remove prettier stuff
-    try {
-      fs.unlinkSync('package.json');
-      fs.unlinkSync('package-lock.json');
-      fs.unlinkSync('.prettierignore');
-      fs.rmSync('node_modules', { recursive: true });
-    } catch (error) {
-      handleError(error);
-    }
-
     // Writing general stuff
     const filesToUpdate = fs.readdirSync('./template', {
       recursive: true,
@@ -275,6 +265,7 @@ const { func: main } = withTempDir(
     }
 
     // Move from template
+    console.log('Moving files...');
     try {
       const filesToMove = fs.readdirSync('./template');
       filesToMove.forEach((file) => {
@@ -287,20 +278,36 @@ const { func: main } = withTempDir(
       handleError(error);
     }
 
-    // Remove setup script
-    if (
-      (
-        await question('Would you like to keep this setup script? (y/n)\n=> ')
-      ).toLowerCase() !== 'y'
-    ) {
-      console.log('Removing setup script...');
-      try {
-        fs.unlinkSync(__filename);
-      } catch (error) {
-        handleError(error);
-      }
-    } else {
-      console.log('Okay.');
+    // Clean up development stuff
+    console.log('Cleaning up...');
+    try {
+      // Js
+      fs.unlinkSync('package.json');
+      fs.unlinkSync('package-lock.json');
+
+      // Ts
+      fs.unlinkSync('setup.ts');
+      fs.unlinkSync('tsconfig.json');
+
+      // Linting
+      fs.unlinkSync('.prettierignore');
+      fs.unlinkSync('eslint.config.mjs');
+
+      // Git
+      fs.unlinkSync('.gitignore');
+
+      // Node
+      fs.rmSync('node_modules', { recursive: true });
+    } catch (error) {
+      handleError(error);
+    }
+
+    // Clean up dist
+    try {
+      fs.unlinkSync(__filename);
+      fs.rmSync('dist', { recursive: true });
+    } catch (error) {
+      handleError(error);
     }
 
     // Final stdout
