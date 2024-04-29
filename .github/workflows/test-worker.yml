@@ -52,8 +52,7 @@ jobs:
       - name: Testing
         run: |
           set -xe
-          echo "Testing project"
-          # npm run test
+          npm run test
 
   check:
     if: always()
