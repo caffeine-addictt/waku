@@ -45,9 +45,7 @@ A simple repository template to get started with GitHub.
 Run the setup script to get started!
 
 ```sh
-# Mark setup as executable
-chmod +x ./setup.sh
-./setup.sh
+node ./setup.js
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
