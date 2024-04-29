@@ -286,8 +286,9 @@ const { func: main } = withTempDir(
       fs.unlinkSync('package-lock.json');
 
       // Ts
-      fs.unlinkSync('setup.ts');
       fs.unlinkSync('tsconfig.json');
+      fs.rmSync('src', { recursive: true });
+      fs.rmSync('tests', { recursive: true });
 
       // Linting
       fs.unlinkSync('.prettierignore');
