@@ -3,7 +3,8 @@
   "scripts": {
     "lint": "eslint --cache .",
     "lint:fix": "eslint --fix --cache .",
-    "test": "echo 'No tests yet'"
+    "test": "echo 'No tests yet'",
+    "build": "tsc --build"
   },
   "devDependencies": {
     "@eslint/js": "^9.1.1",
