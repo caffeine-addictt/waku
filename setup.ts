@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import stream from 'stream';
 import readline from 'readline';
 
 // Constants
@@ -71,9 +72,45 @@ const withTempDir: withTempDirFunc = (prefix, func) => {
   };
 };
 
-/**
- * Make 1
- */
+/** Replace string in file buffer */
+const replaceInFile = (
+  filePath: string,
+  tempDir: string,
+  data: ProjectInfo,
+): Promise<void> =>
+  new Promise((resolve) => {
+    const outputPath = path.join(tempDir, path.basename(filePath));
+    fs.writeFileSync(outputPath, '');
+
+    const inStream = fs.createReadStream(filePath);
+    const outStream = new stream.Writable();
+
+    readline
+      .createInterface({
+        input: inStream,
+        output: outStream,
+        terminal: false,
+      })
+      .on('line', (line) => {
+        fs.appendFileSync(
+          outputPath,
+          line
+            .replace(/{{REPOSITORY}}/g, `${data.username}/${data.repository}`)
+            .replace(/{{PROJECT_NAME}}/g, data.proj_name)
+            .replace(/{{PROJECT_SHORT_DESCRIPTION}}/g, data.proj_short_desc)
+            .replace(/{{PROJECT_LONG_DESCRIPTION}}/g, data.proj_long_desc)
+            .replace(/{{DOCS_URL}}/g, data.docs_url)
+            .replace(/{{EMAIL}}/g, data.email)
+            .replace(/{{USERNAME}}/g, data.username)
+            .replace(/{{NAME}}/g, data.name) + '\n',
+        );
+      })
+      .on('close', () => {
+        // Move from temp back to original
+        fs.renameSync(outputPath, filePath);
+        resolve();
+      });
+  });
 
 interface ProjectInfo {
   name: string;
@@ -136,51 +173,68 @@ const fetchInfo = async (
 /**
  * The main logic
  */
-(async () => {
-  const data = fetchInfo(() => rl.close());
+const { func: main } = withTempDir(
+  'caffeine-addictt-template-',
+  async (tempDir: string) => {
+    const data = await fetchInfo(() => rl.close());
 
-  console.log('\nWriting files...');
+    console.log('\nWriting files...');
 
-  // Remove prettier stuff
-  try {
-    fs.unlinkSync('package.json');
-    fs.unlinkSync('package-lock.json');
-    fs.unlinkSync('.prettierignore');
-    fs.rmSync('node_modules', { recursive: true });
-  } catch (error) {
-    handleError(error);
-  }
-
-  // Writing general stuff
-  const tempDir = fs.mkdtempSync('caffeine-addictt-template-');
-
-  const filesToUpdate = fs.readdirSync('./template', {
-    recursive: true,
-  }) as string[];
-  filesToUpdate.forEach((relativePath) => {
-    const filePath = path.join('./template', relativePath);
+    // Remove prettier stuff
     try {
-      const fileInfo = fs.statSync(filePath);
-      if (fileInfo.isDirectory()) {
-        return;
-      }
-
-      const readBuffer = fs.readAs;
-
-      let fileContent = fs.readFileSync(filePath, 'utf8');
-      fileContent = fileContent
-        .replace(/{{REPOSITORY}}/g, `${data.username}/${data.repository}`)
-        .replace(/{{PROJECT_NAME}}/g, data.proj_name)
-        .replace(/{{PROJECT_SHORT_DESCRIPTION}}/g, data.proj_short_desc)
-        .replace(/{{PROJECT_LONG_DESCRIPTION}}/g, data.proj_long_desc)
-        .replace(/{{DOCS_URL}}/g, data.docs_url)
-        .replace(/{{EMAIL}}/g, data.email)
-        .replace(/{{USERNAME}}/g, data.username)
-        .replace(/{{NAME}}/g, data.name);
-
-      fs.writeFileSync(filePath, fileContent);
+      fs.unlinkSync('package.json');
+      fs.unlinkSync('package-lock.json');
+      fs.unlinkSync('.prettierignore');
+      fs.rmSync('node_modules', { recursive: true });
     } catch (error) {
-      // it's a bit different here, won't touch this for now
+      handleError(error);
+    }
+
+    // Writing general stuff
+    const filesToUpdate = fs.readdirSync('./template', {
+      recursive: true,
+    }) as string[];
+    filesToUpdate.forEach(async (relativePath) => {
+      const filePath = path.join('./template', relativePath);
+      try {
+        const fileInfo = fs.statSync(filePath);
+        if (fileInfo.isDirectory()) {
+          return;
+        }
+
+        await replaceInFile(filePath, tempDir, data);
+
+        // let fileContent = fs.readFileSync(filePath, 'utf8');
+        // fileContent = fileContent
+        //   .replace(/{{REPOSITORY}}/g, `${data.username}/${data.repository}`)
+        //   .replace(/{{PROJECT_NAME}}/g, data.proj_name)
+        //   .replace(/{{PROJECT_SHORT_DESCRIPTION}}/g, data.proj_short_desc)
+        //   .replace(/{{PROJECT_LONG_DESCRIPTION}}/g, data.proj_long_desc)
+        //   .replace(/{{DOCS_URL}}/g, data.docs_url)
+        //   .replace(/{{EMAIL}}/g, data.email)
+        //   .replace(/{{USERNAME}}/g, data.username)
+        //   .replace(/{{NAME}}/g, data.name);
+        //
+        // fs.writeFileSync(filePath, fileContent);
+      } catch (error) {
+        // it's a bit different here, won't touch this for now
+        if (
+          (error as NodeErrorMaybe)?.code !== 'ENOENT' &&
+          (error as NodeErrorMaybe)?.code !== 'EEXIST'
+        ) {
+          console.error(error);
+          process.exit(1);
+        } else {
+          console.log(`File ${filePath} not found.`);
+        }
+      }
+    });
+
+    // Write CODEOWNERS
+    try {
+      fs.appendFileSync('./template/.github/CODEOWNERS', `* @${data.username}`);
+    } catch (error) {
+      // also different here
       if (
         (error as NodeErrorMaybe)?.code !== 'ENOENT' &&
         (error as NodeErrorMaybe)?.code !== 'EEXIST'
@@ -188,84 +242,73 @@ const fetchInfo = async (
         console.error(error);
         process.exit(1);
       } else {
-        console.log(`File ${filePath} not found.`);
+        fs.renameSync('./template/.github/CODEOWNERS', '.github/CODEOWNERS');
       }
     }
-  });
 
-  // Write CODEOWNERS
-  try {
-    fs.appendFileSync('./template/.github/CODEOWNERS', `* @${data.username}`);
-  } catch (error) {
-    // also different here
+    // Optional keep up-to-date
     if (
-      (error as NodeErrorMaybe)?.code !== 'ENOENT' &&
-      (error as NodeErrorMaybe)?.code !== 'EEXIST'
+      (
+        await question(
+          'Would you like to keep up-to-date with the template? (y/n)\n=> ',
+        )
+      ).toLowerCase() === 'y'
     ) {
-      console.error(error);
-      process.exit(1);
+      console.log('Writing ignore file...');
+      try {
+        fs.appendFileSync('./template/.templatesyncignore', templateSyncIgnore);
+        fs.appendFileSync('./template/.github/settings.yml', templateSyncLabel);
+        fs.renameSync('./template/.templatesyncignore', '.templatesyncignore');
+        console.log(
+          'You can view more configuration here: https://github.com/AndreasAugustin/actions-template-sync',
+        );
+      } catch (error) {
+        handleError(error);
+      }
     } else {
-      fs.renameSync('./template/.github/CODEOWNERS', '.github/CODEOWNERS');
+      console.log('Removing syncing workflow...');
+      try {
+        fs.unlinkSync('./template/.github/workflows/sync-template.yml');
+      } catch (error) {
+        handleError(error);
+      }
     }
-  }
 
-  // Optional keep up-to-date
-  const up_to_date = question(
-    'Would you like to keep up-to-date with the template? (y/n)\n=> ',
-  );
-  if (up_to_date.toLowerCase() === 'y') {
-    console.log('Writing ignore file...');
+    // Move from template
     try {
-      fs.appendFileSync('./template/.templatesyncignore', templateSyncIgnore);
-      fs.appendFileSync('./template/.github/settings.yml', templateSyncLabel);
-      fs.renameSync('./template/.templatesyncignore', '.templatesyncignore');
-      console.log(
-        'You can view more configuration here: https://github.com/AndreasAugustin/actions-template-sync',
-      );
+      const filesToMove = fs.readdirSync('./template');
+      filesToMove.forEach((file) => {
+        fs.renameSync(`./template/${file}`, `./${file}`);
+      });
+      fs.rmSync('./template', { recursive: true });
+      fs.rmSync('.github', { recursive: true });
+      fs.renameSync('./template/.github', '.github');
     } catch (error) {
       handleError(error);
     }
-  } else {
-    console.log('Removing syncing workflow...');
-    try {
-      fs.unlinkSync('./template/.github/workflows/sync-template.yml');
-    } catch (error) {
-      handleError(error);
+
+    // Remove setup script
+    if (
+      (
+        await question('Would you like to keep this setup script? (y/n)\n=> ')
+      ).toLowerCase() !== 'y'
+    ) {
+      console.log('Removing setup script...');
+      try {
+        fs.unlinkSync(__filename);
+      } catch (error) {
+        handleError(error);
+      }
+    } else {
+      console.log('Okay.');
     }
-  }
 
-  // Move from template
-  try {
-    const filesToMove = fs.readdirSync('./template');
-    filesToMove.forEach((file) => {
-      fs.renameSync(`./template/${file}`, `./${file}`);
-    });
-    fs.rmSync('./template', { recursive: true });
-    fs.rmSync('.github', { recursive: true });
-    fs.renameSync('./template/.github', '.github');
-  } catch (error) {
-    handleError(error);
-  }
+    // Final stdout
+    console.log(
+      '\nDone!\nIf you encounter any issues, please report it here: https://github.com/caffeine-addictt/template/issues/new?assignees=caffeine-addictt&labels=Type%3A+Bug&projects=&template=1-bug-report.md&title=[Bug]+',
+    );
+    rl.close();
+  },
+);
 
-  // Remove setup script
-  if (
-    question(
-      'Would you like to keep this setup script? (y/n)\n=> ',
-    ).toLowerCase() !== 'y'
-  ) {
-    console.log('Removing setup script...');
-    try {
-      fs.unlinkSync(__filename);
-    } catch (error) {
-      handleError(error);
-    }
-  } else {
-    console.log('Okay.');
-  }
-
-  // Final stdout
-  console.log(
-    '\nDone!\nIf you encounter any issues, please report it here: https://github.com/caffeine-addictt/template/issues/new?assignees=caffeine-addictt&labels=Type%3A+Bug&projects=&template=1-bug-report.md&title=[Bug]+',
-  );
-  rl.close();
-})();
+main();
