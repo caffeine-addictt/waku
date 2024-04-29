@@ -51,39 +51,71 @@ const question = (query) =>
   });
 
 /**
+ * Ask for project information
+ *
+ * @param {() => unknown} cleanup
+ * @returns {{
+ *   name: string;
+ *   email: string;
+ *   username: string;
+ *   repository: string;
+ *   proj_name: string;
+ *   proj_short_desc: string;
+ *   proj_long_desc: string;
+ *   docs_url: string;
+ * }}
+ */
+function fetchInfo(cleanup) {
+  return (async () => {
+    const name = await question('Name? (This will go on the LICENSE)\n=> ');
+    const email = await question('Email?\n=> ');
+    const username = await question(
+      'Username? (https://github.com/<username>)\n=> ',
+    );
+    const repository = await question(
+      'Repository? ((https://github.com/$username/<repo>\n=> ',
+    );
+    const proj_name = await question('Project name?\n=> ');
+    const proj_short_desc = await question('Short description?\n=> ');
+    const proj_long_desc = await question('Long description?\n=> ');
+    const docs_url = await question('Documentation URL?\n=> ');
+
+    console.log('\n\n===== Log =====');
+    console.log('Name:', name);
+    console.log('Email:', email);
+    console.log('Username:', username);
+    console.log('Repository:', repository);
+    console.log('Project name:', proj_name);
+    console.log('Project short description:', proj_short_desc);
+    console.log('Project long description:', proj_long_desc);
+    console.log('Docs URL:', docs_url);
+    console.log('================');
+
+    // Guard clause for confirmation
+    if ((await question('Confirm? (y/n)\n=> ')).toLowerCase() !== 'y') {
+      console.log('Aborted.');
+      cleanup();
+      process.exit(1);
+    }
+
+    return {
+      name: name,
+      email: email,
+      username: username,
+      repository: repository,
+      proj_name: proj_name,
+      proj_short_desc: proj_short_desc,
+      proj_long_desc: proj_long_desc,
+      docs_url: docs_url,
+    };
+  })();
+}
+
+/**
  * The main logic
  */
 (async () => {
-  const name = await question('Name? (This will go on the LICENSE)\n=> ');
-  const email = await question('Email?\n=> ');
-  const username = await question(
-    'Username? (https://github.com/<username>)\n=> ',
-  );
-  const repository = await question(
-    'Repository? ((https://github.com/$username/<repo>\n=> ',
-  );
-  const proj_name = await question('Project name?\n=> ');
-  const proj_short_desc = await question('Short description?\n=> ');
-  const proj_long_desc = await question('Long description?\n=> ');
-  const docs_url = await question('Documentation URL?\n=> ');
-
-  console.log('\n\n===== Log =====');
-  console.log('Name:', name);
-  console.log('Email:', email);
-  console.log('Username:', username);
-  console.log('Repository:', repository);
-  console.log('Project name:', proj_name);
-  console.log('Project short description:', proj_short_desc);
-  console.log('Project long description:', proj_long_desc);
-  console.log('Docs URL:', docs_url);
-  console.log('================');
-
-  // Guard clause for confirmation
-  if ((await question('Confirm? (y/n)\n=> ')).toLowerCase() !== 'y') {
-    console.log('Aborted.');
-    rl.close();
-    return;
-  }
+  const data = fetchInfo(() => rl.close());
 
   console.log('\nWriting files...');
 
