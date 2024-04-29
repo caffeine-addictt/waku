@@ -43,10 +43,8 @@ const rl = readline.createInterface({
 });
 
 /** Prompt user for input */
-const question = (query: string): string =>
-  await new Promise((resolve) => {
-    rl.question(query, resolve);
-  });
+const question = (query: string): Promise<string> =>
+  new Promise((resolve) => rl.question(query, resolve));
 
 /** Create a temp directory with automatic cleanup */
 type withTempDirFunc<T = unknown> = (
@@ -77,7 +75,7 @@ const withTempDir: withTempDirFunc = (prefix, func) => {
  * Make 1
  */
 
-interface InfoType {
+interface ProjectInfo {
   name: string;
   email: string;
   username: string;
@@ -89,17 +87,21 @@ interface InfoType {
 }
 
 /** Ask for project information */
-function fetchInfo(cleanup: () => void | unknown): InfoType {
-  const name = question('Name? (This will go on the LICENSE)\n=> ');
-  const email = question('Email?\n=> ');
-  const username = question('Username? (https://github.com/<username>)\n=> ');
-  const repository = question(
+const fetchInfo = async (
+  cleanup: () => void | unknown,
+): Promise<ProjectInfo> => {
+  const name = await question('Name? (This will go on the LICENSE)\n=> ');
+  const email = await question('Email?\n=> ');
+  const username = await question(
+    'Username? (https://github.com/<username>)\n=> ',
+  );
+  const repository = await question(
     'Repository? ((https://github.com/$username/<repo>\n=> ',
   );
-  const proj_name = question('Project name?\n=> ');
-  const proj_short_desc = question('Short description?\n=> ');
-  const proj_long_desc = question('Long description?\n=> ');
-  const docs_url = question('Documentation URL?\n=> ');
+  const proj_name = await question('Project name?\n=> ');
+  const proj_short_desc = await question('Short description?\n=> ');
+  const proj_long_desc = await question('Long description?\n=> ');
+  const docs_url = await question('Documentation URL?\n=> ');
 
   console.log('\n\n===== Log =====');
   console.log('Name:', name);
@@ -113,7 +115,7 @@ function fetchInfo(cleanup: () => void | unknown): InfoType {
   console.log('================');
 
   // Guard clause for confirmation
-  if (question('Confirm? (y/n)\n=> ').toLowerCase() !== 'y') {
+  if ((await question('Confirm? (y/n)\n=> ')).toLowerCase() !== 'y') {
     console.log('Aborted.');
     cleanup();
     process.exit(1);
@@ -128,8 +130,8 @@ function fetchInfo(cleanup: () => void | unknown): InfoType {
     proj_short_desc: proj_short_desc,
     proj_long_desc: proj_long_desc,
     docs_url: docs_url,
-  } satisfies InfoType;
-}
+  } satisfies ProjectInfo;
+};
 
 /**
  * The main logic
