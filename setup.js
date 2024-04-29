@@ -11,6 +11,12 @@ CITATION.cff
 LICENSE
 README.md`;
 
+const templateSyncLabel = `
+  - name: 'CI: Template Sync'
+  color: AEB1C2
+  description: Sync with upstream template
+`;
+
 /**
  * Handle errors and conditionally exit program
  *
@@ -137,14 +143,7 @@ const question = (query) =>
     console.log('Writing ignore file...');
     try {
       fs.appendFileSync('./template/.templatesyncignore', templateSyncIgnore);
-      fs.appendFileSync(
-        './template/.github/settings.yml',
-        `
-      - name: 'CI: Template Sync'
-      color: AEB1C2
-      description: Sync with upstream template
-      `,
-      );
+      fs.appendFileSync('./template/.github/settings.yml', templateSyncLabel);
       fs.renameSync('./template/.templatesyncignore', '.templatesyncignore');
       console.log(
         'You can view more configuration here: https://github.com/AndreasAugustin/actions-template-sync',
