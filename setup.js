@@ -173,10 +173,12 @@ const question = (query) =>
     handleError(error);
   }
 
-  const keep_script = await question(
-    'Would you like to keep this setup script? (y/n)\n=> ',
-  );
-  if (keep_script.toLowerCase() !== 'y') {
+  // Remove setup script
+  if (
+    (
+      await question('Would you like to keep this setup script? (y/n)\n=> ')
+    ).toLowerCase() !== 'y'
+  ) {
     console.log('Removing setup script...');
     try {
       fs.unlinkSync(__filename);
