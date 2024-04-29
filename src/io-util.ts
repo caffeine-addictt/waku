@@ -10,8 +10,13 @@ import type { ProjectInfo } from './types';
 export type withTempDirFunc<T = unknown> = (
   prefix: string,
   func: (dirPath: string) => T,
+  autoCleanup?: boolean,
 ) => { cleanup: () => void; func: () => T; path: string };
-export const withTempDir: withTempDirFunc = (prefix, func) => {
+export const withTempDir: withTempDirFunc = (
+  prefix,
+  func,
+  autoCleanup = true,
+) => {
   const dirPath = fs.mkdtempSync(prefix);
 
   const cleanup = () => fs.rmdirSync(dirPath);
@@ -22,7 +27,7 @@ export const withTempDir: withTempDirFunc = (prefix, func) => {
     func: () => {
       try {
         const returnVal = func(dirPath);
-        cleanup();
+        if (autoCleanup) cleanup();
         return returnVal;
       } catch (e) {
         handleError(e);
