@@ -19,7 +19,7 @@ export const withTempDir: withTempDirFunc = (
 ) => {
   const dirPath = fs.mkdtempSync(prefix);
 
-  const cleanup = () => fs.rmdirSync(dirPath);
+  const cleanup = () => fs.rmSync(dirPath, { recursive: true, force: true });
 
   return {
     path: dirPath,
