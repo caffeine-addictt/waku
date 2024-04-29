@@ -29,6 +29,7 @@ jobs:
           - macos
 
         node_version:
+          - 16
           - 18
           - 20
           - latest
