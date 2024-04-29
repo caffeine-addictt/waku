@@ -1,6 +1,5 @@
 const readline = require('readline');
 const fs = require('fs');
-const { execSync } = require('child_process');
 
 const templateSync = `
 .github/ISSUE_TEMPLATE/*
