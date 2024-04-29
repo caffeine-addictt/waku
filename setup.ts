@@ -152,8 +152,10 @@ function fetchInfo(cleanup: () => void | unknown): InfoType {
   // Writing general stuff
   const tempDir = fs.mkdtempSync('caffeine-addictt-template-');
 
-  const filesToUpdate = fs.readdirSync('./template', { recursive: true });
-  filesToUpdate.forEach((/** @type {string} */ relativePath) => {
+  const filesToUpdate = fs.readdirSync('./template', {
+    recursive: true,
+  }) as string[];
+  filesToUpdate.forEach((relativePath) => {
     const filePath = path.join('./template', relativePath);
     try {
       const fileInfo = fs.statSync(filePath);
