@@ -1,6 +1,11 @@
+// @ts-check
+
+const eslint = require('@eslint/js');
+const tseslint = require('typescript-eslint');
 const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
 
 module.exports = [
-  // Any other config imports go at the top
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
   eslintPluginPrettierRecommended,
 ];
