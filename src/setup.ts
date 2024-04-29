@@ -1,7 +1,10 @@
 import fs from 'fs';
 import path from 'path';
-import stream from 'stream';
 import readline from 'readline';
+
+import type { ProjectInfo } from './types';
+import { replaceInFile, withTempDir } from './io-util';
+import { handleError, type NodeErrorMaybe } from './error';
 
 // Constants
 const templateSyncIgnore = `
@@ -20,21 +23,6 @@ const templateSyncLabel = `
   description: Sync with upstream template
 ` as const;
 
-// Errors
-interface NodeErrorMaybe extends Error {
-  code?: string;
-}
-/** Handle errors and conditionally exit program */
-const handleError = (error: Error | unknown) => {
-  if (
-    (error as NodeErrorMaybe)?.code !== 'ENOENT' &&
-    (error as NodeErrorMaybe)?.code !== 'EEXIST'
-  ) {
-    console.error(error);
-    process.exit(1);
-  }
-};
-
 /**
  * For interacting with stdin/stdout
  */
@@ -46,82 +34,6 @@ const rl = readline.createInterface({
 /** Prompt user for input */
 const question = (query: string): Promise<string> =>
   new Promise((resolve) => rl.question(query, resolve));
-
-/** Create a temp directory with automatic cleanup */
-type withTempDirFunc<T = unknown> = (
-  prefix: string,
-  func: (dirPath: string) => T,
-) => { cleanup: () => void; func: () => T };
-const withTempDir: withTempDirFunc = (prefix, func) => {
-  let dirPath: string;
-
-  const cleanup = () => dirPath && fs.rmdirSync(dirPath);
-
-  return {
-    cleanup: cleanup,
-    func: () => {
-      dirPath = fs.mkdtempSync(prefix);
-      try {
-        const returnVal = func(dirPath);
-        cleanup();
-        return returnVal;
-      } catch (e) {
-        handleError(e);
-      }
-    },
-  };
-};
-
-/** Replace string in file buffer */
-const replaceInFile = (
-  filePath: string,
-  tempDir: string,
-  data: ProjectInfo,
-): Promise<void> =>
-  new Promise((resolve) => {
-    const outputPath = path.join(tempDir, path.basename(filePath));
-    fs.writeFileSync(outputPath, '');
-
-    const inStream = fs.createReadStream(filePath);
-    const outStream = new stream.Writable();
-
-    readline
-      .createInterface({
-        input: inStream,
-        output: outStream,
-        terminal: false,
-      })
-      .on('line', (line) => {
-        fs.appendFileSync(
-          outputPath,
-          line
-            .replace(/{{REPOSITORY}}/g, `${data.username}/${data.repository}`)
-            .replace(/{{PROJECT_NAME}}/g, data.proj_name)
-            .replace(/{{PROJECT_SHORT_DESCRIPTION}}/g, data.proj_short_desc)
-            .replace(/{{PROJECT_LONG_DESCRIPTION}}/g, data.proj_long_desc)
-            .replace(/{{DOCS_URL}}/g, data.docs_url)
-            .replace(/{{EMAIL}}/g, data.email)
-            .replace(/{{USERNAME}}/g, data.username)
-            .replace(/{{NAME}}/g, data.name) + '\n',
-        );
-      })
-      .on('close', () => {
-        // Move from temp back to original
-        fs.renameSync(outputPath, filePath);
-        resolve();
-      });
-  });
-
-interface ProjectInfo {
-  name: string;
-  email: string;
-  username: string;
-  repository: string;
-  proj_name: string;
-  proj_short_desc: string;
-  proj_long_desc: string;
-  docs_url: string;
-}
 
 /** Ask for project information */
 const fetchInfo = async (
@@ -193,19 +105,6 @@ const { func: main } = withTempDir(
         }
 
         await replaceInFile(filePath, tempDir, data);
-
-        // let fileContent = fs.readFileSync(filePath, 'utf8');
-        // fileContent = fileContent
-        //   .replace(/{{REPOSITORY}}/g, `${data.username}/${data.repository}`)
-        //   .replace(/{{PROJECT_NAME}}/g, data.proj_name)
-        //   .replace(/{{PROJECT_SHORT_DESCRIPTION}}/g, data.proj_short_desc)
-        //   .replace(/{{PROJECT_LONG_DESCRIPTION}}/g, data.proj_long_desc)
-        //   .replace(/{{DOCS_URL}}/g, data.docs_url)
-        //   .replace(/{{EMAIL}}/g, data.email)
-        //   .replace(/{{USERNAME}}/g, data.username)
-        //   .replace(/{{NAME}}/g, data.name);
-        //
-        // fs.writeFileSync(filePath, fileContent);
       } catch (error) {
         // it's a bit different here, won't touch this for now
         if (

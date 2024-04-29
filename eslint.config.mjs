@@ -7,7 +7,7 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
 export default [
   {
-    ignores: ['dist/*'],
+    ignores: ['dist/*', 'babel.config.cjs'],
   },
   configs.recommended,
   ..._configs.recommended,
