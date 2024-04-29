@@ -1,7 +1,7 @@
 const readline = require('readline');
 const fs = require('fs');
 
-const templateSync = `
+const templateSyncIgnore = `
 .github/ISSUE_TEMPLATE/*
 .github/CODEOWNERS
 .github/CODESTYLE.md
@@ -135,7 +135,7 @@ const question = (query) =>
   if (up_to_date.toLowerCase() === 'y') {
     console.log('Writing ignore file...');
     try {
-      fs.appendFileSync('./template/.templatesyncignore', templateSync);
+      fs.appendFileSync('./template/.templatesyncignore', templateSyncIgnore);
       fs.appendFileSync(
         './template/.github/settings.yml',
         `
