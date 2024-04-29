@@ -11,6 +11,12 @@ CITATION.cff
 LICENSE
 README.md`;
 
+/**
+ * Handle errors and conditionally exit program
+ *
+ * @param {Error} error
+ * @returns {void}
+ */
 function handleError(error) {
   if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
     console.error(error);
@@ -18,16 +24,28 @@ function handleError(error) {
   }
 }
 
+/**
+ * For interacting with stdin/stdout
+ */
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
+/**
+ * Prompt user for input
+ *
+ * @param {string} query
+ * @returns {Promise<string>} the response
+ */
 const question = (query) =>
   new Promise((resolve) => {
     rl.question(query, resolve);
   });
 
+/**
+ * The main logic
+ */
 (async () => {
   const name = await question('Name? (This will go on the LICENSE)\n=> ');
   const email = await question('Email?\n=> ');
