@@ -179,7 +179,10 @@ function fetchInfo(cleanup: () => void | unknown): InfoType {
       fs.writeFileSync(filePath, fileContent);
     } catch (error) {
       // it's a bit different here, won't touch this for now
-      if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
+      if (
+        (error as NodeErrorMaybe)?.code !== 'ENOENT' &&
+        (error as NodeErrorMaybe)?.code !== 'EEXIST'
+      ) {
         console.error(error);
         process.exit(1);
       } else {
@@ -193,7 +196,10 @@ function fetchInfo(cleanup: () => void | unknown): InfoType {
     fs.appendFileSync('./template/.github/CODEOWNERS', `* @${data.username}`);
   } catch (error) {
     // also different here
-    if (error.code !== 'ENOENT' && error.code !== 'EEXIST') {
+    if (
+      (error as NodeErrorMaybe)?.code !== 'ENOENT' &&
+      (error as NodeErrorMaybe)?.code !== 'EEXIST'
+    ) {
       console.error(error);
       process.exit(1);
     } else {
