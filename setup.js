@@ -84,6 +84,7 @@ const question = (query) =>
   try {
     fs.unlinkSync('package.json');
     fs.unlinkSync('package-lock.json');
+    fs.unlinkSync('.prettierignore');
     fs.rmSync('node_modules', { recursive: true });
   } catch (error) {
     handleError(error);
