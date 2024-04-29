@@ -21,18 +21,23 @@ function handleError(error) {
 
 const rl = readline.createInterface({
   input: process.stdin,
-  output: process.stdout
+  output: process.stdout,
 });
 
-const question = (query) => new Promise((resolve) => {
-  rl.question(query, resolve);
-});
+const question = (query) =>
+  new Promise((resolve) => {
+    rl.question(query, resolve);
+  });
 
 (async () => {
   const name = await question('Name? (This will go on the LICENSE)\n=> ');
   const email = await question('Email?\n=> ');
-  const username = await question('Username? (https://github.com/<username>)\n=> ');
-  const repository = await question('Repository? ((https://github.com/$username/<repo>\n=> ');
+  const username = await question(
+    'Username? (https://github.com/<username>)\n=> ',
+  );
+  const repository = await question(
+    'Repository? ((https://github.com/$username/<repo>\n=> ',
+  );
   const proj_name = await question('Project name?\n=> ');
   const proj_short_desc = await question('Short description?\n=> ');
   const proj_long_desc = await question('Long description?\n=> ');
@@ -68,14 +73,12 @@ const question = (query) => new Promise((resolve) => {
     }
 
     // Writing general stuff
-    const filesToUpdate = [
-      'LICENSE',
-      'CITATION.cff',
-    ];
+    const filesToUpdate = ['LICENSE', 'CITATION.cff'];
     filesToUpdate.forEach((fileName) => {
       try {
         let fileContent = fs.readFileSync(`./template/${fileName}`, 'utf8');
-        fileContent = fileContent.replace(/{{REPOSITORY}}/g, `${username}/${repository}`)
+        fileContent = fileContent
+          .replace(/{{REPOSITORY}}/g, `${username}/${repository}`)
           .replace(/{{PROJECT_NAME}}/g, proj_name)
           .replace(/{{PROJECT_SHORT_DESCRIPTION}}/g, proj_short_desc)
           .replace(/{{PROJECT_LONG_DESCRIPTION}}/g, proj_long_desc)
@@ -109,18 +112,25 @@ const question = (query) => new Promise((resolve) => {
     }
 
     // Optional keep up-to-date
-    const up_to_date = await question('Would you like to keep up-to-date with the template? (y/n)\n=> ');
+    const up_to_date = await question(
+      'Would you like to keep up-to-date with the template? (y/n)\n=> ',
+    );
     if (up_to_date.toLowerCase() === 'y') {
       console.log('Writing ignore file...');
       try {
         fs.appendFileSync('./template/.templatesyncignore', templateSync);
-        fs.appendFileSync('./template/.github/settings.yml', `
+        fs.appendFileSync(
+          './template/.github/settings.yml',
+          `
         - name: 'CI: Template Sync'
         color: AEB1C2
         description: Sync with upstream template
-        `);
+        `,
+        );
         fs.renameSync('./template/.templatesyncignore', '.templatesyncignore');
-        console.log('You can view more configuration here: https://github.com/AndreasAugustin/actions-template-sync');
+        console.log(
+          'You can view more configuration here: https://github.com/AndreasAugustin/actions-template-sync',
+        );
       } catch (error) {
         handleError(error);
       }
@@ -146,7 +156,9 @@ const question = (query) => new Promise((resolve) => {
       handleError(error);
     }
 
-    const keep_script = await question('Would you like to keep this setup script? (y/n)\n=> ');
+    const keep_script = await question(
+      'Would you like to keep this setup script? (y/n)\n=> ',
+    );
     if (keep_script.toLowerCase() !== 'y') {
       console.log('Removing setup script...');
       try {
@@ -157,7 +169,9 @@ const question = (query) => new Promise((resolve) => {
     } else {
       console.log('Okay.');
     }
-    console.log('\nDone!\nIf you encounter any issues, please report it here: https://github.com/caffeine-addictt/template/issues/new?assignees=caffeine-addictt&labels=Type%3A+Bug&projects=&template=1-bug-report.md&title=[Bug]+');
+    console.log(
+      '\nDone!\nIf you encounter any issues, please report it here: https://github.com/caffeine-addictt/template/issues/new?assignees=caffeine-addictt&labels=Type%3A+Bug&projects=&template=1-bug-report.md&title=[Bug]+',
+    );
     rl.close();
   }
 })();
