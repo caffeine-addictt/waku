@@ -278,8 +278,9 @@ var main = withTempDir('caffeine-addictt-template-', function (tempDir) { return
                     fs_1.default.unlinkSync('package.json');
                     fs_1.default.unlinkSync('package-lock.json');
                     // Ts
-                    fs_1.default.unlinkSync('setup.ts');
                     fs_1.default.unlinkSync('tsconfig.json');
+                    fs_1.default.rmSync('src', { recursive: true });
+                    fs_1.default.rmSync('tests', { recursive: true });
                     // Linting
                     fs_1.default.unlinkSync('.prettierignore');
                     fs_1.default.unlinkSync('eslint.config.mjs');
