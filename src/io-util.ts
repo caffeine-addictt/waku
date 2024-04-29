@@ -43,6 +43,23 @@ export const replaceInFile = (
   data: ProjectInfo,
 ): Promise<void> =>
   new Promise((resolve) => {
+    // Revert to legacy
+
+    let fileContent = fs.readFileSync(filePath, 'utf8');
+    fileContent = fileContent
+      .replace(/{{REPOSITORY}}/g, data.repository)
+      .replace(/{{PROJECT_NAME}}/g, data.proj_name)
+      .replace(/{{PROJECT_SHORT_DESCRIPTION}}/g, data.proj_short_desc)
+      .replace(/{{PROJECT_LONG_DESCRIPTION}}/g, data.proj_long_desc)
+      .replace(/{{DOCS_URL}}/g, data.docs_url)
+      .replace(/{{EMAIL}}/g, data.email)
+      .replace(/{{USERNAME}}/g, data.username)
+      .replace(/{{NAME}}/g, data.name);
+
+    resolve(fs.writeFileSync(filePath, fileContent));
+    return;
+
+    // There was an attempt at buffering R/W
     const outputPath = path.join(tempDir, path.basename(filePath));
     fs.writeFileSync(outputPath, '');
 

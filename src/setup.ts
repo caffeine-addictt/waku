@@ -105,19 +105,6 @@ const { func: main } = withTempDir(
         }
 
         await replaceInFile(filePath, tempDir, data);
-
-        // let fileContent = fs.readFileSync(filePath, 'utf8');
-        // fileContent = fileContent
-        //   .replace(/{{REPOSITORY}}/g, `${data.username}/${data.repository}`)
-        //   .replace(/{{PROJECT_NAME}}/g, data.proj_name)
-        //   .replace(/{{PROJECT_SHORT_DESCRIPTION}}/g, data.proj_short_desc)
-        //   .replace(/{{PROJECT_LONG_DESCRIPTION}}/g, data.proj_long_desc)
-        //   .replace(/{{DOCS_URL}}/g, data.docs_url)
-        //   .replace(/{{EMAIL}}/g, data.email)
-        //   .replace(/{{USERNAME}}/g, data.username)
-        //   .replace(/{{NAME}}/g, data.name);
-        //
-        // fs.writeFileSync(filePath, fileContent);
       } catch (error) {
         // it's a bit different here, won't touch this for now
         if (
