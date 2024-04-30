@@ -197,9 +197,14 @@ const { func: main } = withTempDir(
       // Ts
       fs.unlinkSync('tsconfig.json');
       fs.rmSync('src', { recursive: true });
+
+      // Tests
+      fs.unlinkSync('babel.config.cjs');
       fs.rmSync('tests', { recursive: true });
 
       // Linting
+      fs.unlinkSync('.eslintcache');
+      fs.unlinkSync('.eslintignore');
       fs.unlinkSync('.prettierignore');
       fs.unlinkSync('eslint.config.mjs');
 
