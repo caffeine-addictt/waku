@@ -166,13 +166,23 @@ const { func: main } = withTempDir(
     // Move from template
     console.log('Moving files...');
     try {
-      const filesToMove = fs.readdirSync('./template');
+      // Delete .github/ directory
+      fs.rmSync('./.github', { recursive: true, force: true });
+
+      const filesToMove = fs.readdirSync('./template', {
+        recursive: true,
+      }) as string[];
       filesToMove.forEach((file) => {
-        fs.renameSync(`./template/${file}`, `./${file}`);
+        const filePath = path.join('./template', file);
+
+        const fileInfo = fs.statSync(filePath);
+        if (fileInfo.isDirectory()) {
+          fs.mkdirSync(`${file}`);
+          return;
+        }
+        fs.renameSync(filePath, `./${file}`);
       });
-      fs.rmSync('./template', { recursive: true });
-      fs.rmSync('.github', { recursive: true });
-      fs.renameSync('./template/.github', '.github');
+      fs.rmSync('./template', { recursive: true, force: true });
     } catch (error) {
       handleError(error);
     }
