@@ -3,8 +3,7 @@
 
 Documentation:
   - changed-files:
-      - any-glob-to-any-file: [docs/**, .github/**, './*.{md,mdx}']
-      - all-globs-to-all-files: '!.github/workflows/*'
+      - any-glob-to-any-file: [docs/**, './*.{md,mdx}']
 
 'Type: Test':
   - changed-files:

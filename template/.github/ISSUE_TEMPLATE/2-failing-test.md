@@ -3,7 +3,7 @@ name: 'Failing Test'
 about: 'Report failing tests or CI jobs.'
 title: '[Test] '
 labels: 'Type: Test'
-assignees: { { USERNAME } }
+assignees: '{{USERNAME}}'
 ---
 
 # Failing Test
