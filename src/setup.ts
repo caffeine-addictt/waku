@@ -7,8 +7,7 @@ import { replaceInFile, withTempDir } from './io-util';
 import { handleError, type NodeErrorMaybe } from './error';
 
 // Constants
-const templateSyncIgnore = `
-.github/ISSUE_TEMPLATE/*
+const templateSyncIgnore = `.github/ISSUE_TEMPLATE/*
 .github/CODEOWNERS
 .github/CODESTYLE.md
 .github/PULL_REQUEST_TEMPLATE.md
@@ -166,13 +165,23 @@ const { func: main } = withTempDir(
     // Move from template
     console.log('Moving files...');
     try {
-      const filesToMove = fs.readdirSync('./template');
+      // Delete .github/ directory
+      fs.rmSync('./.github', { recursive: true, force: true });
+
+      const filesToMove = fs.readdirSync('./template', {
+        recursive: true,
+      }) as string[];
       filesToMove.forEach((file) => {
-        fs.renameSync(`./template/${file}`, `./${file}`);
+        const filePath = path.join('./template', file);
+
+        const fileInfo = fs.statSync(filePath);
+        if (fileInfo.isDirectory()) {
+          fs.mkdirSync(`${file}`);
+          return;
+        }
+        fs.renameSync(filePath, `./${file}`);
       });
-      fs.rmSync('./template', { recursive: true });
-      fs.rmSync('.github', { recursive: true });
-      fs.renameSync('./template/.github', '.github');
+      fs.rmSync('./template', { recursive: true, force: true });
     } catch (error) {
       handleError(error);
     }
@@ -187,9 +196,14 @@ const { func: main } = withTempDir(
       // Ts
       fs.unlinkSync('tsconfig.json');
       fs.rmSync('src', { recursive: true });
+
+      // Tests
+      fs.unlinkSync('babel.config.cjs');
       fs.rmSync('tests', { recursive: true });
 
       // Linting
+      fs.unlinkSync('.eslintcache');
+      fs.unlinkSync('.eslintignore');
       fs.unlinkSync('.prettierignore');
       fs.unlinkSync('eslint.config.mjs');
 

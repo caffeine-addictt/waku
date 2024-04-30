@@ -9,8 +9,7 @@ const readline_1 = __importDefault(require("readline"));
 const io_util_1 = require("./io-util");
 const error_1 = require("./error");
 // Constants
-const templateSyncIgnore = `
-.github/ISSUE_TEMPLATE/*
+const templateSyncIgnore = `.github/ISSUE_TEMPLATE/*
 .github/CODEOWNERS
 .github/CODESTYLE.md
 .github/PULL_REQUEST_TEMPLATE.md
@@ -140,13 +139,21 @@ const { func: main } = (0, io_util_1.withTempDir)('caffeine-addictt-template-', 
     // Move from template
     console.log('Moving files...');
     try {
-        const filesToMove = fs_1.default.readdirSync('./template');
-        filesToMove.forEach((file) => {
-            fs_1.default.renameSync(`./template/${file}`, `./${file}`);
+        // Delete .github/ directory
+        fs_1.default.rmSync('./.github', { recursive: true, force: true });
+        const filesToMove = fs_1.default.readdirSync('./template', {
+            recursive: true,
         });
-        fs_1.default.rmSync('./template', { recursive: true });
-        fs_1.default.rmSync('.github', { recursive: true });
-        fs_1.default.renameSync('./template/.github', '.github');
+        filesToMove.forEach((file) => {
+            const filePath = path_1.default.join('./template', file);
+            const fileInfo = fs_1.default.statSync(filePath);
+            if (fileInfo.isDirectory()) {
+                fs_1.default.mkdirSync(`${file}`);
+                return;
+            }
+            fs_1.default.renameSync(filePath, `./${file}`);
+        });
+        fs_1.default.rmSync('./template', { recursive: true, force: true });
     }
     catch (error) {
         (0, error_1.handleError)(error);
@@ -160,8 +167,12 @@ const { func: main } = (0, io_util_1.withTempDir)('caffeine-addictt-template-', 
         // Ts
         fs_1.default.unlinkSync('tsconfig.json');
         fs_1.default.rmSync('src', { recursive: true });
+        // Tests
+        fs_1.default.unlinkSync('babel.config.cjs');
         fs_1.default.rmSync('tests', { recursive: true });
         // Linting
+        fs_1.default.unlinkSync('.eslintcache');
+        fs_1.default.unlinkSync('.eslintignore');
         fs_1.default.unlinkSync('.prettierignore');
         fs_1.default.unlinkSync('eslint.config.mjs');
         // Git
