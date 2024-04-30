@@ -7,8 +7,7 @@ import { replaceInFile, withTempDir } from './io-util';
 import { handleError, type NodeErrorMaybe } from './error';
 
 // Constants
-const templateSyncIgnore = `
-.github/ISSUE_TEMPLATE/*
+const templateSyncIgnore = `.github/ISSUE_TEMPLATE/*
 .github/CODEOWNERS
 .github/CODESTYLE.md
 .github/PULL_REQUEST_TEMPLATE.md
