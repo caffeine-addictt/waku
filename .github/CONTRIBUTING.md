@@ -63,3 +63,13 @@ npm run lint
 # To fix any linting errors, run:
 npm run lint:fix
 ```
+
+### Building
+
+We pre-transpile our code to JavaScript in the `dist/` directory.
+Please ensure that the `dist/` directory is updated before merging a Pull Request.
+
+```sh
+# To build your code, run:
+npm run build
+```
