@@ -9,7 +9,7 @@ assignees: caffeine-addictt
 # Bug report
 
 Your issue may already be reported!
-Please check out our [active issues](https://github.com/{{REPOSITORY}}/issues) before creating one.
+Please check out our [active issues](https://github.com/caffeine-addictt/template/issues) before creating one.
 
 ## Expected Behavior
 
