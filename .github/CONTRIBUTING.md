@@ -39,3 +39,13 @@ please follow it in all your interactions with the project.
 > (This does not apply to development dependencies.)
 
 To prevent any unintentional errors, we develop this project with [TypeScript](https://www.typescriptlang.org/).
+
+### Testing
+
+We use [Jest](https://jestjs.io/) to test our code.
+Please ensure that tests are updated and pass before merging a Pull Request.
+
+```sh
+# To test your code, run:
+npm run test
+```
