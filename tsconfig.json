@@ -10,7 +10,5 @@
     "noFallthroughCasesInSwitch": true,
     "useUnknownInCatchVariables": true
   },
-  "include": [
-    "src/"
-  ]
+  "include": ["src/"]
 }
