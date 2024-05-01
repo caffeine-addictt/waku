@@ -28,3 +28,14 @@ please follow it in all your interactions with the project.
 2. Select the template that better fits your issue.
 3. Read the instructions carefully and write within the template guidelines.
 4. Submit it and wait for support.
+
+## Code Quality
+
+> [!IMPORTANT]
+> To ensure our script can be ran directly with `Node.js`,
+> without any additional install or build steps,
+> the use of any external libraries or packages is not allowed.
+>
+> (This does not apply to development dependencies.)
+
+To prevent any unintentional errors, we develop this project with [TypeScript](https://www.typescriptlang.org/).
