@@ -30,12 +30,10 @@ const myFunction = (): string => {
 
 Currently, documentation for this project resides in markdown files.
 
-- Headings are to be separated with 3 lines
-- Use of HTML comments is appreciated
 - Use of HTML is permitted
-- [reference style links][reference-style-links] are not required by are appreciated
+- Use of HTML comments is appreciated
 - Exceedingly long lines are to be broken
-- The indents are to be 4 spaces
+- [reference style links][reference-style-links] are not required by are appreciated
 
 ```markdown
 <!--example markdown document-->
