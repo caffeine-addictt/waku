@@ -1,8 +1,8 @@
 {
   "name": "repository_template",
   "scripts": {
-    "lint": "eslint --cache .",
-    "lint:fix": "eslint --fix --cache .",
+    "lint": "eslint --cache . && prettier --cache --check .",
+    "lint:fix": "eslint --fix --cache . && prettier --cache --write .",
     "test": "jest --passWithNoTests",
     "build": "tsc --build"
   },
