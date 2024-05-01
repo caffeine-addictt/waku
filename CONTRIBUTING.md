@@ -4,7 +4,7 @@ When contributing to this repository,
 please first discuss the change you wish to make via issue, email, or any other method
 with the owners of this repository before making a change.
 
-Please note we have a [code of conduct](./CODE_OF_CONDUCT.md);
+Please note we have a [code of conduct](./.github/CODE_OF_CONDUCT.md);
 please follow it in all your interactions with the project.
 
 ## Table of Contents
@@ -96,7 +96,7 @@ npm run test
 ### Linting
 
 We use [Prettier](https://prettier.io/) and [ESLint](https://eslint.org/)
-to ensure that code is consistent and follows our [code style](./CODESTYLE.md).
+to ensure that code is consistent and follows our [code style](./.github/CODESTYLE.md).
 Please ensure that your code passes linting before merging a Pull Request.
 
 ```sh
