@@ -33,7 +33,7 @@ Currently, documentation for this project resides in markdown files.
 - Headings are to be separated with 3 lines
 - Use of HTML comments is appreciated
 - Use of HTML is permitted
-- [reference style links](https://www.markdownguide.org/basic-syntax/#reference-style-links) are not required by are appreciated
+- [reference style links][reference-style-links] are not required by are appreciated
 - Exceedingly long lines are to be broken
 - The indents are to be 4 spaces
 
@@ -62,3 +62,5 @@ anim id est laborum. found [Lorem Ipsum Generator]
 
 [Lorem Ipsum Generator]: https://loremipsum.io/generator/
 ```
+
+[reference-style-links]: https://www.markdownguide.org/basic-syntax/#reference-style-links
