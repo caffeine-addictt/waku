@@ -12,11 +12,18 @@ and refer to it throughout the development of your contribution.
 Listed is a example class used demonstrate general rules you should follow
 throughout the development of your contribution.
 
-- Docstrings are to follow {{DOCSTRING_FORMAT}}
-- Private attributes are to be prefixed with an underscore
+We use [Prettier](https://prettier.io/) and [ESLint](https://eslint.org/)
+to ensure that code is consistent and follows our [code style](./CODESTYLE.md).
+Please ensure that your code passes linting before merging a Pull Request.
 
-```
-code example
+- Docstrings are to follow [JSDoc syntax](https://jsdoc.app).
+- Private attributes are to be prefixed with an underscore.
+
+```ts
+/** Get a greeting string */
+const myFunction = (): string => {
+  return 'hi';
+};
 ```
 
 ## Markdown Guidelines
