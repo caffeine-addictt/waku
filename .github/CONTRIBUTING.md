@@ -49,3 +49,17 @@ Please ensure that tests are updated and pass before merging a Pull Request.
 # To test your code, run:
 npm run test
 ```
+
+### Linting
+
+We use [Prettier](https://prettier.io/) and [ESLint](https://eslint.org/)
+to ensure that code is consistent and follows our [code style](./CODESTYLE.md).
+Please ensure that your code passes linting before merging a Pull Request.
+
+```sh
+# To lint your code, run:
+npm run lint
+
+# To fix any linting errors, run:
+npm run lint:fix
+```
