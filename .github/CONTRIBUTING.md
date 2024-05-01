@@ -7,6 +7,21 @@ with the owners of this repository before making a change.
 Please note we have a [code of conduct](./CODE_OF_CONDUCT.md);
 please follow it in all your interactions with the project.
 
+## Table of Contents
+
+<!-- prettier-ignore-start -->
+<!--toc:start-->
+
+1. [Pull Request Process](#pull-request-process)
+2. [Issue Report Process](#issue-report-process)
+3. [Code Quality](#code-quality)
+    - [Testing](#testing)
+    - [Linting](#linting)
+    - [Building](#building)
+
+<!--toc:end-->
+<!-- prettier-ignore-end -->
+
 ## Pull Request Process
 
 1. Ensure any install or build dependencies are removed before the end of the layer
