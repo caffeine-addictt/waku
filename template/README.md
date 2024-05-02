@@ -88,7 +88,8 @@ _Below is an example of how you can install and use {{PROJECT_NAME}}._
 
 Our docs are [here]({{DOCS_URL}})!
 
-See the [open issues](https://github.com/{{REPOSITORY}}/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/{{REPOSITORY}}/issues)
+for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -96,9 +97,13 @@ See the [open issues](https://github.com/{{REPOSITORY}}/issues) for a full list 
 
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**. ( ˶ˆᗜˆ˵ )
+Contributions are what make the open source community
+such an amazing place to learn, inspire, and create.
+Any contributions you make are **greatly appreciated**. ( ˶ˆᗜˆ˵ )
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+If you have a suggestion that would make this better,
+please fork the repo and create a pull request.
+You can also simply open an issue with the tag "enhancement".
 Don't forget to give the project a star! Thanks again!
 
 1. Fork the Project
