@@ -1,11 +1,5 @@
-<!-- Ignore line-length -->
-<!-- markdownlint-disable MD013 -->
-
 <!-- Allow HTML -->
 <!-- markdownlint-disable MD033 -->
-
-<!-- Allow multiple empty lines -->
-<!-- markdownlint-disable MD012 -->
 
 <!-- Allow HTML top-level heading -->
 <!-- markdownlint-disable MD041 -->
