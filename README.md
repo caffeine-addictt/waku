@@ -42,16 +42,18 @@ Simplify your workflow, save time, and ensure consistency across projects.
 
 Let's make starting new projects feel like a _breeze_ again.
 
-### Getting Started
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-#### 1. Creating a repository
+## Getting Started
+
+### 1. Creating a repository
 
 Click the green "Use this template" button in the top right corner of the page
 or the button below to create your new repository.
 
 [![Use Template][use-shield]][use-url]
 
-#### 2. Run the setup script
+### 2. Run the setup script
 
 > [!NOTE]
 > Only Node.Js versions 16, 18, 20 and latest are officially supported.
@@ -62,7 +64,7 @@ Run the following command and answer the prompts to complete the setup.
 node ./dist/setup.js
 ```
 
-#### 3. Final touches
+### 3. Final touches
 
 You are almost ready to start building your project.
 Just a few more steps and you're ready to go!
