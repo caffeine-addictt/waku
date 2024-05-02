@@ -36,11 +36,44 @@
 
 A simple repository template to get started with GitHub.
 
-Run the setup script to get started!
+Starting a new project?
+Say goodbye to repetitive setup tasks and configuration headaches!
+Simplify your workflow, save time, and ensure consistency across projects.
+
+Let's make starting new projects feel like a _breeze_ again.
+
+### Getting Started
+
+#### 1. Creating a repository
+
+Click the green "Use this template" button in the top right corner of the page
+or the button below to create your new repository.
+
+[![Use Template][use-shield]][use-url]
+
+#### 2. Run the setup script
+
+> [!NOTE]
+> Only Node.Js versions 16, 18, 20 and latest are officially supported.
+
+Run the following command and answer the prompts to complete the setup.
 
 ```sh
 node ./dist/setup.js
 ```
+
+#### 3. Final touches
+
+You are almost ready to start building your project.
+Just a few more steps and you're ready to go!
+
+- Update `CITATION.cff` file with your project information.
+- Create and add project images to the `images/` directory
+  and update `README.md` file.
+- Update `LICENSE.txt` file with your preferred license.
+- Update `.github/CODESTYLE.md` with your project's preferred code style.
+- Update `CONTRIBUTING.md` with your project's preferred contribution guidelines.
+- Update the workflow files in the `.github/workflows/` directory.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -102,3 +135,5 @@ Alex - [contact@ngjx.org](mailto:contact@ngjx.org)
 [stars-url]: https://github.com/caffeine-addictt/template/stargazers
 [license-shield]: https://img.shields.io/github/license/caffeine-addictt/template.svg?style=for-the-badge
 [license-url]: https://github.com/caffeine-addictt/template/blob/master/LICENSE.txt
+[use-shield]: https://img.shields.io/badge/Use%20template-FFFFFF?style=for-the-badge
+[use-url]: https://github.com/new?template_name=template&template_owner=caffeine-addictt
