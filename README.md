@@ -81,7 +81,7 @@ Just a few more steps and you're ready to go!
 >
 > If you have any feedback, please feel free to create an issue or a pull request.
 
-Want to support this project? _✨ Star it on GitHub_ and help us spread the word!
+Want to support this project? **✨ Star it on GitHub** and help us spread the word!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
