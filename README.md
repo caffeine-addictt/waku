@@ -75,6 +75,14 @@ Just a few more steps and you're ready to go!
 - Update `CONTRIBUTING.md` with your project's preferred contribution guidelines.
 - Update the workflow files in the `.github/workflows/` directory.
 
+> [!NOTE]
+> We know that there is still a fair amount of manual setup required,
+> and we are committed to making this process as smooth and painless as possible.
+>
+> If you have any feedback, please feel free to create an issue or a pull request.
+
+Want to support this project? _✨ Star it on GitHub_ and help us spread the word!
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
