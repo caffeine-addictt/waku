@@ -41,6 +41,11 @@ const fetchInfo = async (cleanup) => {
     const proj_short_desc = await question('Short description?\n=> ');
     const proj_long_desc = await question('Long description?\n=> ');
     const docs_url = await question('Documentation URL?\n=> ');
+    const assignees = Array.from(new Set([
+        ...(await question('Additional issue assignees? (Usernames comma separated)\n=> ')).split(','),
+        // Add CODEOWNERS
+        username,
+    ].map((s) => s.trim()))).join(`', '`);
     console.log('\n\n===== Log =====');
     console.log('Name:', name);
     console.log('Email:', email);
@@ -50,6 +55,7 @@ const fetchInfo = async (cleanup) => {
     console.log('Project short description:', proj_short_desc);
     console.log('Project long description:', proj_long_desc);
     console.log('Docs URL:', docs_url);
+    console.log('Issue assignees:', `['${assignees}']`);
     console.log('================');
     // Guard clause for confirmation
     if ((await question('Confirm? (y/n)\n=> ')).toLowerCase() !== 'y') {
@@ -66,6 +72,7 @@ const fetchInfo = async (cleanup) => {
         proj_short_desc: proj_short_desc,
         proj_long_desc: proj_long_desc,
         docs_url: docs_url,
+        assignees: assignees,
     };
 };
 /**
