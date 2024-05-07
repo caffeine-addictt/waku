@@ -54,7 +54,8 @@ export const replaceInFile = (
       .replace(/{{DOCS_URL}}/g, data.docs_url)
       .replace(/{{EMAIL}}/g, data.email)
       .replace(/{{USERNAME}}/g, data.username)
-      .replace(/{{NAME}}/g, data.name);
+      .replace(/{{NAME}}/g, data.name)
+      .replace(/{{ASSIGNEES}}/g, data.assignees);
 
     resolve(fs.writeFileSync(filePath, fileContent));
     return;
