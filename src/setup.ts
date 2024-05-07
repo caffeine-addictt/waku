@@ -265,6 +265,10 @@ const { func: main } = withTempDir(
       handleError(error);
     }
 
+    // Generate src and test
+    fs.mkdirSync('src');
+    fs.mkdirSync('tests');
+
     // Final stdout
     console.log(
       '\nDone!\nIf you encounter any issues, please report it here: https://github.com/caffeine-addictt/template/issues/new?assignees=caffeine-addictt&labels=Type%3A+Bug&projects=&template=1-bug-report.md&title=[Bug]+',
