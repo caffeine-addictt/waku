@@ -30,11 +30,26 @@ const rl = readline_1.default.createInterface({
     output: process.stdout,
 });
 /** Prompt user for input */
-const question = (query) => new Promise((resolve) => rl.question(query, resolve));
+const question = (query, validator = [], trimWhitespace = true) => new Promise((resolve) => rl.question(query, (s) => {
+    if (trimWhitespace)
+        s = s.trim();
+    validator.forEach((v) => {
+        if (!v.validate(s)) {
+            v.onError();
+            process.exit(1);
+        }
+    });
+    resolve(s);
+}));
 /** Ask for project information */
 const fetchInfo = async (cleanup) => {
     const name = await question('Name? (This will go on the LICENSE)\n=> ');
-    const email = await question('Email?\n=> ');
+    const email = await question('Email?\n=> ', [
+        {
+            validate: (s) => /.+@.+\..+/.test(s),
+            onError: () => console.log('Invalid email!'),
+        },
+    ]);
     const username = await question('Username? (https://github.com/<username>)\n=> ');
     const repository = await question('Repository? ((https://github.com/$username/<repo>\n=> ');
     const proj_name = await question('Project name?\n=> ');
