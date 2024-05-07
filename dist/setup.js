@@ -213,6 +213,9 @@ const { func: main } = (0, io_util_1.withTempDir)('caffeine-addictt-template-', 
     catch (error) {
         (0, error_1.handleError)(error);
     }
+    // Generate src and test
+    fs_1.default.mkdirSync('src');
+    fs_1.default.mkdirSync('tests');
     // Final stdout
     console.log('\nDone!\nIf you encounter any issues, please report it here: https://github.com/caffeine-addictt/template/issues/new?assignees=caffeine-addictt&labels=Type%3A+Bug&projects=&template=1-bug-report.md&title=[Bug]+');
     rl.close();
