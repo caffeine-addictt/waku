@@ -60,7 +60,9 @@ const fetchInfo = async (cleanup) => {
         ...(await question('Additional issue assignees? (Usernames comma separated)\n=> ')).split(','),
         // Add CODEOWNERS
         username,
-    ].map((s) => s.trim()))).join(`', '`);
+    ]
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0))).join(`', '`);
     console.log('\n\n===== Log =====');
     console.log('Name:', name);
     console.log('Email:', email);

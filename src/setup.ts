@@ -86,7 +86,9 @@ const fetchInfo = async (
 
         // Add CODEOWNERS
         username,
-      ].map((s: string) => s.trim()),
+      ]
+        .map((s: string) => s.trim())
+        .filter((s: string) => s.length > 0),
     ),
   ).join(`', '`);
 
