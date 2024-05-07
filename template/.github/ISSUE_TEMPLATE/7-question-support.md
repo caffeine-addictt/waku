@@ -3,7 +3,7 @@ name: 'Question or Support Request'
 about: 'Questions and requests for support.'
 title: ''
 labels: ['Type: Question', 'help wanted']
-assignees: '{{USERNAME}}'
+assignees: ['{{ASSIGNEES}}']
 ---
 
 # Question or Support Request
