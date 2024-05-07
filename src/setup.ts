@@ -39,9 +39,11 @@ interface Validator {
 const question = (
   query: string,
   validator: Validator[] = [],
+  trimWhitespace: boolean = true,
 ): Promise<string> =>
   new Promise((resolve) =>
     rl.question(query, (s: string) => {
+      if (trimWhitespace) s = s.trim();
       validator.forEach((v) => {
         if (!v.validate(s)) {
           v.onError();
