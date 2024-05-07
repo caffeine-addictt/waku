@@ -1,7 +1,7 @@
 import fs from 'fs';
-import path from 'path';
-import stream from 'stream';
-import readline from 'readline';
+// import path from 'path';
+// import stream from 'stream';
+// import readline from 'readline';
 
 import { handleError } from './error';
 import type { ProjectInfo } from './types';
@@ -39,7 +39,7 @@ export const withTempDir: withTempDirFunc = (
 /** Replace string in file buffer */
 export const replaceInFile = (
   filePath: string,
-  tempDir: string,
+  _tempDir: string,
   data: ProjectInfo,
 ): Promise<void> =>
   new Promise((resolve) => {
@@ -54,41 +54,42 @@ export const replaceInFile = (
       .replace(/{{DOCS_URL}}/g, data.docs_url)
       .replace(/{{EMAIL}}/g, data.email)
       .replace(/{{USERNAME}}/g, data.username)
-      .replace(/{{NAME}}/g, data.name);
+      .replace(/{{NAME}}/g, data.name)
+      .replace(/{{ASSIGNEES}}/g, data.assignees);
 
     resolve(fs.writeFileSync(filePath, fileContent));
     return;
 
     // There was an attempt at buffering R/W
-    const outputPath = path.join(tempDir, path.basename(filePath));
-    fs.writeFileSync(outputPath, '');
-
-    const inStream = fs.createReadStream(filePath);
-    const outStream = new stream.Writable();
-
-    readline
-      .createInterface({
-        input: inStream,
-        output: outStream,
-        terminal: false,
-      })
-      .on('line', (line) => {
-        fs.appendFileSync(
-          outputPath,
-          line
-            .replace(/{{REPOSITORY}}/g, `${data.username}/${data.repository}`)
-            .replace(/{{PROJECT_NAME}}/g, data.proj_name)
-            .replace(/{{PROJECT_SHORT_DESCRIPTION}}/g, data.proj_short_desc)
-            .replace(/{{PROJECT_LONG_DESCRIPTION}}/g, data.proj_long_desc)
-            .replace(/{{DOCS_URL}}/g, data.docs_url)
-            .replace(/{{EMAIL}}/g, data.email)
-            .replace(/{{USERNAME}}/g, data.username)
-            .replace(/{{NAME}}/g, data.name) + '\n',
-        );
-      })
-      .on('close', () => {
-        // Move from temp back to original
-        fs.renameSync(outputPath, filePath);
-        resolve();
-      });
+    // const outputPath = path.join(tempDir, path.basename(filePath));
+    // fs.writeFileSync(outputPath, '');
+    //
+    // const inStream = fs.createReadStream(filePath);
+    // const outStream = new stream.Writable();
+    //
+    // readline
+    //   .createInterface({
+    //     input: inStream,
+    //     output: outStream,
+    //     terminal: false,
+    //   })
+    //   .on('line', (line) => {
+    //     fs.appendFileSync(
+    //       outputPath,
+    //       line
+    //         .replace(/{{REPOSITORY}}/g, `${data.username}/${data.repository}`)
+    //         .replace(/{{PROJECT_NAME}}/g, data.proj_name)
+    //         .replace(/{{PROJECT_SHORT_DESCRIPTION}}/g, data.proj_short_desc)
+    //         .replace(/{{PROJECT_LONG_DESCRIPTION}}/g, data.proj_long_desc)
+    //         .replace(/{{DOCS_URL}}/g, data.docs_url)
+    //         .replace(/{{EMAIL}}/g, data.email)
+    //         .replace(/{{USERNAME}}/g, data.username)
+    //         .replace(/{{NAME}}/g, data.name) + '\n',
+    //     );
+    //   })
+    //   .on('close', () => {
+    //     // Move from temp back to original
+    //     fs.renameSync(outputPath, filePath);
+    //     resolve();
+    //   });
   });

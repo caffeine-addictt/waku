@@ -9,4 +9,5 @@ export interface ProjectInfo {
   proj_short_desc: string;
   proj_long_desc: string;
   docs_url: string;
+  assignees: string;
 }

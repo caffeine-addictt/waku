@@ -18,6 +18,7 @@ The repo is {{REPOSITORY}}
 {{EMAIL}} ssssss
 
 {{PROJECT_LONG_DESCRIPTION}}
+assignees: ['{{ASSIGNEES}}']
 `;
 const replaced = `
 My name is: John
@@ -31,6 +32,7 @@ My Project
 HbVYf@example.com ssssss
 
 Project with some description that is really long
+assignees: ['John', 'Jane']
 `;
 
 const tmp = withTempDir(
@@ -68,6 +70,7 @@ describe('replace the correct content', () => {
     proj_short_desc: 'Project with some description',
     proj_long_desc: 'Project with some description that is really long',
     docs_url: 'https://example.com/docs',
+    assignees: `John', 'Jane`,
   } satisfies ProjectInfo;
 
   test('File content is replaced matches "replaced" string', async () => {
