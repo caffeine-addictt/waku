@@ -138,7 +138,7 @@ const { func: main } = withTempDir(
     const filesToUpdate = fs.readdirSync('./template', {
       recursive: true,
     }) as string[];
-    filesToUpdate.forEach(async (relativePath) => {
+    for (const relativePath of filesToUpdate) {
       const filePath = path.join('./template', relativePath);
       try {
         const fileInfo = fs.statSync(filePath);
@@ -159,7 +159,7 @@ const { func: main } = withTempDir(
           console.log(`File ${filePath} not found.`);
         }
       }
-    });
+    }
 
     // Write CODEOWNERS
     try {
