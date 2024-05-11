@@ -102,7 +102,7 @@ const { func: main } = (0, io_util_1.withTempDir)('caffeine-addictt-template-', 
     const filesToUpdate = fs_1.default.readdirSync('./template', {
         recursive: true,
     });
-    filesToUpdate.forEach(async (relativePath) => {
+    for (const relativePath of filesToUpdate) {
         const filePath = path_1.default.join('./template', relativePath);
         try {
             const fileInfo = fs_1.default.statSync(filePath);
@@ -122,7 +122,7 @@ const { func: main } = (0, io_util_1.withTempDir)('caffeine-addictt-template-', 
                 console.log(`File ${filePath} not found.`);
             }
         }
-    });
+    }
     // Write CODEOWNERS
     try {
         fs_1.default.appendFileSync('./template/.github/CODEOWNERS', `* @${data.username}`);
