@@ -137,6 +137,8 @@ const { func: main } = (0, io_util_1.withTempDir)('caffeine-addictt-template-', 
     fs_1.default.unlinkSync('.eslintignore');
     fs_1.default.unlinkSync('.prettierignore');
     fs_1.default.unlinkSync('eslint.config.mjs');
+    // Syncing
+    fs_1.default.unlinkSync('.templatesyncignore');
     // Git
     fs_1.default.unlinkSync('.gitignore');
     // Node

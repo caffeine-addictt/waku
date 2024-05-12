@@ -187,6 +187,9 @@ const { func: main } = withTempDir(
     fs.unlinkSync('.prettierignore');
     fs.unlinkSync('eslint.config.mjs');
 
+    // Syncing
+    fs.unlinkSync('.templatesyncignore');
+
     // Git
     fs.unlinkSync('.gitignore');
 
