@@ -43,7 +43,10 @@ jobs:
         uses: AndreasAugustin/actions-template-sync@v2
         if: github.repository != env.UPSTREAM_REPO
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN || secrets.PERSONAL_ACCESS_TOKEN }}
+          # Token permissions
+          # Replace it with {{ secrets.PERSONAL_ACCESS_TOKEN }} and delete the .templatesyncignore file
+          # if you want to sync workflows.
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           source_repo_path: ${{ env.UPSTREAM_REPO }}
           upstream_branch: ${{ env.UPSTREAM_BRANCH }}
           pr_title: '[CI] Sync with upstream template'
