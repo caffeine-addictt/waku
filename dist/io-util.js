@@ -5,10 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.replaceInFile = exports.withTempDir = void 0;
 const fs_1 = __importDefault(require("fs"));
-// import path from 'path';
-// import stream from 'stream';
-// import readline from 'readline';
-const error_1 = require("./error");
 const withTempDir = (prefix, func, autoCleanup = true) => {
     const dirPath = fs_1.default.mkdtempSync(prefix);
     const cleanup = () => fs_1.default.rmSync(dirPath, { recursive: true, force: true });
@@ -16,15 +12,10 @@ const withTempDir = (prefix, func, autoCleanup = true) => {
         path: dirPath,
         cleanup: cleanup,
         func: () => {
-            try {
-                const returnVal = func(dirPath);
-                if (autoCleanup)
-                    cleanup();
-                return returnVal;
-            }
-            catch (e) {
-                (0, error_1.handleError)(e);
-            }
+            const returnVal = func(dirPath);
+            if (autoCleanup)
+                cleanup();
+            return returnVal;
         },
     };
 };

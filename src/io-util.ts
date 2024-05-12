@@ -3,7 +3,6 @@ import fs from 'fs';
 // import stream from 'stream';
 // import readline from 'readline';
 
-import { handleError } from './error';
 import type { ProjectInfo } from './types';
 
 /** Create a temp directory with automatic cleanup */
@@ -25,13 +24,9 @@ export const withTempDir: withTempDirFunc = (
     path: dirPath,
     cleanup: cleanup,
     func: () => {
-      try {
-        const returnVal = func(dirPath);
-        if (autoCleanup) cleanup();
-        return returnVal;
-      } catch (e) {
-        handleError(e);
-      }
+      const returnVal = func(dirPath);
+      if (autoCleanup) cleanup();
+      return returnVal;
     },
   };
 };

@@ -4,7 +4,6 @@ import readline from 'readline';
 
 import type { ProjectInfo } from './types';
 import { replaceInFile, withTempDir } from './io-util';
-import { handleError, type NodeErrorMaybe } from './error';
 
 /**
  * For interacting with stdin/stdout
@@ -116,9 +115,11 @@ const { func: main } = withTempDir(
   async (tempDir: string) => {
     const data = await fetchInfo(() => rl.close());
 
+    /// ######################################## //
+    // Stage 1: Update file content in template/ //
+    // ######################################### //
     console.log('\nWriting files...');
 
-    // Writing general stuff
     const filesToUpdate = fs.readdirSync('./template', {
       recursive: true,
     }) as string[];
@@ -138,82 +139,63 @@ const { func: main } = withTempDir(
     );
 
     // Write CODEOWNERS
-    try {
-      fs.appendFileSync('./template/.github/CODEOWNERS', `* @${data.username}`);
-    } catch (error) {
-      // also different here
-      if (
-        (error as NodeErrorMaybe)?.code !== 'ENOENT' &&
-        (error as NodeErrorMaybe)?.code !== 'EEXIST'
-      ) {
-        console.error(error);
-        process.exit(1);
-      } else {
-        fs.renameSync('./template/.github/CODEOWNERS', '.github/CODEOWNERS');
-      }
-    }
+    fs.appendFileSync('./template/.github/CODEOWNERS', `* @${data.username}`);
 
-    // Move from template
+    // ########################################## //
+    // Stage 2: Move files from template/ to root //
+    // ########################################## //
     console.log('Moving files...');
-    try {
-      // Delete .github/ directory
-      fs.rmSync('./.github', { recursive: true, force: true });
 
-      const filesToMove = fs.readdirSync('./template', {
-        recursive: true,
-      }) as string[];
-      filesToMove.forEach((file) => {
-        const filePath = path.join('./template', file);
+    // Delete .github/ directory
+    fs.rmSync('./.github', { recursive: true, force: true });
 
-        const fileInfo = fs.statSync(filePath);
-        if (fileInfo.isDirectory()) {
-          fs.mkdirSync(`${file}`);
-          return;
-        }
-        fs.renameSync(filePath, `./${file}`);
-      });
-      fs.rmSync('./template', { recursive: true, force: true });
-    } catch (error) {
-      handleError(error);
-    }
+    const filesToMove = fs.readdirSync('./template', {
+      recursive: true,
+    }) as string[];
+    filesToMove.forEach((file) => {
+      const filePath = path.join('./template', file);
 
-    // Clean up development stuff
+      const fileInfo = fs.statSync(filePath);
+      if (fileInfo.isDirectory()) {
+        fs.mkdirSync(`${file}`);
+        return;
+      }
+      fs.renameSync(filePath, `./${file}`);
+    });
+    fs.rmSync('./template', { recursive: true, force: true });
+
+    // ################# //
+    // Stage 3: Clean up //
+    // ################# //
     console.log('Cleaning up...');
-    try {
-      // Js
-      fs.unlinkSync('package.json');
-      fs.unlinkSync('package-lock.json');
 
-      // Ts
-      fs.unlinkSync('tsconfig.json');
-      fs.rmSync('src', { recursive: true });
+    // Js
+    fs.unlinkSync('package.json');
+    fs.unlinkSync('package-lock.json');
 
-      // Tests
-      fs.unlinkSync('babel.config.cjs');
-      fs.rmSync('tests', { recursive: true });
+    // Ts
+    fs.unlinkSync('tsconfig.json');
+    fs.rmSync('src', { recursive: true });
 
-      // Linting
-      fs.unlinkSync('.eslintcache');
-      fs.unlinkSync('.eslintignore');
-      fs.unlinkSync('.prettierignore');
-      fs.unlinkSync('eslint.config.mjs');
+    // Tests
+    fs.unlinkSync('babel.config.cjs');
+    fs.rmSync('tests', { recursive: true });
 
-      // Git
-      fs.unlinkSync('.gitignore');
+    // Linting
+    fs.unlinkSync('.eslintcache');
+    fs.unlinkSync('.eslintignore');
+    fs.unlinkSync('.prettierignore');
+    fs.unlinkSync('eslint.config.mjs');
 
-      // Node
-      fs.rmSync('node_modules', { recursive: true });
-    } catch (error) {
-      handleError(error);
-    }
+    // Git
+    fs.unlinkSync('.gitignore');
+
+    // Node
+    fs.rmSync('node_modules', { recursive: true });
 
     // Clean up dist
-    try {
-      fs.unlinkSync(__filename);
-      fs.rmSync('dist', { recursive: true });
-    } catch (error) {
-      handleError(error);
-    }
+    fs.unlinkSync(__filename);
+    fs.rmSync('dist', { recursive: true });
 
     // Generate src and test
     fs.mkdirSync('src');
