@@ -6,22 +6,6 @@ import type { ProjectInfo } from './types';
 import { replaceInFile, withTempDir } from './io-util';
 import { handleError, type NodeErrorMaybe } from './error';
 
-// Constants
-const templateSyncIgnore = `.github/ISSUE_TEMPLATE/*
-.github/CODEOWNERS
-.github/CODESTYLE.md
-.github/PULL_REQUEST_TEMPLATE.md
-.github/SECURITY.md
-CITATION.cff
-LICENSE
-README.md` as const;
-
-const templateSyncLabel = `
-  - name: 'CI: Template Sync'
-  color: AEB1C2
-  description: Sync with upstream template
-` as const;
-
 /**
  * For interacting with stdin/stdout
  */
@@ -174,34 +158,6 @@ const { func: main } = withTempDir(
         process.exit(1);
       } else {
         fs.renameSync('./template/.github/CODEOWNERS', '.github/CODEOWNERS');
-      }
-    }
-
-    // Optional keep up-to-date
-    if (
-      (
-        await question(
-          'Would you like to keep up-to-date with the template? (y/n)\n=> ',
-        )
-      ).toLowerCase() === 'y'
-    ) {
-      console.log('Writing ignore file...');
-      try {
-        fs.appendFileSync('./template/.templatesyncignore', templateSyncIgnore);
-        fs.appendFileSync('./template/.github/settings.yml', templateSyncLabel);
-        fs.renameSync('./template/.templatesyncignore', '.templatesyncignore');
-        console.log(
-          'You can view more configuration here: https://github.com/AndreasAugustin/actions-template-sync',
-        );
-      } catch (error) {
-        handleError(error);
-      }
-    } else {
-      console.log('Removing syncing workflow...');
-      try {
-        fs.unlinkSync('./template/.github/workflows/sync-template.yml');
-      } catch (error) {
-        handleError(error);
       }
     }
 
