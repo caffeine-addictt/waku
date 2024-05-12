@@ -8,20 +8,6 @@ const path_1 = __importDefault(require("path"));
 const readline_1 = __importDefault(require("readline"));
 const io_util_1 = require("./io-util");
 const error_1 = require("./error");
-// Constants
-const templateSyncIgnore = `.github/ISSUE_TEMPLATE/*
-.github/CODEOWNERS
-.github/CODESTYLE.md
-.github/PULL_REQUEST_TEMPLATE.md
-.github/SECURITY.md
-CITATION.cff
-LICENSE
-README.md`;
-const templateSyncLabel = `
-  - name: 'CI: Template Sync'
-  color: AEB1C2
-  description: Sync with upstream template
-`;
 /**
  * For interacting with stdin/stdout
  */
@@ -136,28 +122,6 @@ const { func: main } = (0, io_util_1.withTempDir)('caffeine-addictt-template-', 
         }
         else {
             fs_1.default.renameSync('./template/.github/CODEOWNERS', '.github/CODEOWNERS');
-        }
-    }
-    // Optional keep up-to-date
-    if ((await question('Would you like to keep up-to-date with the template? (y/n)\n=> ')).toLowerCase() === 'y') {
-        console.log('Writing ignore file...');
-        try {
-            fs_1.default.appendFileSync('./template/.templatesyncignore', templateSyncIgnore);
-            fs_1.default.appendFileSync('./template/.github/settings.yml', templateSyncLabel);
-            fs_1.default.renameSync('./template/.templatesyncignore', '.templatesyncignore');
-            console.log('You can view more configuration here: https://github.com/AndreasAugustin/actions-template-sync');
-        }
-        catch (error) {
-            (0, error_1.handleError)(error);
-        }
-    }
-    else {
-        console.log('Removing syncing workflow...');
-        try {
-            fs_1.default.unlinkSync('./template/.github/workflows/sync-template.yml');
-        }
-        catch (error) {
-            (0, error_1.handleError)(error);
         }
     }
     // Move from template
