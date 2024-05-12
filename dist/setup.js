@@ -88,27 +88,15 @@ const { func: main } = (0, io_util_1.withTempDir)('caffeine-addictt-template-', 
     const filesToUpdate = fs_1.default.readdirSync('./template', {
         recursive: true,
     });
-    for (const relativePath of filesToUpdate) {
-        const filePath = path_1.default.join('./template', relativePath);
-        try {
-            const fileInfo = fs_1.default.statSync(filePath);
-            if (fileInfo.isDirectory()) {
-                return;
-            }
-            await (0, io_util_1.replaceInFile)(filePath, tempDir, data);
+    // Use async
+    await Promise.all(filesToUpdate.map((filename) => async () => {
+        const filePath = path_1.default.join('./template', filename);
+        const fileInfo = fs_1.default.statSync(filePath);
+        if (fileInfo.isDirectory()) {
+            return;
         }
-        catch (error) {
-            // it's a bit different here, won't touch this for now
-            if (error?.code !== 'ENOENT' &&
-                error?.code !== 'EEXIST') {
-                console.error(error);
-                process.exit(1);
-            }
-            else {
-                console.log(`File ${filePath} not found.`);
-            }
-        }
-    }
+        await (0, io_util_1.replaceInFile)(filePath, tempDir, data);
+    }));
     // Write CODEOWNERS
     try {
         fs_1.default.appendFileSync('./template/.github/CODEOWNERS', `* @${data.username}`);
