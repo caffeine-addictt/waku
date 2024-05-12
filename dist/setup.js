@@ -7,7 +7,6 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const readline_1 = __importDefault(require("readline"));
 const io_util_1 = require("./io-util");
-const error_1 = require("./error");
 /**
  * For interacting with stdin/stdout
  */
@@ -83,8 +82,10 @@ const fetchInfo = async (cleanup) => {
  */
 const { func: main } = (0, io_util_1.withTempDir)('caffeine-addictt-template-', async (tempDir) => {
     const data = await fetchInfo(() => rl.close());
+    /// ######################################## //
+    // Stage 1: Update file content in template/ //
+    // ######################################### //
     console.log('\nWriting files...');
-    // Writing general stuff
     const filesToUpdate = fs_1.default.readdirSync('./template', {
         recursive: true,
     });
@@ -98,75 +99,51 @@ const { func: main } = (0, io_util_1.withTempDir)('caffeine-addictt-template-', 
         await (0, io_util_1.replaceInFile)(filePath, tempDir, data);
     }));
     // Write CODEOWNERS
-    try {
-        fs_1.default.appendFileSync('./template/.github/CODEOWNERS', `* @${data.username}`);
-    }
-    catch (error) {
-        // also different here
-        if (error?.code !== 'ENOENT' &&
-            error?.code !== 'EEXIST') {
-            console.error(error);
-            process.exit(1);
-        }
-        else {
-            fs_1.default.renameSync('./template/.github/CODEOWNERS', '.github/CODEOWNERS');
-        }
-    }
-    // Move from template
+    fs_1.default.appendFileSync('./template/.github/CODEOWNERS', `* @${data.username}`);
+    // ########################################## //
+    // Stage 2: Move files from template/ to root //
+    // ########################################## //
     console.log('Moving files...');
-    try {
-        // Delete .github/ directory
-        fs_1.default.rmSync('./.github', { recursive: true, force: true });
-        const filesToMove = fs_1.default.readdirSync('./template', {
-            recursive: true,
-        });
-        filesToMove.forEach((file) => {
-            const filePath = path_1.default.join('./template', file);
-            const fileInfo = fs_1.default.statSync(filePath);
-            if (fileInfo.isDirectory()) {
-                fs_1.default.mkdirSync(`${file}`);
-                return;
-            }
-            fs_1.default.renameSync(filePath, `./${file}`);
-        });
-        fs_1.default.rmSync('./template', { recursive: true, force: true });
-    }
-    catch (error) {
-        (0, error_1.handleError)(error);
-    }
-    // Clean up development stuff
+    // Delete .github/ directory
+    fs_1.default.rmSync('./.github', { recursive: true, force: true });
+    const filesToMove = fs_1.default.readdirSync('./template', {
+        recursive: true,
+    });
+    filesToMove.forEach((file) => {
+        const filePath = path_1.default.join('./template', file);
+        const fileInfo = fs_1.default.statSync(filePath);
+        if (fileInfo.isDirectory()) {
+            fs_1.default.mkdirSync(`${file}`);
+            return;
+        }
+        fs_1.default.renameSync(filePath, `./${file}`);
+    });
+    fs_1.default.rmSync('./template', { recursive: true, force: true });
+    // ################# //
+    // Stage 3: Clean up //
+    // ################# //
     console.log('Cleaning up...');
-    try {
-        // Js
-        fs_1.default.unlinkSync('package.json');
-        fs_1.default.unlinkSync('package-lock.json');
-        // Ts
-        fs_1.default.unlinkSync('tsconfig.json');
-        fs_1.default.rmSync('src', { recursive: true });
-        // Tests
-        fs_1.default.unlinkSync('babel.config.cjs');
-        fs_1.default.rmSync('tests', { recursive: true });
-        // Linting
-        fs_1.default.unlinkSync('.eslintcache');
-        fs_1.default.unlinkSync('.eslintignore');
-        fs_1.default.unlinkSync('.prettierignore');
-        fs_1.default.unlinkSync('eslint.config.mjs');
-        // Git
-        fs_1.default.unlinkSync('.gitignore');
-        // Node
-        fs_1.default.rmSync('node_modules', { recursive: true });
-    }
-    catch (error) {
-        (0, error_1.handleError)(error);
-    }
+    // Js
+    fs_1.default.unlinkSync('package.json');
+    fs_1.default.unlinkSync('package-lock.json');
+    // Ts
+    fs_1.default.unlinkSync('tsconfig.json');
+    fs_1.default.rmSync('src', { recursive: true });
+    // Tests
+    fs_1.default.unlinkSync('babel.config.cjs');
+    fs_1.default.rmSync('tests', { recursive: true });
+    // Linting
+    fs_1.default.unlinkSync('.eslintcache');
+    fs_1.default.unlinkSync('.eslintignore');
+    fs_1.default.unlinkSync('.prettierignore');
+    fs_1.default.unlinkSync('eslint.config.mjs');
+    // Git
+    fs_1.default.unlinkSync('.gitignore');
+    // Node
+    fs_1.default.rmSync('node_modules', { recursive: true });
     // Clean up dist
-    try {
-        fs_1.default.unlinkSync(__filename);
-        fs_1.default.rmSync('dist', { recursive: true });
-    }
-    catch (error) {
-        (0, error_1.handleError)(error);
-    }
+    fs_1.default.unlinkSync(__filename);
+    fs_1.default.rmSync('dist', { recursive: true });
     // Generate src and test
     fs_1.default.mkdirSync('src');
     fs_1.default.mkdirSync('tests');
