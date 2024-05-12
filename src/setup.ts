@@ -122,28 +122,20 @@ const { func: main } = withTempDir(
     const filesToUpdate = fs.readdirSync('./template', {
       recursive: true,
     }) as string[];
-    for (const relativePath of filesToUpdate) {
-      const filePath = path.join('./template', relativePath);
-      try {
+
+    // Use async
+    await Promise.all(
+      filesToUpdate.map((filename) => async () => {
+        const filePath = path.join('./template', filename);
+
         const fileInfo = fs.statSync(filePath);
         if (fileInfo.isDirectory()) {
           return;
         }
 
         await replaceInFile(filePath, tempDir, data);
-      } catch (error) {
-        // it's a bit different here, won't touch this for now
-        if (
-          (error as NodeErrorMaybe)?.code !== 'ENOENT' &&
-          (error as NodeErrorMaybe)?.code !== 'EEXIST'
-        ) {
-          console.error(error);
-          process.exit(1);
-        } else {
-          console.log(`File ${filePath} not found.`);
-        }
-      }
-    }
+      }),
+    );
 
     // Write CODEOWNERS
     try {
