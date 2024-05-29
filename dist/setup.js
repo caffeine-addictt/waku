@@ -36,7 +36,7 @@ const fetchInfo = async (cleanup) => {
         },
     ]);
     const username = await question('Username? (https://github.com/<username>)\n=> ');
-    const repository = await question('Repository? ((https://github.com/$username/<repo>\n=> ');
+    const repository = await question(`Repository? (https://github.com/${username}/<repo>)\n=> `);
     const proj_name = await question('Project name?\n=> ');
     const proj_short_desc = await question('Short description?\n=> ');
     const proj_long_desc = await question('Long description?\n=> ');
