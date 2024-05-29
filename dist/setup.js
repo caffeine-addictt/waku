@@ -122,6 +122,9 @@ const { func: main } = (0, io_util_1.withTempDir)('caffeine-addictt-template-', 
     // ################# //
     // Stage 3: Clean up //
     // ################# //
+    // Only add `force: true` for files or directories that
+    // will only exist if some development task was carried out
+    // like eslintcache
     console.log('Cleaning up...');
     // Js
     fs_1.default.unlinkSync('package.json');
@@ -133,16 +136,16 @@ const { func: main } = (0, io_util_1.withTempDir)('caffeine-addictt-template-', 
     fs_1.default.unlinkSync('babel.config.cjs');
     fs_1.default.rmSync('tests', { recursive: true });
     // Linting
-    fs_1.default.unlinkSync('.eslintcache');
     fs_1.default.unlinkSync('.eslintignore');
     fs_1.default.unlinkSync('.prettierignore');
     fs_1.default.unlinkSync('eslint.config.mjs');
+    fs_1.default.rmSync('.eslintcache', { force: true });
     // Syncing
     fs_1.default.unlinkSync('.templatesyncignore');
     // Git
     fs_1.default.unlinkSync('.gitignore');
     // Node
-    fs_1.default.rmSync('node_modules', { recursive: true });
+    fs_1.default.rmSync('node_modules', { recursive: true, force: true });
     // Clean up dist
     fs_1.default.unlinkSync(__filename);
     fs_1.default.rmSync('dist', { recursive: true });

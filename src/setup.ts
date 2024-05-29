@@ -167,6 +167,9 @@ const { func: main } = withTempDir(
     // ################# //
     // Stage 3: Clean up //
     // ################# //
+    // Only add `force: true` for files or directories that
+    // will only exist if some development task was carried out
+    // like eslintcache
     console.log('Cleaning up...');
 
     // Js
@@ -182,10 +185,10 @@ const { func: main } = withTempDir(
     fs.rmSync('tests', { recursive: true });
 
     // Linting
-    fs.unlinkSync('.eslintcache');
     fs.unlinkSync('.eslintignore');
     fs.unlinkSync('.prettierignore');
     fs.unlinkSync('eslint.config.mjs');
+    fs.rmSync('.eslintcache', { force: true });
 
     // Syncing
     fs.unlinkSync('.templatesyncignore');
@@ -194,7 +197,7 @@ const { func: main } = withTempDir(
     fs.unlinkSync('.gitignore');
 
     // Node
-    fs.rmSync('node_modules', { recursive: true });
+    fs.rmSync('node_modules', { recursive: true, force: true });
 
     // Clean up dist
     fs.unlinkSync(__filename);
