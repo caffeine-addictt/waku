@@ -52,7 +52,7 @@ const fetchInfo = async (
     'Username? (https://github.com/<username>)\n=> ',
   );
   const repository = await question(
-    'Repository? ((https://github.com/$username/<repo>\n=> ',
+    `Repository? (https://github.com/${username}/<repo>)\n=> `,
   );
   const proj_name = await question('Project name?\n=> ');
   const proj_short_desc = await question('Short description?\n=> ');
