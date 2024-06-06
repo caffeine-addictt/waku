@@ -126,16 +126,18 @@ const { func: main } = withTempDir(
 
     // Use async
     await Promise.all(
-      filesToUpdate.map((filename) => async () => {
-        const filePath = path.join('./template', filename);
+      filesToUpdate.map((filename) =>
+        (async () => {
+          const filePath = path.join('./template', filename);
 
-        const fileInfo = fs.statSync(filePath);
-        if (fileInfo.isDirectory()) {
-          return;
-        }
+          const fileInfo = fs.statSync(filePath);
+          if (fileInfo.isDirectory()) {
+            return;
+          }
 
-        await replaceInFile(filePath, tempDir, data);
-      }),
+          await replaceInFile(filePath, tempDir, data);
+        })(),
+      ),
     );
 
     // Write CODEOWNERS
