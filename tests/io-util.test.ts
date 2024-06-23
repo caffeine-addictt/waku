@@ -23,7 +23,7 @@ assignees: ['{{ASSIGNEES}}']
 const replaced = `
 My name is: John
 
-The repo is https://github.com/username/repo
+The repo is johnny/repo
 
 HbVYf@example.com https://example.com/docs
 Project with some description
@@ -65,7 +65,7 @@ describe('replace the correct content', () => {
     name: 'John',
     email: 'HbVYf@example.com',
     username: 'johnny',
-    repository: 'https://github.com/username/repo',
+    repository: 'repo',
     proj_name: 'My Project',
     proj_short_desc: 'Project with some description',
     proj_long_desc: 'Project with some description that is really long',
