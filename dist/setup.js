@@ -7,6 +7,7 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const readline_1 = __importDefault(require("readline"));
 const io_util_1 = require("./io-util");
+const resolver_1 = __importDefault(require("./resolver"));
 /**
  * For interacting with stdin/stdout
  */
@@ -28,15 +29,25 @@ const question = (query, validator = [], trimWhitespace = true) => new Promise((
 }));
 /** Ask for project information */
 const fetchInfo = async (cleanup) => {
-    const name = await question('Name? (This will go on the LICENSE)\n=> ');
-    const email = await question('Email?\n=> ', [
+    const resolved = await (0, resolver_1.default)();
+    // Ask user
+    const name = await question(`Name? (This will go on the LICENSE)${resolved.name ? ` [Resolved: ${resolved.name}]` : ''}\n=> `)
+        .then((val) => val.trim())
+        .then((val) => (val.length ? val : resolved.name ?? ''));
+    const email = await question(`Email?${resolved.email ? ` [Resolved: ${resolved.email}]` : ''}\n=> `, [
         {
-            validate: (s) => /.+@.+\..+/.test(s),
+            validate: (s) => !!resolved.email || /.+@.+\..+/.test(s),
             onError: () => console.log('Invalid email!'),
         },
-    ]);
-    const username = await question('Username? (https://github.com/<username>)\n=> ');
-    const repository = await question(`Repository? (https://github.com/${username}/<repo>)\n=> `);
+    ])
+        .then((val) => val.trim())
+        .then((val) => (val.length ? val : resolved.email ?? ''));
+    const username = await question(`Username? (https://github.com/<username>)${resolved.org ? ` [Resolved: ${resolved.org}]` : ''}\n=> `)
+        .then((val) => val.trim())
+        .then((val) => (val.length ? val : resolved.org ?? ''));
+    const repository = await question(`Repository? (https://github.com/${username}/<repo>)${resolved.repo ? ` [Resolved: ${resolved.repo}]` : ''}\n=> `)
+        .then((val) => val.trim())
+        .then((val) => (val.length ? val : resolved.repo ?? ''));
     const proj_name = await question('Project name?\n=> ');
     const proj_short_desc = await question('Short description?\n=> ');
     const proj_long_desc = await question('Long description?\n=> ');
