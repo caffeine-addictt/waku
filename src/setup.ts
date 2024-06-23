@@ -4,6 +4,7 @@ import readline from 'readline';
 
 import type { ProjectInfo } from './types';
 import { replaceInFile, withTempDir } from './io-util';
+import resolveGitInfo from './resolver';
 
 /**
  * For interacting with stdin/stdout
@@ -41,19 +42,39 @@ const question = (
 const fetchInfo = async (
   cleanup: () => void | unknown,
 ): Promise<ProjectInfo> => {
-  const name = await question('Name? (This will go on the LICENSE)\n=> ');
-  const email = await question('Email?\n=> ', [
-    {
-      validate: (s: string) => /.+@.+\..+/.test(s),
-      onError: () => console.log('Invalid email!'),
-    },
-  ]);
+  const resolved = await resolveGitInfo();
+
+  // Ask user
+  const name = await question(
+    `Name? (This will go on the LICENSE)${resolved.name ? ` [Resolved: ${resolved.name}]` : ''}\n=> `,
+  )
+    .then((val) => val.trim())
+    .then((val) => (val.length ? val : resolved.name ?? ''));
+
+  const email = await question(
+    `Email?${resolved.email ? ` [Resolved: ${resolved.email}]` : ''}\n=> `,
+    [
+      {
+        validate: (s: string) => !!resolved.email || /.+@.+\..+/.test(s),
+        onError: () => console.log('Invalid email!'),
+      },
+    ],
+  )
+    .then((val) => val.trim())
+    .then((val) => (val.length ? val : resolved.email ?? ''));
+
   const username = await question(
-    'Username? (https://github.com/<username>)\n=> ',
-  );
+    `Username? (https://github.com/<username>)${resolved.org ? ` [Resolved: ${resolved.org}]` : ''}\n=> `,
+  )
+    .then((val) => val.trim())
+    .then((val) => (val.length ? val : resolved.org ?? ''));
+
   const repository = await question(
-    `Repository? (https://github.com/${username}/<repo>)\n=> `,
-  );
+    `Repository? (https://github.com/${username}/<repo>)${resolved.repo ? ` [Resolved: ${resolved.repo}]` : ''}\n=> `,
+  )
+    .then((val) => val.trim())
+    .then((val) => (val.length ? val : resolved.repo ?? ''));
+
   const proj_name = await question('Project name?\n=> ');
   const proj_short_desc = await question('Short description?\n=> ');
   const proj_long_desc = await question('Long description?\n=> ');
