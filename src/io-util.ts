@@ -42,7 +42,7 @@ export const replaceInFile = (
 
     let fileContent = fs.readFileSync(filePath, 'utf8');
     fileContent = fileContent
-      .replace(/{{REPOSITORY}}/g, data.repository)
+      .replace(/{{REPOSITORY}}/g, `${data.username}/${data.repository}`)
       .replace(/{{PROJECT_NAME}}/g, data.proj_name)
       .replace(/{{PROJECT_SHORT_DESCRIPTION}}/g, data.proj_short_desc)
       .replace(/{{PROJECT_LONG_DESCRIPTION}}/g, data.proj_long_desc)
