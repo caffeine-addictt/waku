@@ -11,3 +11,16 @@ export interface ProjectInfo {
   docs_url: string;
   assignees: string;
 }
+
+export interface RepoInfo {
+  url?: string;
+  org?: string;
+  repo?: string;
+}
+
+export interface UserInfo {
+  name?: string;
+  email?: string;
+}
+
+export type GitInfo = RepoInfo & UserInfo;
