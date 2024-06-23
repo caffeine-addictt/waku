@@ -146,6 +146,6 @@ Alex - [contact@ngjx.org](mailto:contact@ngjx.org)
 [stars-shield]: https://img.shields.io/github/stars/caffeine-addictt/template.svg?style=for-the-badge&color=yellow
 [stars-url]: https://github.com/caffeine-addictt/template/stargazers
 [license-shield]: https://img.shields.io/github/license/caffeine-addictt/template.svg?style=for-the-badge
-[license-url]: https://github.com/caffeine-addictt/template/blob/master/LICENSE.txt
+[license-url]: https://github.com/caffeine-addictt/template/blob/main/LICENSE
 [use-shield]: https://img.shields.io/badge/Use%20template-FFFFFF?style=for-the-badge
 [use-url]: https://github.com/new?template_name=template&template_owner=caffeine-addictt

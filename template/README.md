@@ -137,4 +137,4 @@ Distributed under the MIT License. See [LICENSE.txt](./LICENSE.txt) for more inf
 [stars-shield]: https://img.shields.io/github/stars/{{REPOSITORY}}.svg?style=for-the-badge&color=yellow
 [stars-url]: https://github.com/{{REPOSITORY}}/stargazers
 [license-shield]: https://img.shields.io/github/license/{{REPOSITORY}}.svg?style=for-the-badge
-[license-url]: https://github.com/{{REPOSITORY}}/blob/master/LICENSE.txt
+[license-url]: https://github.com/{{REPOSITORY}}/blob/main/LICENSE
