@@ -226,6 +226,9 @@ const { func: main } = withTempDir(
     fs.unlinkSync(__filename);
     fs.rmSync('dist', { recursive: true });
 
+    // Assets
+    fs.rmSync('assets', { recursive: true });
+
     // Generate src and test
     fs.mkdirSync('src');
     fs.mkdirSync('tests');

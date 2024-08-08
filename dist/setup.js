@@ -160,6 +160,8 @@ const { func: main } = (0, io_util_1.withTempDir)('caffeine-addictt-template-', 
     // Clean up dist
     fs_1.default.unlinkSync(__filename);
     fs_1.default.rmSync('dist', { recursive: true });
+    // Assets
+    fs_1.default.rmSync('assets', { recursive: true });
     // Generate src and test
     fs_1.default.mkdirSync('src');
     fs_1.default.mkdirSync('tests');
