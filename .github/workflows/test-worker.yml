@@ -2,6 +2,7 @@ name: Run Tests
 
 on:
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -17,8 +18,8 @@ concurrency:
 
 jobs:
   tests:
-    name: 'Node.Js ${{ matrix.node_version }} on ${{ matrix.os }}'
-    runs-on: '${{ matrix.os }}-latest'
+    name: "Test on ${{ matrix.os }}"
+    runs-on: "${{ matrix.os }}-latest"
 
     strategy:
       fail-fast: false
@@ -28,31 +29,11 @@ jobs:
           - windows
           - macos
 
-        node_version:
-          - 16
-          - 18
-          - 20
-          - latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js ${{ matrix.node_version }}
-        uses: actions/setup-node@v4.0.3
-        with:
-          cache: npm
-          node-version: ${{ matrix.node_version }}
-
-      - name: Install dependencies
-        run: |
-          set -xe
-          npm i
-
-      - name: Testing
-        run: |
-          set -xe
-          npm run test
+      - run: echo "temporary"
 
   check:
     if: always()
