@@ -4,8 +4,8 @@
 
 <!-- Project Banner -->
 
-<a href="[template]">
-  <img src="[template-banner]" width="750" height="300" alt="template banner">
+<a href="https://github.com/caffeine-addictt/template">
+  <img src="https://github.com/caffeine-addictt/template/blob/main/assets/transparent-logo.svg" width="750" height="300" alt="">
 </a>
 
 <br>
@@ -120,7 +120,6 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
 [stars-graph]: https://starchart.cc/caffeine-addictt/template
-[template]: https://github.com/caffeine-addictt/template
 [prs]: https://github.com/caffeine-addictt/template/pulls
 [issues]: https://github.com/caffeine-addictt/template/issues
 [license]: https://github.com/caffeine-addictt/template/blob/main/LICENSE
@@ -135,10 +134,6 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 [hyprland]: https://github.com/hyprwm/Hyprland
 [hyprdots]: https://github.com/prasanthrangan/hyprdots
 [img-shields]: https://shields.io
-
-<!---------------- {{Images}} ---------------->
-
-[template-banner]: https://github.com/caffeine-addictt/template/blob/main/assets/transparent-logo.svg
 
 <!---------------- {{Badges}} ---------------->
 
