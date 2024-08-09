@@ -103,28 +103,35 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 - **[Hyprdots][hyprdots]** - _For showing how to make beautiful READMEs_
 
 
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
+[stars-graph]: https://starchart.cc/caffeine-addictt/template
 [template]: https://github.com/caffeine-addictt/template
+[prs]: https://github.com/caffeine-addictt/template/pulls
+[issues]: https://github.com/caffeine-addictt/template/issues
+[license]: https://github.com/caffeine-addictt/template/blob/main/LICENSE
 
+<!---------------- {{Links}} ---------------->
 
+[use-url]: https://github.com/new?template_name=template&template_owner=caffeine-addictt
+[contribute]: https://github.com/caffeine-addictt/template/blob/main/CONTRIBUTING.md
 
+<!---------------- {{Thanks}} ---------------->
 
 [hyprland]: https://github.com/hyprwm/Hyprland
 [hyprdots]: https://github.com/prasanthrangan/hyprdots
 [img-shields]: https://shields.io
 
+<!---------------- {{Images}} ---------------->
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 [template-banner]: https://github.com/caffeine-addictt/template/blob/main/assets/transparent-logo.svg
 
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+<!---------------- {{Badges}} ---------------->
 
-[forks-shield]: https://img.shields.io/github/forks/caffeine-addictt/template.svg?style=for-the-badge
-[forks-url]: https://github.com/caffeine-addictt/template/network/members
-[stars-shield]: https://img.shields.io/github/stars/caffeine-addictt/template.svg?style=for-the-badge&color=yellow
-[stars-url]: https://github.com/caffeine-addictt/template/stargazers
-[license-shield]: https://img.shields.io/github/license/caffeine-addictt/template.svg?style=for-the-badge
-[license-url]: https://github.com/caffeine-addictt/template/blob/main/LICENSE
-[use-url]: https://github.com/new?template_name=template&template_owner=caffeine-addictt
+[badge-workflow]: https://github.com/caffeine-addictt/template/actions/workflows/test-worker.yml/badge.svg
+[badge-issues]: https://img.shields.io/github/issues/caffeine-addictt/template
+[badge-pr]: https://img.shields.io/github/issues-pr/caffeine-addictt/template
+[badge-language]: https://img.shields.io/github/languages/top/caffeine-addictt/template
+[badge-license]: https://img.shields.io/github/license/caffeine-addictt/template
 [badge-use]: https://img.shields.io/badge/Use%20template-FFFFFF?style=for-the-badge
