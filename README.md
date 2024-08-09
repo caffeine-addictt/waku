@@ -1,8 +1,4 @@
-<!-- Allow HTML -->
-<!-- markdownlint-disable MD033 -->
 
-<!-- Allow HTML top-level heading -->
-<!-- markdownlint-disable MD041 -->
 
 <a name="readme-top"></a>
 
