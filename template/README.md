@@ -1,140 +1,103 @@
-<!-- Allow HTML -->
-<!-- markdownlint-disable MD033 -->
+###### _<div align="right"><sub>// made with <3</sub></div>_
 
-<!-- Allow HTML top-level heading -->
-<!-- markdownlint-disable MD041 -->
-
-<a name="readme-top"></a>
-
-<!-- PROJECT SHIELDS -->
 <div align="center">
 
-<a href="[forks-url]">[![Forks][forks-shield]][forks-url]</a>
-<a href="[stars-url]">[![Stargazers][stars-shield]][stars-url]</a>
-<a href="[license-url]">[![MIT License][license-shield]][license-url]</a>
+<!-- Project Banner -->
 
-</div>
+<a href="https://github.com/{{REPOSITORY}}">
+  <img src="https://github.com/{{REPOSITORY}}/blob/main/assets/logo.svg" width="750" height="300" alt="">
+</a>
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/{{REPOSITORY}}">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
+<br>
 
-  <h3 align="center">{{PROJECT_NAME}}</h3>
+<!-- Badges -->
 
-  <p align="center">
-    {{PROJECT_SHORT_DESCRIPTION}}
-    <br />
-    <a href="{{DOCS_URL}}"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/{{REPOSITORY}}/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/{{REPOSITORY}}/issues">Request Feature</a>
-  </p>
-</div>
+![badge-workflow]
+[![badge-license]][license]
+![badge-language]
+[![badge-pr]][prs]
+[![badge-issues]][issues]
 
-<!-- ABOUT THE PROJECT -->
+<br><br>
 
-## About The Project
-
-![Social Card](images/socialcard.png)
+<!-- Description -->
 
 {{PROJECT_LONG_DESCRIPTION}}
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+{{PROJECT_SHORT_DESCRIPTION}}
 
-<!-- GETTING STARTED -->
+<br><br>
 
-## Getting Started
+---
 
-This is an example of how you can set up your project locally.
-To get a local copy up and running follow these simple example steps.
+<!-- TOC -->
 
-### Prerequisites
+**[<kbd> <br> Quick Start <br> </kbd>](#quick-start)**
+**[<kbd> <br> Documentation <br> </kbd>]({{DOCS_URL}})**
+**[<kbd> <br> Thanks <br> </kbd>](#special-thanks)**
+**[<kbd> <br> Contribute <br> </kbd>][contribute]**
 
--
+---
 
-### Installation
+<br>
 
-_Below is an example of how you can install and use {{PROJECT_NAME}}._
+</div>
 
-1.
-2.
+# Quick Start
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+_This is an example of how you can set up your project locally.
+To get a local copy up and running, follow these simple steps._
 
-<!-- DOCS -->
+## Prerequisites
 
-## Documentation
+- Language 1
 
-Our docs are [here]({{DOCS_URL}})!
+## Installation
 
-See the [open issues](https://github.com/{{REPOSITORY}}/issues)
-for a full list of proposed features (and known issues).
+_Below is an example of how you can install and use {{PROJECT_NAME}}_
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+1. Step 1
+2. Step 2
 
-<!-- CONTRIBUTING -->
+<div align="right">
+  <br>
+  <a href="#-made-with-3"><kbd> <br> 🡅 <br> </kbd></a>
+</div>
 
-## Contributing
+## Special Thanks
 
-Contributions are what make the open source community
-such an amazing place to learn, inspire, and create.
-Any contributions you make are **greatly appreciated**. ( ˶ˆᗜˆ˵ )
+- **[Caffeine-addictt][template-repo]** - _For the repository template_
+- **[Img Shields][img-shields]** - _For the awesome README badges_
+- **[Hyprland][hyprland]** - _For showing how to make beautiful READMEs_
+- **[Hyprdots][hyprdots]** - _For showing how to make beautiful READMEs_
 
-If you have a suggestion that would make this better,
-please fork the repo and create a pull request.
-You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+---
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-Read our [contributing guide](./CONTRIBUTING.md) for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- LICENSE -->
-
-## License
-
-Distributed under the MIT License. See [LICENSE.txt](./LICENSE.txt) for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- CONTACT -->
-
-## Contact
-
-{{NAME}} - [{{EMAIL}}](mailto:{{EMAIL}})
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- ACKNOWLEDGMENTS -->
-
-## Acknowledgments
-
-- [Repository Template](https://github.com/caffeine-addictt/template)
-- [Choose an Open Source License](https://choosealicense.com)
-- [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-- [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-- [Malven's Grid Cheatsheet](https://grid.malven.co/)
-- [Img Shields](https://shields.io)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+![stars-graph]
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[forks-shield]: https://img.shields.io/github/forks/{{REPOSITORY}}.svg?style=for-the-badge
-[forks-url]: https://github.com/{{REPOSITORY}}/network/members
-[stars-shield]: https://img.shields.io/github/stars/{{REPOSITORY}}.svg?style=for-the-badge&color=yellow
-[stars-url]: https://github.com/{{REPOSITORY}}/stargazers
-[license-shield]: https://img.shields.io/github/license/{{REPOSITORY}}.svg?style=for-the-badge
-[license-url]: https://github.com/{{REPOSITORY}}/blob/main/LICENSE
+[stars-graph]: https://starchart.cc/{{REPOSITORY}}.svg?variant=adaptive
+[prs]: https://github.com/{{REPOSITORY}}/pulls
+[issues]: https://github.com/{{REPOSITORY}}/issues
+[license]: https://github.com/{{REPOSITORY}}/blob/main/LICENSE
+
+<!---------------- {{Links}} ---------------->
+
+[contribute]: https://github.com/{{REPOSITORY}}/blob/main/CONTRIBUTING.md
+
+<!---------------- {{Thanks}} ---------------->
+
+[template-repo]: https://github.com/caffeine-addictt/template
+[hyprland]: https://github.com/hyprwm/Hyprland
+[hyprdots]: https://github.com/prasanthrangan/hyprdots
+[img-shields]: https://shields.io
+
+<!---------------- {{Badges}} ---------------->
+
+[badge-workflow]: https://github.com/{{REPOSITORY}}/actions/workflows/test-worker.yml/badge.svg
+[badge-issues]: https://img.shields.io/github/issues/{{REPOSITORY}}
+[badge-pr]: https://img.shields.io/github/issues-pr/{{REPOSITORY}}
+[badge-language]: https://img.shields.io/github/languages/top/{{REPOSITORY}}
+[badge-license]: https://img.shields.io/github/license/{{REPOSITORY}}

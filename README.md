@@ -1,57 +1,75 @@
-<!-- Allow HTML -->
-<!-- markdownlint-disable MD033 -->
+###### _<div align="right"><sub>// made with <3</sub></div>_
 
-<!-- Allow HTML top-level heading -->
-<!-- markdownlint-disable MD041 -->
-
-<a name="readme-top"></a>
-
-<!-- PROJECT SHIELDS -->
 <div align="center">
 
-<a href="[forks-url]">[![Forks][forks-shield]][forks-url]</a>
-<a href="[stars-url]">[![Stargazers][stars-shield]][stars-url]</a>
-<a href="[license-url]">[![MIT License][license-shield]][license-url]</a>
+<!-- Project Banner -->
 
-</div>
+<a href="https://github.com/caffeine-addictt/template">
+  <img src="https://github.com/caffeine-addictt/template/blob/main/assets/transparent-logo.svg" width="750" height="300" alt="">
+</a>
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <h3 align="center">Repository Template</h3>
+<br>
 
-  <p align="center">
-    Simple repository template to get started with GitHub.
-    <br />
-    <br />
-    <a href="https://github.com/caffeine-addictt/template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/caffeine-addictt/template/issues">Request Feature</a>
-  </p>
-</div>
+<!-- Badges -->
 
-<!-- ABOUT THE PROJECT -->
+![badge-workflow]
+[![badge-license]][license]
+![badge-language]
+[![badge-pr]][prs]
+[![badge-issues]][issues]
 
-## About The Project
+<br><br>
+
+<!-- Description -->
 
 A simple repository template to get started with GitHub.
-
-Starting a new project?
 Say goodbye to repetitive setup tasks and configuration headaches!
 Simplify your workflow, save time, and ensure consistency across projects.
 
-Let's make starting new projects feel like a _breeze_ again.
+Let's make starting new projects feel like a **_breeze_** again.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<br><br>
 
-## Getting Started
+---
+
+<!-- TOC -->
+
+**[<kbd> <br> Features <br> </kbd>](#features)**
+**[<kbd> <br> Quick Start <br> </kbd>](#quick-start)**
+**[<kbd> <br> Contribute <br> </kbd>][contribute]**
+
+---
+
+<br>
+
+</div>
+
+# Features
+
+- Beautiful README
+- Matrix testing CI
+- Draft Releasing CI
+- Pull Request Labeler CI
+- Code of Conduct
+- Code Style Documentation
+- Security Policy Documentation
+- 7 Issue Templates
+- Pull Request Template
+- And more...
+
+<div align="right">
+  <br>
+  <a href="#-made-with-3"><kbd> <br> 🡅 <br> </kbd></a>
+</div>
+
+# Quick Start
 
 ### 1. Creating a repository
 
 Click the green "Use this template" button in the top right corner of the page
 or the button below to create your new repository.
 
-[![Use Template][use-shield]][use-url]
+[![Use Template][badge-use]][use-url]
 
 ### 2. Run the setup script
 
@@ -85,67 +103,45 @@ Just a few more steps and you're ready to go!
 
 Want to support this project? **✨ Star it on GitHub** and help us spread the word!
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<div align="right">
+  <br>
+  <a href="#-made-with-3"><kbd> <br> 🡅 <br> </kbd></a>
+</div>
 
-<!-- CONTRIBUTING -->
+## Special Thanks
 
-## Contributing
+- **[Img Shields][img-shields]** - _For the awesome README badges_
+- **[Hyprland][hyprland]** - _For showing how to make beautiful READMEs_
+- **[Hyprdots][hyprdots]** - _For showing how to make beautiful READMEs_
 
-Contributions are what make the open source community
-such an amazing place to learn, inspire, and create.
-Any contributions you make are **greatly appreciated**. ( ˶ˆᗜˆ˵ )
+---
 
-If you have a suggestion that would make this better,
-please fork the repo and create a pull request.
-You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-Read our [contributing guide](./CONTRIBUTING.md) for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- LICENSE -->
-
-## License
-
-Distributed under the MIT License. See [LICENSE.txt](./LICENSE.txt) for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- CONTACT -->
-
-## Contact
-
-Alex - [contact@ngjx.org](mailto:contact@ngjx.org)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- ACKNOWLEDGMENTS -->
-
-## Acknowledgments
-
-- [Choose an Open Source License](https://choosealicense.com)
-- [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-- [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-- [Malven's Grid Cheatsheet](https://grid.malven.co/)
-- [Img Shields](https://shields.io)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+![stars-graph]
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[forks-shield]: https://img.shields.io/github/forks/caffeine-addictt/template.svg?style=for-the-badge
-[forks-url]: https://github.com/caffeine-addictt/template/network/members
-[stars-shield]: https://img.shields.io/github/stars/caffeine-addictt/template.svg?style=for-the-badge&color=yellow
-[stars-url]: https://github.com/caffeine-addictt/template/stargazers
-[license-shield]: https://img.shields.io/github/license/caffeine-addictt/template.svg?style=for-the-badge
-[license-url]: https://github.com/caffeine-addictt/template/blob/main/LICENSE
-[use-shield]: https://img.shields.io/badge/Use%20template-FFFFFF?style=for-the-badge
+[stars-graph]: https://starchart.cc/caffeine-addictt/template.svg?variant=adaptive
+[prs]: https://github.com/caffeine-addictt/template/pulls
+[issues]: https://github.com/caffeine-addictt/template/issues
+[license]: https://github.com/caffeine-addictt/template/blob/main/LICENSE
+
+<!---------------- {{Links}} ---------------->
+
 [use-url]: https://github.com/new?template_name=template&template_owner=caffeine-addictt
+[contribute]: https://github.com/caffeine-addictt/template/blob/main/CONTRIBUTING.md
+
+<!---------------- {{Thanks}} ---------------->
+
+[hyprland]: https://github.com/hyprwm/Hyprland
+[hyprdots]: https://github.com/prasanthrangan/hyprdots
+[img-shields]: https://shields.io
+
+<!---------------- {{Badges}} ---------------->
+
+[badge-workflow]: https://github.com/caffeine-addictt/template/actions/workflows/test-worker.yml/badge.svg
+[badge-issues]: https://img.shields.io/github/issues/caffeine-addictt/template
+[badge-pr]: https://img.shields.io/github/issues-pr/caffeine-addictt/template
+[badge-language]: https://img.shields.io/github/languages/top/caffeine-addictt/template
+[badge-license]: https://img.shields.io/github/license/caffeine-addictt/template
+[badge-use]: https://img.shields.io/badge/Use%20template-FFFFFF?style=for-the-badge
