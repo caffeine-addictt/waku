@@ -83,6 +83,11 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Special Thanks
+
+- **[Img Shields][img-shields]** - _For the awesome README badges_
+- **[Hyprland][hyprland]** - _For showing how to make beautiful READMEs_
+- **[Hyprdots][hyprdots]** - _For showing how to make beautiful READMEs_
 
 
 
@@ -90,15 +95,10 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 
 
 
-<!-- ACKNOWLEDGMENTS -->
+[hyprland]: https://github.com/hyprwm/Hyprland
+[hyprdots]: https://github.com/prasanthrangan/hyprdots
+[img-shields]: https://shields.io
 
-## Acknowledgments
-
-- [Choose an Open Source License](https://choosealicense.com)
-- [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-- [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-- [Malven's Grid Cheatsheet](https://grid.malven.co/)
-- [Img Shields](https://shields.io)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
