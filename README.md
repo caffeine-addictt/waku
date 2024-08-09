@@ -45,12 +45,12 @@ Let's make starting new projects feel like a _breeze_ again.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Getting Started
 <div align="right">
   <br>
   <a href="#-made-with-3"><kbd> <br> 🡅 <br> </kbd></a>
 </div>
 
+# Quick Start
 
 ### 1. Creating a repository
 
