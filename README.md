@@ -114,6 +114,8 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 - **[Hyprland][hyprland]** - _For showing how to make beautiful READMEs_
 - **[Hyprdots][hyprdots]** - _For showing how to make beautiful READMEs_
 
+---
+
 ![stars-graph]
 
 <!-- MARKDOWN LINKS & IMAGES -->
