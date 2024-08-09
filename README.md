@@ -51,7 +51,7 @@ Let's make starting new projects feel like a _breeze_ again.
 Click the green "Use this template" button in the top right corner of the page
 or the button below to create your new repository.
 
-[![Use Template][use-shield]][use-url]
+[![Use Template][badge-use]][use-url]
 
 ### 2. Run the setup script
 
@@ -124,5 +124,5 @@ Alex - [contact@ngjx.org](mailto:contact@ngjx.org)
 [stars-url]: https://github.com/caffeine-addictt/template/stargazers
 [license-shield]: https://img.shields.io/github/license/caffeine-addictt/template.svg?style=for-the-badge
 [license-url]: https://github.com/caffeine-addictt/template/blob/main/LICENSE
-[use-shield]: https://img.shields.io/badge/Use%20template-FFFFFF?style=for-the-badge
 [use-url]: https://github.com/new?template_name=template&template_owner=caffeine-addictt
+[badge-use]: https://img.shields.io/badge/Use%20template-FFFFFF?style=for-the-badge
