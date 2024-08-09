@@ -1,13 +1,18 @@
 ###### _<div align="right"><sub>// made with <3</sub></div>_
 
+<div align="center">
 
+<!-- Project Banner -->
 
 <!-- PROJECT SHIELDS -->
-<div align="center">
+<a href="[template]">
+  <img src="[template-banner]" width="750" height="300" alt="template banner">
+</a>
 
 <a href="[forks-url]">[![Forks][forks-shield]][forks-url]</a>
 <a href="[stars-url]">[![Stargazers][stars-shield]][stars-url]</a>
 <a href="[license-url]">[![MIT License][license-shield]][license-url]</a>
+<br>
 
 </div>
 
@@ -99,6 +104,7 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 
 
 
+[template]: https://github.com/caffeine-addictt/template
 
 
 
@@ -109,6 +115,7 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+[template-banner]: https://github.com/caffeine-addictt/template/blob/main/assets/transparent-logo.svg
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
