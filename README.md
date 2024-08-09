@@ -41,6 +41,11 @@ Let's make starting new projects feel like a _breeze_ again.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Getting Started
+<div align="right">
+  <br>
+  <a href="#-made-with-3"><kbd> <br> 🡅 <br> </kbd></a>
+</div>
+
 
 ### 1. Creating a repository
 
@@ -81,7 +86,10 @@ Just a few more steps and you're ready to go!
 
 Want to support this project? **✨ Star it on GitHub** and help us spread the word!
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<div align="right">
+  <br>
+  <a href="#-made-with-3"><kbd> <br> 🡅 <br> </kbd></a>
+</div>
 
 ## Special Thanks
 
