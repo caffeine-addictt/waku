@@ -12,16 +12,34 @@ please follow it in all your interactions with the project.
 <!-- prettier-ignore-start -->
 <!--toc:start-->
 
-1. [Pull Request Process](#pull-request-process)
-2. [Issue Report Process](#issue-report-process)
-3. [Commit Message Guidelines](#commit-message-guidelines)
-4. [Code Quality](#code-quality)
+1. [Getting started](#getting-started)
+2. [Pull Request Process](#pull-request-process)
+3. [Issue Report Process](#issue-report-process)
+4. [Commit Message Guidelines](#commit-message-guidelines)
+5. [Code Quality](#code-quality)
     - [Testing](#testing)
     - [Linting](#linting)
     - [Building](#building)
 
 <!--toc:end-->
 <!-- prettier-ignore-end -->
+
+## Getting started
+
+Contributions are what make the open source community
+such an amazing place to learn, inspire, and create.
+Any contributions you make are **greatly appreciated**. ( ˶ˆᗜˆ˵ )
+
+If you have a suggestion that would make this better,
+please fork the repo and create a pull request.
+You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## Pull Request Process
 
