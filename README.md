@@ -119,7 +119,7 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[stars-graph]: https://starchart.cc/caffeine-addictt/template
+[stars-graph]: https://starchart.cc/caffeine-addictt/template.svg?variant=adaptive
 [prs]: https://github.com/caffeine-addictt/template/pulls
 [issues]: https://github.com/caffeine-addictt/template/issues
 [license]: https://github.com/caffeine-addictt/template/blob/main/LICENSE
