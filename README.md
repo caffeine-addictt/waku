@@ -4,44 +4,45 @@
 
 <!-- Project Banner -->
 
-<!-- PROJECT SHIELDS -->
 <a href="[template]">
   <img src="[template-banner]" width="750" height="300" alt="template banner">
 </a>
 
-<a href="[forks-url]">[![Forks][forks-shield]][forks-url]</a>
-<a href="[stars-url]">[![Stargazers][stars-shield]][stars-url]</a>
-<a href="[license-url]">[![MIT License][license-shield]][license-url]</a>
 <br>
 
-</div>
+<!-- Badges -->
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <h3 align="center">Repository Template</h3>
+![badge-workflow]
+[![badge-license]][license]
+![badge-language]
+[![badge-pr]][prs]
+[![badge-issues]][issues]
 
-  <p align="center">
-    Simple repository template to get started with GitHub.
-    <br />
-    <br />
-    <a href="https://github.com/caffeine-addictt/template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/caffeine-addictt/template/issues">Request Feature</a>
-  </p>
-</div>
+<br><br>
 
-<!-- ABOUT THE PROJECT -->
-
-## About The Project
+<!-- Description -->
 
 A simple repository template to get started with GitHub.
-
-Starting a new project?
 Say goodbye to repetitive setup tasks and configuration headaches!
 Simplify your workflow, save time, and ensure consistency across projects.
 
-Let's make starting new projects feel like a _breeze_ again.
+Let's make starting new projects feel like a **_breeze_** again.
+
+<br><br>
+
+---
+
+<!-- TOC -->
+
+**[<kbd> <br> Features <br> </kbd>](#features)**
+**[<kbd> <br> Quick Start <br> </kbd>](#quick-start)**
+**[<kbd> <br> Contribute <br> </kbd>][contribute]**
+
+---
+
+<br>
+
+</div>
 
 # Features
 
