@@ -83,21 +83,12 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- LICENSE -->
 
-## License
 
-Distributed under the MIT License. See [LICENSE.txt](./LICENSE.txt) for more information.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- CONTACT -->
 
-## Contact
 
-Alex - [contact@ngjx.org](mailto:contact@ngjx.org)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ACKNOWLEDGMENTS -->
 
