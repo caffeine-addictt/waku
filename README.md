@@ -43,7 +43,18 @@ Simplify your workflow, save time, and ensure consistency across projects.
 
 Let's make starting new projects feel like a _breeze_ again.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+# Features
+
+- Beautiful README
+- Matrix testing CI
+- Draft Releasing CI
+- Pull Request Labeler CI
+- Code of Conduct
+- Code Style Documentation
+- Security Policy Documentation
+- 7 Issue Templates
+- Pull Request Template
+- And more...
 
 <div align="right">
   <br>
