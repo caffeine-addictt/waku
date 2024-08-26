@@ -1,9 +1,9 @@
 ---
-name: 'Failing Test'
-about: 'Report failing tests or CI jobs.'
-title: '[Test] '
-labels: 'Type: Test'
-assignees: ['{{ASSIGNEES}}']
+name: "Failing Test"
+about: "Report failing tests or CI jobs."
+title: "[Test] "
+labels: "Type: Test"
+assignees: ["{{ASSIGNEES}}"]
 ---
 
 # Failing Test
