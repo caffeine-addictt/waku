@@ -1,0 +1,118 @@
+# Release Configuration
+project_name: template
+report_sizes: true
+
+before:
+  hooks:
+    - go mod download
+    - go mod tidy
+    - go run github.com/securego/gosec/v2/cmd/gosec@latest -quiet ./...
+    - go run github.com/go-critic/go-critic/cmd/gocritic@latest check -enableAll ./...
+    - go run github.com/google/osv-scanner/cmd/osv-scanner@latest -r .
+    - go test -race .
+
+builds:
+  - id: default
+    env: [CGO_ENABLED=0]
+    goos: [linux, windows, darwin]
+    goarch: [amd64, arm64]
+
+upx:
+  - ids: [default]
+    enabled: true
+    compress: best
+    lzma: true
+    brute: true
+    goos: [linux, windows] # skip darwin (macOS 13.x Ventura is not support now)
+    goarch: [amd64, arm64]
+
+archives:
+  - format_overrides:
+      - goos: windows
+        format: zip
+    files: [LICENSE, README.md]
+
+nfpms:
+  - maintainer: Jun Xiang <contact@ngjx.org>
+    description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
+    homepage: "https://github.com/caffeine-addictt/template"
+    license: MIT
+    formats: [rpm, apk, termux.deb, deb, archlinux]
+    dependencies: [git]
+
+brews:
+  - homepage: "https://github.com/caffeine-addictt/template"
+    license: "MIT"
+    skip_upload: auto
+    directory: Formula/template
+    repository:
+      owner: caffeine-addictt
+      name: homebrew-tap
+      branch: "template"
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+    commit_author:
+      name: goreleaserbot
+      email: bot@goreleaser.com
+    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
+    description: "A simple template repository generator. Lets make starting new proejcts feel like a breeze again!"
+
+chocolateys:
+  - name: template
+    title: Repository templatehtt
+    owners: caffeine-addictt
+    authors: caffeine-addictt
+    project_url: https://github.com/caffeine-addictt/template
+    package_source_url: https://github.com/caffeine-addictt/template
+    url_template: "https://github.com/caffeine-addictt/template/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    # icon_url: "" https://docs.chocolatey.org/en-us/create/create-packages/#package-icon-guidelines
+    copyright: 2024 Jun Xiang
+    license_url: https://github.com/caffeine-addictt/template/blob/main/LICENSE
+    require_license_acceptance: false
+    docs_url: https://github.com/caffeine-addictt/template/blob/main/README.md
+    bug_tracker_url: https://github.com/caffeine-addictt/template/issues
+    tags: "repository git generator simple quick quickstart template project project-generator"
+    summary: "A simple template repository generator."
+    description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
+    release_notes: "https://github.com/caffeine-addictt/template/releases/tag/{{ .Tag }}"
+    dependencies:
+      - id: git
+    api_key: "{{ .Env.CHOCOLATEY_API_KEY }}"
+    source_repo: "https://push.chocolatey.org/"
+    skip_publish: true # update this
+
+release:
+  ids: [default]
+  draft: true
+  replace_existing_draft: true
+  target_commitish: "{{ .Commit }}"
+  prerelease: auto
+  mode: replace
+  skip_upload: false
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  use: github
+  sort: asc
+  abbrev: 0
+  filters:
+    exclude:
+      - "^ci"
+      - "^chore"
+      - " (T|t)ypo "
+  groups:
+    - title: Features
+      regexp: '^.*?feat(\(.+\))??!?:.+$'
+      order: 0
+    - title: Bug fixes
+      regexp: '^.*?fix(\(.+\))??!?:.+$'
+      order: 1
+    - title: Improvements
+      regexp: '^.*?(docs?|style|test|build|perf|refactor)(\(.+\))??!?:.+$'
+      order: 2
+    - title: Security issues
+      regexp: ^.*?(S|s)ecurity.*?$
+      order: 4
+    - title: Others
+      order: 999
