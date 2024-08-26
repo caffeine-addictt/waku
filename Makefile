@@ -93,6 +93,7 @@ build:
 ## test: Runs tests
 .PHONY: test
 test:
+	go mod tidy
 	go mod verify
 	go vet ./...
 	go run github.com/securego/gosec/v2/cmd/gosec@latest -quiet ./...
