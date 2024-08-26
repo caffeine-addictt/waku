@@ -3,12 +3,12 @@
 
 Documentation:
   - changed-files:
-      - any-glob-to-any-file: [docs/**, './*.{md,mdx}']
+      - any-glob-to-any-file: [docs/**, "./*.{md,mdx}"]
 
-'Type: Test':
+"Type: Test":
   - changed-files:
       - any-glob-to-any-file: [tests/**, ./*test*]
 
-'Type: CI':
+"Type: CI":
   - changed-files:
       - any-glob-to-any-file: [.github/workflows/**]

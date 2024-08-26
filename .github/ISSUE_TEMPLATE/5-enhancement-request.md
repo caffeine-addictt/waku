@@ -1,8 +1,8 @@
 ---
-name: 'Enhancement Request'
-about: 'Suggest an enhancement for this project. Improve an existing feature'
-title: ''
-labels: 'Type: Enhancement'
+name: "Enhancement Request"
+about: "Suggest an enhancement for this project. Improve an existing feature"
+title: ""
+labels: "Type: Enhancement"
 assignees: caffeine-addictt
 ---
 
