@@ -1,8 +1,8 @@
 ---
-name: 'Security Report'
-about: 'Report an issue to help the project improve.'
-title: ''
-labels: 'Type: Security'
+name: "Security Report"
+about: "Report an issue to help the project improve."
+title: ""
+labels: "Type: Security"
 assignees: caffeine-addictt
 ---
 
