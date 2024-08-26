@@ -22,7 +22,7 @@ Please ensure that your code passes linting before merging a Pull Request.
 ```ts
 /** Get a greeting string */
 const myFunction = (): string => {
-  return 'hi';
+  return "hi";
 };
 ```
 
