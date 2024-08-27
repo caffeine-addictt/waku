@@ -61,7 +61,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          language-version: 1.23.0
+          language-version: latest
 
       - name: Lint
         run: |
