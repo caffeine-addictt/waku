@@ -8,21 +8,20 @@ import (
 )
 
 // For testing command execution
-// Returns stdout, stderr and error
-func ExecuteCommand(cmd *cobra.Command, stdin []string, args ...string) (string, string, error) {
+func ExecuteCommand(cmd *cobra.Command, stdin []string, args ...string) (stdout, stderr string, e error) {
 	cmd.SetArgs(args)
 
-	stdout := bytes.Buffer{}
-	stderr := bytes.Buffer{}
+	out := bytes.Buffer{}
+	errout := bytes.Buffer{}
 
-	cmd.SetOut(&stdout)
-	cmd.SetErr(&stderr)
+	cmd.SetOut(&out)
+	cmd.SetErr(&errout)
 	cmd.SetIn(strings.NewReader(strings.Join(stdin, "\n")))
 
 	err := cmd.Execute()
 	if err != nil {
-		return stdout.String(), stderr.String(), err
+		return out.String(), errout.String(), err
 	}
 
-	return stdout.String(), stderr.String(), nil
+	return out.String(), errout.String(), nil
 }
