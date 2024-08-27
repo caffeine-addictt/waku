@@ -58,7 +58,7 @@ func TestParsingFailEarly(t *testing.T) {
 	}
 }
 
-func checkValues(val string, typeString string, vg *types.ValueGuard[string]) error {
+func checkValues(val, typeString string, vg *types.ValueGuard[string]) error {
 	if vg.Value() != val {
 		return fmt.Errorf("Expected %s, got %s", val, vg.Value())
 	}
