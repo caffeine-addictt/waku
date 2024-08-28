@@ -9,7 +9,7 @@ import (
 
 // The options for the new command
 var NewOpts = NewOptions{
-	Repo: *types.NewValueGuardNoParsing("", "<repo>"),
+	Repo:      *types.NewValueGuardNoParsing("", types.REPO),
 	CacheDir: *types.NewValueGuard("", func(v string) (string, error) {
 		ok, err := utils.IsDir(v)
 		if err != nil {
@@ -21,7 +21,7 @@ var NewOpts = NewOptions{
 		}
 
 		return v, nil
-	}, "<path>"),
+	}, types.PATH),
 }
 
 type NewOptions struct {
