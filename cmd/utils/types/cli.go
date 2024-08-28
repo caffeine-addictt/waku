@@ -4,4 +4,5 @@ package types
 const (
 	PATH   string = "<path>"
 	REPO   string = "<repo>"
+	BRANCH string = "<branch>"
 )
