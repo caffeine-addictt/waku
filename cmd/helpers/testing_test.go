@@ -17,15 +17,15 @@ func TestExecuteCommandCapturesStderr(t *testing.T) {
 
 	stdout, stderr, err := helpers.ExecuteCommand(&dummyCmd, []string{}, "")
 	if err != nil {
-		t.Fatalf("Failed to execute command: %v", stderr)
+		t.Fatalf("failed to execute command: %v", stderr)
 	}
 
 	if stderr != msg {
-		t.Fatalf("Expected stderr to be '%s', got '%s'", msg, stderr)
+		t.Fatalf("expected stderr to be '%s', got '%s'", msg, stderr)
 	}
 
 	if stdout != "" {
-		t.Fatalf("Expected stdout to be empty, got '%s'", stdout)
+		t.Fatalf("expected stdout to be empty, got '%s'", stdout)
 	}
 }
 
@@ -39,14 +39,14 @@ func TestExecuteCommandCapturesStdout(t *testing.T) {
 
 	stdout, stderr, err := helpers.ExecuteCommand(&dummyCmd, []string{}, "")
 	if err != nil {
-		t.Fatalf("Failed to execute command: %v", stderr)
+		t.Fatalf("failed to execute command: %v", stderr)
 	}
 
 	if stdout != msg {
-		t.Fatalf("Expected stdout to be '%s', got '%s'", msg, stdout)
+		t.Fatalf("expected stdout to be '%s', got '%s'", msg, stdout)
 	}
 
 	if stderr != "" {
-		t.Fatalf("Expected stderr to be empty, got '%s'", stderr)
+		t.Fatalf("expected stderr to be empty, got '%s'", stderr)
 	}
 }
