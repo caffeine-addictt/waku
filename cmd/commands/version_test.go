@@ -15,10 +15,10 @@ func TestVersionOut(t *testing.T) {
 	}
 
 	if stdout != global.Version+"\n" {
-		t.Errorf("Expected version %s, got %s", global.Version, stdout)
+		t.Errorf("expected version %s, got %s", global.Version, stdout)
 	}
 
 	if stderr != "" {
-		t.Fatalf("Expected no stderr, got %s", err)
+		t.Fatalf("expected no stderr, got %s", err)
 	}
 }
