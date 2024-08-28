@@ -25,5 +25,6 @@ var NewCmd = &cobra.Command{
 
 func init() {
 	NewCmd.PersistentFlags().VarP(&options.NewOpts.Repo, "repo", "r", "community source repository for templates")
+	NewCmd.PersistentFlags().VarP(&options.NewOpts.Directory, "directory", "D", "which directory of the template to use [default: /]")
 	NewCmd.PersistentFlags().VarP(&options.NewOpts.CacheDir, "cache", "C", "where source repository will be cloned to [default: $XDG_CONFIG_HOME/template]")
 }
