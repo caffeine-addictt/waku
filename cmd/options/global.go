@@ -15,6 +15,9 @@ type GlobalOptions struct {
 
 	// Wheter or not debug mode should be enabled
 	Debug bool
+
+	// Wheter or not verbose mode should be enabled
+	Verbose bool
 }
 
 // To resolve the options after the user has provided them
