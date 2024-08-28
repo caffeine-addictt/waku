@@ -3,40 +3,7 @@ package utils
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 )
-
-func GetDefaultCacheDir() (string, error) {
-	dirPath := os.Getenv("XDG_CACHE_HOME")
-
-	if dirPath == "" {
-		os.Getenv("LOCALAPPDATA")
-	}
-
-	if dirPath == "" {
-		dirPath = filepath.Join(os.Getenv("HOME"), ".cache")
-	}
-
-	if dirPath == "" {
-		dirPath = "/tmp"
-	}
-
-	dirPath = filepath.Join(dirPath, "template")
-	ok, err := IsDir(dirPath)
-	if err != nil {
-		return "", err
-	}
-
-	// Create the directory if it doesn't exist
-	if !ok {
-		err := os.Mkdir(dirPath, 0o600) // rw-rw---
-		if err != nil {
-			return "", fmt.Errorf("failed to create directory %s", err)
-		}
-	}
-
-	return dirPath, nil
-}
 
 func IsDir(path string) (bool, error) {
 	fileinfo, err := os.Stat(path)
