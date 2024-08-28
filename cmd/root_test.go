@@ -10,14 +10,14 @@ import (
 func TestRootCommandCanRun(t *testing.T) {
 	stdout, stderr, err := helpers.ExecuteCommand(cmd.RootCmd, []string{})
 	if err != nil {
-		t.Fatalf("Failed to run root command: %v", err)
+		t.Fatalf("failed to run root command: %v", err)
 	}
 
 	if stdout == "" {
-		t.Fatalf("Expected non-empty stdout, but got: %s", stdout)
+		t.Fatalf("expected non-empty stdout, but got: %s", stdout)
 	}
 
 	if stderr != "" {
-		t.Fatalf("Expected empty stderr, but got: %s", stderr)
+		t.Fatalf("expected empty stderr, but got: %s", stderr)
 	}
 }

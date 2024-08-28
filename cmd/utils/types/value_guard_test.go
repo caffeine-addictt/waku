@@ -17,7 +17,7 @@ func TestNoParsing(t *testing.T) {
 	}
 
 	if err := v.Set("new value"); err != nil {
-		t.Fatalf("Failed to set value: %v", err)
+		t.Fatalf("failed to set value: %v", err)
 	}
 }
 
@@ -33,12 +33,12 @@ func TestParsing(t *testing.T) {
 	}, typeString)
 
 	if err := checkValues(val, typeString, v); err != nil {
-		t.Fatalf("Unexpected error: %v", err)
+		t.Fatalf("unexpected error: %v", err)
 	}
 
 	// Only error when setting
 	if err := v.Set(val); err == nil {
-		t.Fatal("Expected error, got nil")
+		t.Fatal("expected error, got nil")
 	}
 }
 
@@ -54,21 +54,21 @@ func TestParsingFailEarly(t *testing.T) {
 	}, typeString)
 
 	if err == nil {
-		t.Fatal("Expected error, got nil")
+		t.Fatal("expected error, got nil")
 	}
 }
 
 func checkValues(val, typeString string, vg *types.ValueGuard[string]) error {
 	if vg.Value() != val {
-		return fmt.Errorf("Expected %s, got %s", val, vg.Value())
+		return fmt.Errorf("expected %s, got %s", val, vg.Value())
 	}
 
 	if vg.String() != val {
-		return fmt.Errorf("Expected %s, got %s", val, vg.String())
+		return fmt.Errorf("expected %s, got %s", val, vg.String())
 	}
 
 	if vg.Type() != typeString {
-		return fmt.Errorf("Expected %s, got %s", typeString, vg.Type())
+		return fmt.Errorf("expected %s, got %s", typeString, vg.Type())
 	}
 
 	return nil

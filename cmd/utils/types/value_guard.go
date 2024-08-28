@@ -55,7 +55,7 @@ func (v *ValueGuard[T]) Set(value T) error {
 	if v.parseValue != nil {
 		value, err := v.parseValue(value)
 		if err != nil {
-			return errors.Join(fmt.Errorf("Cannot set value %v", value), err)
+			return errors.Join(fmt.Errorf("cannot set value %v", value), err)
 		}
 
 		v.value = value
