@@ -5,7 +5,7 @@ import (
 	"github.com/caffeine-addictt/template/cmd/utils/types"
 )
 
-type Options struct {
+type GlobalOptions struct {
 	// The repository Url to use
 	// Should be this repository by default
 	Repo types.ValueGuard[string]
@@ -18,7 +18,7 @@ type Options struct {
 }
 
 // To resolve the options after the user has provided them
-func (o *Options) ResolveOptions() error {
+func (o *GlobalOptions) ResolveOptions() error {
 	if err := o.resolveCacheDir(); err != nil {
 		return err
 	}
@@ -26,7 +26,7 @@ func (o *Options) ResolveOptions() error {
 	return nil
 }
 
-func (o *Options) resolveCacheDir() error {
+func (o *GlobalOptions) resolveCacheDir() error {
 	if o.CacheDir.Value() != "" {
 		return nil
 	}
