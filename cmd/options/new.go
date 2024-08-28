@@ -1,8 +1,10 @@
 package options
 
 import (
+	"errors"
+	"os"
+	"os/exec"
 
-	"github.com/caffeine-addictt/template/cmd/utils"
 	"github.com/caffeine-addictt/template/cmd/utils/types"
 )
 
@@ -25,11 +27,34 @@ type NewOptions struct {
 	Directory types.ValueGuard[string]
 }
 
-
-
+// To clone the repository
+func (o *NewOptions) CloneRepo(out chan string, e chan error) {
+	tmpDirPath, err := os.MkdirTemp("", "template-*")
+	if err != nil {
+		e <- err
+		return
 	}
 
-		return err
+	var c *exec.Cmd
+	if o.Branch.Value() != "" {
+		c = exec.Command("git", "clone", "--depth", "1", "--branch", o.Branch.Value(), o.Repo.Value(), tmpDirPath)
+	} else {
+		c = exec.Command("git", "clone", "--depth", "1", o.Repo.Value(), tmpDirPath)
 	}
 
+	c.Stdin = os.Stdin
+	c.Stdout = os.Stdout
+	c.Stderr = os.Stderr
+
+	if err := c.Run(); err != nil {
+		if errCleanup := os.RemoveAll(tmpDirPath); errCleanup != nil {
+			e <- errors.Join(errCleanup, err)
+		} else {
+			e <- err
+		}
+		return
+	}
+
+	out <- tmpDirPath
+	e <- nil
 }
