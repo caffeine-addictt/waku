@@ -8,7 +8,7 @@ import (
 )
 
 // The global options for the CLI
-var Opts = Options{
+var GlobalOpts = GlobalOptions{
 	Debug: false,
 	Repo:  *types.NewValueGuardNoParsing("", "<repo>"),
 	CacheDir: *types.NewValueGuard("", func(v string) (string, error) {
