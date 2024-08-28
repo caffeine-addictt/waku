@@ -25,6 +25,7 @@ var RootCmd = &cobra.Command{
 // Setting up configuration
 func init() {
 	RootCmd.PersistentFlags().BoolVarP(&options.GlobalOpts.Debug, "debug", "d", false, "debug mode [default: false]")
+	RootCmd.PersistentFlags().BoolVarP(&options.GlobalOpts.Verbose, "verbose", "v", false, "verbose mode [default: false]")
 	RootCmd.PersistentFlags().VarP(&options.GlobalOpts.Repo, "repo", "r", "community source repository for templates")
 	RootCmd.PersistentFlags().VarP(&options.GlobalOpts.CacheDir, "cache", "C", "where source repository will be cloned to [default: $XDG_CONFIG_HOME/template]")
 
