@@ -13,12 +13,6 @@ var NewCmd = &cobra.Command{
 	Aliases: []string{"init"},
 	Short:   "create a new project",
 	Long:    "Create a new project from a template",
-	PreRun: func(cmd *cobra.Command, args []string) {
-		if err := options.NewOpts.ResolveOptions(); err != nil {
-			cmd.PrintErrln(err)
-			os.Exit(1)
-		}
-	},
 	Run: func(cmd *cobra.Command, args []string) {
 	},
 }
@@ -27,5 +21,4 @@ func init() {
 	NewCmd.Flags().VarP(&options.NewOpts.Repo, "repo", "r", "community source repository for templates")
 	NewCmd.Flags().VarP(&options.NewOpts.Branch, "branch", "b", "branch to clone from [default: main/master]")
 	NewCmd.Flags().VarP(&options.NewOpts.Directory, "directory", "D", "which directory of the template to use [default: /]")
-	NewCmd.Flags().VarP(&options.NewOpts.CacheDir, "cache", "C", "where source repository will be cloned to [default: $XDG_CONFIG_HOME/template]")
 }
