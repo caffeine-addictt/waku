@@ -8,9 +8,9 @@ import (
 
 // The options for the new command
 var NewOpts = NewOptions{
-	Repo:      *types.NewValueGuardNoParsing("", types.REPO),
+	Repo:      *types.NewValueGuardNoParsing("https://github.com/caffeine-addictt/template", types.REPO),
 	Branch:    *types.NewValueGuardNoParsing("", types.BRANCH),
-	Directory: *types.NewValueGuardNoParsing("", types.PATH),
+	Directory: *types.NewValueGuardNoParsing("template", types.PATH),
 }
 
 type NewOptions struct {
