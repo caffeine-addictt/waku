@@ -12,8 +12,8 @@ import (
 // The Root command
 var RootCmd = &cobra.Command{
 	Use:   "template",
-	Short: "Let's make starting new projects feel like a breeze again.",
-	Long:  "This tool helps you to create a new project from templates.",
+	Short: "let's make starting new projects feel like a breeze again",
+	Long:  "This tool helps you to create a new project from templates.\n\nLet's make starting new projects feel like a breeze again.",
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		if err := options.Opts.ResolveOptions(); err != nil {
 			cmd.PrintErrln(err)
