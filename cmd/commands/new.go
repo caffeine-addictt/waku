@@ -9,7 +9,7 @@ import (
 
 	"github.com/caffeine-addictt/template/cmd/options"
 	"github.com/caffeine-addictt/template/cmd/utils"
-	"github.com/charmbracelet/huh"
+	"github.com/charmbracelet/huh/spinner"
 	"github.com/spf13/cobra"
 )
 
