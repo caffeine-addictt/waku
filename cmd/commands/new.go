@@ -46,9 +46,13 @@ var NewCmd = &cobra.Command{
 }
 
 func init() {
-	NewCmd.Flags().VarP(&options.NewOpts.Repo, "repo", "r", "community source repository for templates")
-	NewCmd.Flags().VarP(&options.NewOpts.Branch, "branch", "b", "branch to clone from [default: main/master]")
-	NewCmd.Flags().VarP(&options.NewOpts.Directory, "directory", "D", "which directory of the template to use [default: /]")
+	AddNewCmdFlags(NewCmd)
+}
+
+func AddNewCmdFlags(cmd *cobra.Command) {
+	cmd.Flags().VarP(&options.NewOpts.Repo, "repo", "r", "community source repository for templates")
+	cmd.Flags().VarP(&options.NewOpts.Branch, "branch", "b", "branch to clone from [default: main/master]")
+	cmd.Flags().VarP(&options.NewOpts.Directory, "directory", "D", "which directory of the template to use [default: /]")
 }
 
 // For cloning git repo with spinner
