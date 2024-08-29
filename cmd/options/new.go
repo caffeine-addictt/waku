@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/caffeine-addictt/template/cmd/utils"
 	"github.com/caffeine-addictt/template/cmd/utils/types"
 )
 
@@ -35,13 +36,13 @@ func (o *NewOptions) CloneRepo(out chan string, e chan error) {
 		return
 	}
 
-	var c *exec.Cmd
+	args := []string{"clone", "--depth", "1"}
 	if o.Branch.Value() != "" {
-		c = exec.Command("git", "clone", "--depth", "1", "--branch", o.Branch.Value(), o.Repo.Value(), tmpDirPath)
-	} else {
-		c = exec.Command("git", "clone", "--depth", "1", o.Repo.Value(), tmpDirPath)
+		args = append(args, "--branch", utils.EscapeTermString(o.Branch.Value()))
 	}
+	args = append(args, utils.EscapeTermString(o.Repo.Value()), utils.EscapeTermString(tmpDirPath))
 
+	c := exec.Command("git", args...)
 	c.Stdin = os.Stdin
 	c.Stdout = os.Stdout
 	c.Stderr = os.Stderr
