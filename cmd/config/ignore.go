@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -10,6 +11,10 @@ type TemplateIgnore []string
 
 func (t *TemplateIgnore) Validate(root string) error {
 	for _, path := range *t {
+		if !filepath.IsLocal(path) {
+			return fmt.Errorf("path is not local: %s", path)
+		}
+
 		dirPath := path
 		isGrep := strings.HasSuffix(path, "/*")
 

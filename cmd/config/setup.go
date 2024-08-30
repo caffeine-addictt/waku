@@ -35,6 +35,10 @@ func (t *TemplateSetup) Validate(root string) error {
 			continue
 		}
 
+		if !filepath.IsLocal(pth) {
+			return fmt.Errorf("path is not local: %s", pth)
+		}
+
 		ok, err := utils.IsExecutableFile(filepath.Join(root, pth))
 		if err != nil {
 			return err
