@@ -1,15 +1,12 @@
 package commands
 
 import (
-	"bufio"
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/caffeine-addictt/template/cmd/config"
+	"github.com/caffeine-addictt/template/cmd/template"
 	"github.com/caffeine-addictt/template/cmd/utils"
-	"github.com/goccy/go-json"
 	"github.com/spf13/cobra"
 )
 
@@ -45,33 +42,7 @@ var CheckCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		file, err := os.Open(filePath)
-		if err != nil {
-			cmd.PrintErrln(err)
-			os.Exit(1)
-		}
-
-		var template config.TemplateJson
-		var jsonData string
-
-		// Read the entire file content
-		scanner := bufio.NewScanner(file)
-		for scanner.Scan() {
-			jsonData += scanner.Text()
-		}
-
-		if err := scanner.Err(); err != nil {
-			fmt.Println("Error reading file:", err)
-			os.Exit(1)
-		}
-
-		// Unmarshal JSON data
-		if err := json.Unmarshal([]byte(jsonData), &template); err != nil {
-			fmt.Println("Error unmarshalling JSON:", err)
-			os.Exit(1)
-		}
-
-		if err := template.Validate(filepath.Dir(filePath)); err != nil {
+		if _, err := template.ParseConfig(filePath); err != nil {
 			cmd.PrintErrln(err)
 			os.Exit(1)
 		}
