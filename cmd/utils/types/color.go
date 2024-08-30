@@ -18,7 +18,7 @@ func (c *HexColor) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	if !hexColorRegex.MatchString(string(*c)) {
+	if !hexColorRegex.MatchString(string(color)) {
 		return fmt.Errorf("invalid hex color: %s", color)
 	}
 
