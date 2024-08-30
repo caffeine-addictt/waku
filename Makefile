@@ -101,6 +101,13 @@ test:
 	go run github.com/google/osv-scanner/cmd/osv-scanner@latest -r .
 	go test -v -race ./...
 
+
+
+
+## bench: Run benchmarks
+bench:
+	go test -v -bench=. -benchmem ./...
+
 # =================================== QUALITY ================================== #
 
 ## lint: Lint code
