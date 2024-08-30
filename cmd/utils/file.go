@@ -40,7 +40,7 @@ func IsExecutableFile(path string) (bool, error) {
 		return false, fmt.Errorf("%v is not a file", path)
 	}
 
-	err = CheckRW(fileinfo.Mode())
+	err = CheckRWX(fileinfo.Mode())
 	if err != nil {
 		return false, fmt.Errorf("file %v is %v", fileinfo.Name(), err)
 	}
