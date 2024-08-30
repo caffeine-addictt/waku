@@ -6,4 +6,5 @@ import "github.com/spf13/cobra"
 func InitCommands(root *cobra.Command) {
 	root.AddCommand(VersionCmd)
 	root.AddCommand(NewCmd)
+	root.AddCommand(CheckCmd)
 }
