@@ -10,7 +10,7 @@ import (
 )
 
 func ParseConfig(filePath string) (*config.TemplateJson, error) {
-	file, err := os.Open(filePath)
+	file, err := os.Open(filepath.Clean(filePath))
 	if err != nil {
 		return nil, err
 	}
