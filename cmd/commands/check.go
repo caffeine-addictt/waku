@@ -33,6 +33,7 @@ var CheckCmd = &cobra.Command{
 		} else {
 			filePath = "template.json"
 		}
+		filePath = filepath.Clean(filePath)
 
 		ok, err := utils.IsFile(filePath)
 		if err != nil {
