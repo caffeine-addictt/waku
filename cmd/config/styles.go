@@ -17,6 +17,9 @@ func (t *TemplateStyles) Validate(root string) error {
 		}
 
 		resolvedPath := path.Join(root, pth)
+		if resolvedPath == "." {
+			return fmt.Errorf("cannot use . as a path")
+		}
 
 		ok, err := utils.IsDir(resolvedPath)
 		if err != nil {
