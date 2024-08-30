@@ -27,6 +27,26 @@ func IsDir(path string) (bool, error) {
 	return true, nil
 }
 
+func IsFile(path string) (bool, error) {
+	fileinfo, err := os.Stat(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return false, nil
+		}
+		return false, err
+	}
+
+	if fileinfo.IsDir() {
+		return false, fmt.Errorf("%v is not a file", path)
+	}
+
+	if err = CheckRW(fileinfo.Mode()); err != nil {
+		return false, fmt.Errorf("file %v is %v", fileinfo.Name(), err)
+	}
+
+	return true, nil
+}
+
 func IsExecutableFile(path string) (bool, error) {
 	fileinfo, err := os.Stat(path)
 	if err != nil {
