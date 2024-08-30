@@ -22,6 +22,7 @@ var NewCmd = &cobra.Command{
 		tmpDir, err := cloneGitRepo()
 		if err != nil {
 			cmd.PrintErrf("Could not clone git repo: %s", err)
+			os.Exit(1)
 		}
 		gracefullyCleanupDir(tmpDir)
 		defer cleanupDir(tmpDir)
@@ -33,9 +34,11 @@ var NewCmd = &cobra.Command{
 			ok, err := utils.IsDir(tmpDir)
 			if err != nil {
 				cmd.PrintErrln(err)
+				os.Exit(1)
 			}
 			if !ok {
 				cmd.PrintErrf("directory '%s' does not exist\n", options.NewOpts.Directory.Value())
+				os.Exit(1)
 			}
 		}
 
