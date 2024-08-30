@@ -7,6 +7,7 @@ type TemplateJson struct {
 	Labels *TemplateLabel  `json:"labels,omitempty"` // The repository labels
 	Styles *TemplateStyles `json:"styles,omitempty"` // The name of the style mapped to the path to the direcotry
 	Skip   *TemplateSteps  `json:"skip,omitempty"`   // The setps to skip in using the template
+	Name   string          `json:"name,omitempty"`   // The name of the template
 }
 
 func (t *TemplateJson) Validate(root string) error {
