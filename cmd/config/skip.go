@@ -25,7 +25,7 @@ func (t *TemplateSteps) UnmarshalJSON(data []byte) error {
 
 	for _, v := range tmp {
 		if !templateStepsRegexp.MatchString(string(v)) {
-			return fmt.Errorf("invalid hex color: %s", tmp)
+			return fmt.Errorf("invalid step: %s", tmp)
 		}
 	}
 
