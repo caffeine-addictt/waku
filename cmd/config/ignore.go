@@ -5,9 +5,11 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/caffeine-addictt/template/cmd/utils/types"
 )
 
-type TemplateIgnore []string
+type TemplateIgnore types.Set[string]
 
 func (t *TemplateIgnore) Validate(root string) error {
 	for path := range *t {
