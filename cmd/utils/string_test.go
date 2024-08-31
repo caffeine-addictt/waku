@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/caffeine-addictt/template/cmd/utils"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestEscapingTermString(t *testing.T) {
@@ -26,9 +27,8 @@ func TestEscapingTermString(t *testing.T) {
 
 	for _, tc := range tt {
 		t.Run(tc.rule, func(t *testing.T) {
-			if got := utils.EscapeTermString(tc.in); got != tc.out {
-				t.Errorf("%v. EscapeTermString() = '%v', want '%v'", tc.rule, got, tc.out)
-			}
+			got := utils.EscapeTermString(tc.in)
+			assert.Equal(t, got, tc.out, tc.rule)
 		})
 	}
 }
@@ -60,9 +60,8 @@ func TestCleaningString(t *testing.T) {
 
 	for _, tc := range tt {
 		t.Run(tc.rule, func(t *testing.T) {
-			if got := utils.CleanString(tc.in, tc.extra...); got != tc.out {
-				t.Errorf("%v. CleanString() = '%v', want '%v'", tc.rule, got, tc.out)
-			}
+			got := utils.CleanString(tc.in, tc.extra...)
+			assert.Equal(t, got, tc.out, tc.rule)
 		})
 	}
 }

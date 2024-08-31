@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/caffeine-addictt/template/cmd/utils/types"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestHexColors(t *testing.T) {
@@ -27,11 +28,10 @@ func TestHexColors(t *testing.T) {
 			c := types.HexColor(tc.in)
 
 			err := c.UnmarshalJSON([]byte("\"" + tc.in + "\""))
-			if err != nil && !tc.errors {
-				t.Errorf("%v. expected to error but got %s: %v", tc.rule, c, err)
-			}
-			if err == nil && tc.errors {
-				t.Errorf("%v. expected to not error but got %s: %v", tc.rule, c, err)
+			if tc.errors {
+				assert.Error(t, err, tc.rule)
+			} else {
+				assert.NoError(t, err, tc.rule)
 			}
 		})
 	}

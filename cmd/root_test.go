@@ -5,19 +5,13 @@ import (
 
 	"github.com/caffeine-addictt/template/cmd"
 	"github.com/caffeine-addictt/template/cmd/helpers"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestRootCommandCanRun(t *testing.T) {
 	stdout, stderr, err := helpers.ExecuteCommand(cmd.RootCmd, []string{})
-	if err != nil {
-		t.Fatalf("failed to run root command: %v", err)
-	}
 
-	if stdout == "" {
-		t.Fatalf("expected non-empty stdout, but got: %s", stdout)
-	}
-
-	if stderr != "" {
-		t.Fatalf("expected empty stderr, but got: %s", stderr)
-	}
+	assert.NoError(t, err, "failed to run root command")
+	assert.NotEmpty(t, stdout, "expected empty stdout")
+	assert.Empty(t, stderr, "expected empty stderr")
 }

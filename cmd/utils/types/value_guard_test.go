@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/caffeine-addictt/template/cmd/utils/types"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNoParsing(t *testing.T) {
@@ -12,13 +13,10 @@ func TestNoParsing(t *testing.T) {
 	typeString := "my type"
 
 	v := types.NewValueGuardNoParsing(val, typeString)
-	if err := checkValues(val, typeString, v); err != nil {
-		t.Fatal(err)
-	}
+	checkValues(t, val, typeString, v)
 
-	if err := v.Set("new value"); err != nil {
-		t.Fatalf("failed to set value: %v", err)
-	}
+	err := v.Set("new value")
+	assert.NoError(t, err, v.String(), "failed to set value")
 }
 
 func TestParsing(t *testing.T) {
@@ -31,15 +29,11 @@ func TestParsing(t *testing.T) {
 		}
 		return s, nil
 	}, typeString)
-
-	if err := checkValues(val, typeString, v); err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
+	checkValues(t, val, typeString, v)
 
 	// Only error when setting
-	if err := v.Set(val); err == nil {
-		t.Fatal("expected error, got nil")
-	}
+	err := v.Set(val)
+	assert.Error(t, err, "expected error")
 }
 
 func TestParsingFailEarly(t *testing.T) {
@@ -58,18 +52,8 @@ func TestParsingFailEarly(t *testing.T) {
 	}
 }
 
-func checkValues(val, typeString string, vg *types.ValueGuard[string]) error {
-	if vg.Value() != val {
-		return fmt.Errorf("expected %s, got %s", val, vg.Value())
-	}
-
-	if vg.String() != val {
-		return fmt.Errorf("expected %s, got %s", val, vg.String())
-	}
-
-	if vg.Type() != typeString {
-		return fmt.Errorf("expected %s, got %s", typeString, vg.Type())
-	}
-
-	return nil
+func checkValues(t *testing.T, val, typeString string, vg *types.ValueGuard[string]) {
+	assert.Equal(t, val, vg.Value(), "value Value() should match")
+	assert.Equal(t, val, vg.String(), "value String() should match")
+	assert.Equal(t, typeString, vg.Type(), "value Type() should match")
 }

@@ -5,13 +5,12 @@ import (
 	"testing"
 
 	"github.com/caffeine-addictt/template/cmd/global"
+	"github.com/stretchr/testify/assert"
 )
 
 // Regex taken from https://semver.org
 var semverRegex = regexp.MustCompile(`^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$`)
 
 func TestFollowsSemVer(t *testing.T) {
-	if !semverRegex.MatchString(global.Version) {
-		t.Fatalf("%v does not follow semver", global.Version)
-	}
+	assert.True(t, semverRegex.MatchString(global.Version), "%s does not follow semver", global.Version)
 }

@@ -5,6 +5,7 @@ import (
 
 	"github.com/caffeine-addictt/template/cmd/helpers"
 	"github.com/spf13/cobra"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestExecuteCommandCapturesStderr(t *testing.T) {
@@ -16,17 +17,10 @@ func TestExecuteCommandCapturesStderr(t *testing.T) {
 	}
 
 	stdout, stderr, err := helpers.ExecuteCommand(&dummyCmd, []string{}, "")
-	if err != nil {
-		t.Fatalf("failed to execute command: %v", stderr)
-	}
+	assert.NoError(t, err, "failed to execute command")
 
-	if stderr != msg {
-		t.Fatalf("expected stderr to be '%s', got '%s'", msg, stderr)
-	}
-
-	if stdout != "" {
-		t.Fatalf("expected stdout to be empty, got '%s'", stdout)
-	}
+	assert.Equal(t, msg, stderr, "wrong stderr")
+	assert.Empty(t, stdout, "non-empty stdout")
 }
 
 func TestExecuteCommandCapturesStdout(t *testing.T) {
@@ -38,15 +32,8 @@ func TestExecuteCommandCapturesStdout(t *testing.T) {
 	}
 
 	stdout, stderr, err := helpers.ExecuteCommand(&dummyCmd, []string{}, "")
-	if err != nil {
-		t.Fatalf("failed to execute command: %v", stderr)
-	}
+	assert.NoError(t, err, "failed to execute command")
 
-	if stdout != msg {
-		t.Fatalf("expected stdout to be '%s', got '%s'", msg, stdout)
-	}
-
-	if stderr != "" {
-		t.Fatalf("expected stderr to be empty, got '%s'", stderr)
-	}
+	assert.Equal(t, msg, stdout, "wrong stdout")
+	assert.Empty(t, stderr, "non-empty stderr")
 }

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/caffeine-addictt/template/cmd/utils/types"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCleanStringUnmarshalJSON(t *testing.T) {
@@ -22,10 +23,10 @@ func TestCleanStringUnmarshalJSON(t *testing.T) {
 		var s types.CleanString
 		err := s.UnmarshalJSON([]byte("\"" + tc.in + "\""))
 
-		if tc.errors && err == nil {
-			t.Errorf("expected error, but got nil")
-		} else if !tc.errors && err != nil {
-			t.Errorf("did not expect error, but got %v", err)
+		if tc.errors {
+			assert.Error(t, err)
+		} else {
+			assert.NoError(t, err)
 		}
 	}
 }
