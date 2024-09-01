@@ -7,6 +7,38 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestStringStartsWith(t *testing.T) {
+	tt := []struct {
+		inputs [2]string
+		rule   string
+		out    bool
+	}{
+		{[2]string{"start", "start"}, "values are euqal", true},
+		{[2]string{"s", "stop"}, "stop starts with s", true},
+		{[2]string{"sto", "stoop"}, "stoop starts with sto", true},
+		{[2]string{"iiiiii", "iii"}, "iii is not iiiiii", false},
+		{[2]string{"", ""}, "values are euqal", true},
+		{[2]string{"", "nonempty"}, "empty prefix", true},
+		{[2]string{"nonempty", ""}, "empty string", false},
+		{[2]string{"hello", "hello world"}, "hello world starts with hello", true},
+		{[2]string{"world", "hello world"}, "hello world does not start with world", false},
+		{[2]string{"h", "H"}, "case sensitivity", false},
+		{[2]string{"hello", "h"}, "h does not start with hello", false},
+		{[2]string{"abcd", "abcde"}, "abcde starts with abcd", true},
+		{[2]string{"test", "testing"}, "testing starts with test", true},
+		{[2]string{"prefix", "suffix"}, "suffix does not start with prefix", false},
+		{[2]string{"go", "gopher"}, "gopher starts with go", true},
+		{[2]string{"😊", "😊😊😊"}, "unicode check", true},
+	}
+
+	for _, tc := range tt {
+		t.Run(tc.rule, func(t *testing.T) {
+			got := utils.StringStartsWith(tc.inputs[0], tc.inputs[1])
+			assert.Equal(t, got, tc.out, tc.rule)
+		})
+	}
+}
+
 func TestEscapingTermString(t *testing.T) {
 	tt := []struct {
 		in   string
@@ -62,6 +94,29 @@ func TestCleaningString(t *testing.T) {
 		t.Run(tc.rule, func(t *testing.T) {
 			got := utils.CleanString(tc.in, tc.extra...)
 			assert.Equal(t, got, tc.out, tc.rule)
+		})
+	}
+}
+
+func BenchmarkStringStartsWith(b *testing.B) {
+	cases := []struct {
+		prefix string
+		full   string
+	}{
+		{"", ""},
+		{"a", "a"},
+		{"hello", "hello world"},
+		{"go", "gopher"},
+		{"abc", "abcdefghijklmnopqrstuvwxyz"},
+		{"longprefix", "longprefixandaverylongstring"},
+		{"😊", "😊😊😊😊😊😊😊😊"},
+	}
+
+	for _, bc := range cases {
+		b.Run(bc.prefix+"_"+bc.full, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				utils.StringStartsWith(bc.prefix, bc.full)
+			}
 		})
 	}
 }

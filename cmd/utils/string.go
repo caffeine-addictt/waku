@@ -2,6 +2,22 @@ package utils
 
 import "strings"
 
+// StringStartsWith returns true if the given string
+// starts with the given string look, or if they start similarily.
+func StringStartsWith(s, look string) bool {
+	if len(s) >= len(look) {
+		return look == s
+	}
+
+	target := min(len(s), len(look))
+	for i := 0; i < target; i++ {
+		if s[i] != look[i] {
+			return false
+		}
+	}
+	return true
+}
+
 // Invokes CleanString with terminal-specific operators
 // like ;|&$.
 func EscapeTermString(s string) string {
