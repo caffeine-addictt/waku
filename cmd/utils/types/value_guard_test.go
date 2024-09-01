@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/caffeine-addictt/template/cmd/utils/types"
+	"github.com/goccy/go-json"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -34,6 +35,20 @@ func TestParsing(t *testing.T) {
 	// Only error when setting
 	err := v.Set(val)
 	assert.Error(t, err, "expected error")
+}
+
+func TestParsingJsonUnMarshal(t *testing.T) {
+	var tmp types.ValueGuard[string]
+	err := json.Unmarshal([]byte(`"test"`), &tmp)
+	assert.NoError(t, err, "failed to unmarshal")
+	checkValues(t, "test", "", &tmp)
+}
+
+func TestParsingJsonMarshal(t *testing.T) {
+	tmp := types.NewValueGuardNoParsing("hi", "ok")
+	data, err := json.Marshal(tmp)
+	assert.NoError(t, err, "failed to marshal")
+	assert.Equal(t, `"hi"`, string(data), "value should match")
 }
 
 func TestParsingFailEarly(t *testing.T) {

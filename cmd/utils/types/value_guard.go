@@ -3,6 +3,8 @@ package types
 import (
 	"errors"
 	"fmt"
+
+	"github.com/goccy/go-json"
 )
 
 // A value guard to validate values being set
@@ -74,4 +76,20 @@ func (v *ValueGuard[T]) Type() string {
 // Return the string representation
 func (v *ValueGuard[T]) String() string {
 	return fmt.Sprintf("%v", v.value)
+}
+
+func (v *ValueGuard[T]) UnmarshalJSON(data []byte) error {
+	var tmp T
+	if err := json.Unmarshal(data, &tmp); err != nil {
+		return err
+	}
+
+	if err := v.Set(tmp); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (v ValueGuard[T]) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
 }
