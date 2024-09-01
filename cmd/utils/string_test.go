@@ -98,6 +98,64 @@ func TestCleaningString(t *testing.T) {
 	}
 }
 
+func TestCleanStringNoRegex(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		expected string
+	}{
+		{
+			name:     "Alphanumeric string",
+			input:    "Hello123",
+			expected: "Hello123",
+		},
+		{
+			name:     "String with spaces",
+			input:    "Hello World 123",
+			expected: "Hello World 123",
+		},
+		{
+			name:     "String with special characters",
+			input:    "Hello@World!123#",
+			expected: "HelloWorld123",
+		},
+		{
+			name:     "String with unicode characters",
+			input:    "こんにちは世界123",
+			expected: "こんにちは世界123",
+		},
+		{
+			name:     "String with mixed valid and invalid characters",
+			input:    "Hello, World! #123",
+			expected: "Hello World 123",
+		},
+		{
+			name:     "Empty string",
+			input:    "",
+			expected: "",
+		},
+		{
+			name:     "String with only special characters",
+			input:    "@#$%^&*()",
+			expected: "",
+		},
+		{
+			name:     "String with leading and trailing spaces",
+			input:    "  Hello World  ",
+			expected: "  Hello World  ",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := utils.CleanStringNoRegex(tt.input)
+			if result != tt.expected {
+				t.Errorf("CleanStringNoRegex(%q) = %q; expected %q", tt.input, result, tt.expected)
+			}
+		})
+	}
+}
+
 func BenchmarkStringStartsWith(b *testing.B) {
 	cases := []struct {
 		prefix string

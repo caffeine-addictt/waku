@@ -1,6 +1,9 @@
 package utils
 
-import "strings"
+import (
+	"strings"
+	"unicode"
+)
 
 // StringStartsWith returns true if the given string
 // starts with the given string look, or if they start similarily.
@@ -22,6 +25,21 @@ func StringStartsWith(s, look string) bool {
 // like ;|&$.
 func EscapeTermString(s string) string {
 	return CleanString(s, '|', '&', ';', '`', '$')
+}
+
+// Invokes CleanString to prevent regex
+func CleanStringNoRegex(s string) string {
+	var builder strings.Builder
+	builder.Grow(len(s)) // Optimize for the expected size to reduce reallocations.
+
+	for _, r := range s {
+		// Filter out any non-alphanumeric and non-space characters.
+		if unicode.IsLetter(r) || unicode.IsDigit(r) || unicode.IsSpace(r) {
+			builder.WriteRune(r)
+		}
+	}
+
+	return builder.String()
 }
 
 // Escapes the given string from common escape sequences
