@@ -1,3 +1,8 @@
 {
-  "$schema": "../schema.json"
+  "$schema": "../schema.json",
+  "styles": {
+    "simple github": {
+      "source": "simple-github"
+    }
+  }
 }
