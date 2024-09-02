@@ -10,6 +10,8 @@ import (
 	"github.com/caffeine-addictt/template/cmd/utils/types"
 )
 
+const defaultRepo = "https://github.com/caffeine-addictt/template.git"
+
 // The options for the new command
 var NewOpts = NewOptions{
 	Repo:      *types.NewValueGuard("", func(v string) (string, error) { return strings.TrimSpace(v), nil }, types.REPO),
@@ -32,14 +34,19 @@ type NewOptions struct {
 // TO be invoked before a command is ran
 func (o *NewOptions) Validate() error {
 	switch o.Repo.Value() {
-	case "",
-		"https://github.com/caffeine-addictt/template.git",
+	case "":
+		if err := o.Repo.Set(defaultRepo); err != nil {
+			return err
+		}
+		if err := o.Directory.Set("template"); err != nil {
+			return err
+		}
+
+	case
+		defaultRepo,
 		"https://github.com/caffeine-addictt/template",
 		"git://github.com/caffeine-addictt/template.git",
 		"git@github.com:caffeine-addictt/template.git":
-		if err := o.Branch.Set(""); err != nil {
-			return err
-		}
 		if err := o.Directory.Set("template"); err != nil {
 			return err
 		}
