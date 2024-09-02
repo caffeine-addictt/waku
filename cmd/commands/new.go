@@ -48,7 +48,7 @@ var NewCmd = &cobra.Command{
 		}
 
 		// Parse template.json
-		tmpl, err := template.ParseConfig(rootDir)
+		tmpl, err := template.ParseConfig(filepath.Join(rootDir, "template.json"))
 		if err != nil {
 			cmd.PrintErrln(err)
 			os.Exit(1)
