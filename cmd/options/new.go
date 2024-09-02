@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/caffeine-addictt/template/cmd/utils"
 	"github.com/caffeine-addictt/template/cmd/utils/types"
@@ -11,9 +12,9 @@ import (
 
 // The options for the new command
 var NewOpts = NewOptions{
-	Repo:      *types.NewValueGuardNoParsing("https://github.com/caffeine-addictt/template", types.REPO),
-	Branch:    *types.NewValueGuardNoParsing("", types.BRANCH),
-	Directory: *types.NewValueGuardNoParsing("template", types.PATH),
+	Repo:      *types.NewValueGuard("", func(v string) (string, error) { return strings.TrimSpace(v), nil }, types.REPO),
+	Branch:    *types.NewValueGuard("", func(v string) (string, error) { return strings.TrimSpace(v), nil }, types.BRANCH),
+	Directory: *types.NewValueGuard("", func(v string) (string, error) { return strings.TrimSpace(v), nil }, types.PATH),
 }
 
 type NewOptions struct {
@@ -26,6 +27,25 @@ type NewOptions struct {
 
 	// The directory of the template to use
 	Directory types.ValueGuard[string]
+}
+
+// TO be invoked before a command is ran
+func (o *NewOptions) Validate() error {
+	switch o.Repo.Value() {
+	case "",
+		"https://github.com/caffeine-addictt/template.git",
+		"https://github.com/caffeine-addictt/template",
+		"git://github.com/caffeine-addictt/template.git",
+		"git@github.com:caffeine-addictt/template.git":
+		if err := o.Branch.Set(""); err != nil {
+			return err
+		}
+		if err := o.Directory.Set("template"); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // To clone the repository

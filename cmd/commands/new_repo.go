@@ -7,6 +7,7 @@ var NewRepoCmd = &cobra.Command{
 	Aliases: []string{"repository", "project"},
 	Short:   NewCmd.Short,
 	Long:    NewCmd.Long,
+	PreRunE: NewCmd.PreRunE,
 	Run:     NewCmd.Run,
 }
 

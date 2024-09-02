@@ -18,6 +18,9 @@ var NewCmd = &cobra.Command{
 	Aliases: []string{"init"},
 	Short:   "create a new project",
 	Long:    "Create a new project from a template",
+	PreRunE: func(cmd *cobra.Command, args []string) error {
+		return options.NewOpts.Validate()
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		tmpDir, err := cloneGitRepo()
 		if err != nil {
