@@ -17,8 +17,7 @@ type TemplateJson struct {
 }
 
 func (t *TemplateJson) Validate(root string) error {
-	t.Name.Clean()
-	if t.Name == "" {
+	if t.Name == "" && (t.Styles == nil || len(*t.Styles) == 0) {
 		return fmt.Errorf("'%v' is an invalid name", t.Name)
 	}
 
