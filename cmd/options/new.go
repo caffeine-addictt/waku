@@ -57,16 +57,22 @@ func (o *NewOptions) Validate() error {
 
 // To clone the repository
 func (o *NewOptions) CloneRepo() (string, error) {
+	Debugln("Creating tmp dir")
+
 	tmpDirPath, err := os.MkdirTemp("", "template-*")
 	if err != nil {
 		return "", err
 	}
+
+	Infoln("Create tmp dir at", tmpDirPath)
 
 	args := []string{"clone", "--depth", "1"}
 	if o.Branch.Value() != "" {
 		args = append(args, "--branch", utils.EscapeTermString(o.Branch.Value()))
 	}
 	args = append(args, utils.EscapeTermString(o.Repo.Value()), utils.EscapeTermString(tmpDirPath))
+
+	Debugln("git args:", args, len(args))
 
 	c := exec.Command("git", args...)
 	c.Stdin = os.Stdin

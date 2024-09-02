@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/caffeine-addictt/template/cmd/config"
+	"github.com/caffeine-addictt/template/cmd/options"
 )
 
 func ParseConfig(filePath string) (*config.TemplateJson, error) {
@@ -29,10 +30,13 @@ func ParseConfig(filePath string) (*config.TemplateJson, error) {
 	}
 
 	// Unmarshal JSON data
+	options.Debugln("Unmarshalling JSON data from " + filePath)
 	if err := json.Unmarshal([]byte(jsonData), &template); err != nil {
 		return nil, err
 	}
 
+	options.Debugf("Unmarshalled JSON data: %+v\n", template)
+	options.Infoln("Validating JSON data from " + filePath)
 	if err := template.Validate(filepath.Dir(filePath)); err != nil {
 		return nil, err
 	}

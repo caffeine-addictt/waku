@@ -41,6 +41,7 @@ var NewCmd = &cobra.Command{
 		rootDir := tmpDir
 		if options.NewOpts.Directory.Value() != "" {
 			rootDir = filepath.Join(tmpDir, options.NewOpts.Directory.Value())
+			options.Debugf("resolved directory to: %s\n", rootDir)
 
 			ok, err := utils.IsDir(rootDir)
 			if err != nil {
@@ -56,6 +57,7 @@ var NewCmd = &cobra.Command{
 		}
 
 		// Parse template.json
+		options.Infoln("Parsing template.json...")
 		tmpl, err := template.ParseConfig(filepath.Join(rootDir, "template.json"))
 		if err != nil {
 			cmd.PrintErrln(err)
@@ -67,6 +69,7 @@ var NewCmd = &cobra.Command{
 		// TODO: handle writing files in async
 
 		// Get file paths
+		options.Infoln("Getting file paths...")
 		paths, err := utils.WalkDirRecursive(rootDir)
 		if err != nil {
 			cmd.PrintErrln(err)
@@ -76,9 +79,13 @@ var NewCmd = &cobra.Command{
 
 		// Handle ignores
 		if tmpl.Ignore != nil {
+			options.Infoln("Applying ignores...")
 			pathsSet := template.ResolveIncludes(types.NewSet(paths...), types.Set[string](*tmpl.Ignore))
 			paths = pathsSet.ToSlice()
 		}
+		options.Debugf("Resolved files to write: %v", paths)
+
+		// cmd.Printf("%v", paths)
 	},
 }
 
