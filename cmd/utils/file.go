@@ -15,8 +15,7 @@ func WalkDirRecursive(root string) ([]string, error) {
 			return err
 		}
 
-		// Ignore the root directory itself; just collect its contents
-		if path != root {
+		if !d.IsDir() {
 			relPath, err := filepath.Rel(root, path)
 			if err != nil {
 				return err
