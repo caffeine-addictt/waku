@@ -10,6 +10,7 @@ import (
 	"github.com/caffeine-addictt/template/cmd/options"
 	"github.com/caffeine-addictt/template/cmd/template"
 	"github.com/caffeine-addictt/template/cmd/utils"
+	"github.com/caffeine-addictt/template/cmd/utils/types"
 	"github.com/charmbracelet/huh/spinner"
 	"github.com/spf13/cobra"
 )
@@ -62,6 +63,12 @@ var NewCmd = &cobra.Command{
 		if err != nil {
 			cmd.PrintErrln(err)
 			os.Exit(1)
+		}
+
+		// Handle ignores
+		if tmpl.Ignore != nil {
+			pathsSet := template.ResolveIncludes(types.NewSet(paths...), types.Set[string](*tmpl.Ignore))
+			paths = pathsSet.ToSlice()
 		}
 	},
 }
