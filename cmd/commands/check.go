@@ -11,7 +11,7 @@ import (
 )
 
 var CheckCmd = &cobra.Command{
-	Use:     "check",
+	Use:     "check <path>",
 	Aliases: []string{"ch", "c", "verify"},
 	Short:   "check if template.json is valid",
 	Long:    "Check if your current template.json is valid",
