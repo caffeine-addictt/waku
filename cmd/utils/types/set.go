@@ -30,6 +30,15 @@ func (s *Set[T]) Contains(item T) bool {
 	return ok
 }
 
+// Copy returns a new set containing all items in the set
+func (s *Set[T]) Copy() Set[T] {
+	n := make(Set[T], len(*s))
+	for k := range *s {
+		n[k] = struct{}{}
+	}
+	return n
+}
+
 // Count returns the number of items in the set
 func (s *Set[T]) Len() int {
 	return len(*s)
