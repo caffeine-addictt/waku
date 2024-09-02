@@ -31,10 +31,11 @@ var NewCmd = &cobra.Command{
 		defer cleanupDir(tmpDir)
 
 		// Resolve dir
+		rootDir := tmpDir
 		if options.NewOpts.Directory.Value() != "" {
-			tmpDir = filepath.Join(tmpDir, options.NewOpts.Directory.Value())
+			rootDir = filepath.Join(tmpDir, options.NewOpts.Directory.Value())
 
-			ok, err := utils.IsDir(tmpDir)
+			ok, err := utils.IsDir(rootDir)
 			if err != nil {
 				cmd.PrintErrln(err)
 				os.Exit(1)
