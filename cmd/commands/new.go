@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	"github.com/caffeine-addictt/template/cmd/options"
+	"github.com/caffeine-addictt/template/cmd/template"
 	"github.com/caffeine-addictt/template/cmd/utils"
 	"github.com/charmbracelet/huh/spinner"
 	"github.com/spf13/cobra"
@@ -46,7 +47,12 @@ var NewCmd = &cobra.Command{
 			}
 		}
 
-		// TODO: handle parsing template.json
+		// Parse template.json
+		if _, err := template.ParseConfig(rootDir); err != nil {
+			cmd.PrintErrln(err)
+			os.Exit(1)
+		}
+
 		// TODO: handle Prompts
 		// TODO: handle writing files in async
 	},
