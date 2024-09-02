@@ -15,7 +15,6 @@ type TemplateStyles map[types.CleanString]struct {
 	Labels *TemplateLabel    `json:"labels,omitempty"` // The repository labels
 	Skip   *TemplateSteps    `json:"skip,omitempty"`   // The setps to skip in using the template
 	Source types.CleanString `json:"source"`           // The source template path
-	Name   types.CleanString `json:"name"`             // The name of the template
 }
 
 func (t *TemplateStyles) Validate(root string) error {
