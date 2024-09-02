@@ -56,11 +56,10 @@ func (o *NewOptions) Validate() error {
 }
 
 // To clone the repository
-func (o *NewOptions) CloneRepo(out chan string, e chan error) {
+func (o *NewOptions) CloneRepo() (string, error) {
 	tmpDirPath, err := os.MkdirTemp("", "template-*")
 	if err != nil {
-		e <- err
-		return
+		return "", err
 	}
 
 	args := []string{"clone", "--depth", "1"}
@@ -76,13 +75,10 @@ func (o *NewOptions) CloneRepo(out chan string, e chan error) {
 
 	if err := c.Run(); err != nil {
 		if errCleanup := os.RemoveAll(tmpDirPath); errCleanup != nil {
-			e <- errors.Join(errCleanup, err)
-		} else {
-			e <- err
+			return "", errors.Join(errCleanup, err)
 		}
-		return
+		return "", err
 	}
 
-	out <- tmpDirPath
-	e <- nil
+	return tmpDirPath, nil
 }

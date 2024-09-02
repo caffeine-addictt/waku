@@ -11,7 +11,6 @@ import (
 	"github.com/caffeine-addictt/template/cmd/template"
 	"github.com/caffeine-addictt/template/cmd/utils"
 	"github.com/caffeine-addictt/template/cmd/utils/types"
-	"github.com/charmbracelet/huh/spinner"
 	"github.com/spf13/cobra"
 )
 
@@ -24,7 +23,7 @@ var NewCmd = &cobra.Command{
 		return options.NewOpts.Validate()
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		tmpDir, err := cloneGitRepo()
+		tmpDir, err := options.NewOpts.CloneRepo()
 		if err != nil {
 			cmd.PrintErrf("Could not clone git repo: %s", err)
 			os.Exit(1)
@@ -81,19 +80,6 @@ func AddNewCmdFlags(cmd *cobra.Command) {
 	cmd.Flags().VarP(&options.NewOpts.Repo, "repo", "r", "community source repository for templates")
 	cmd.Flags().VarP(&options.NewOpts.Branch, "branch", "b", "branch to clone from [default: main/master]")
 	cmd.Flags().VarP(&options.NewOpts.Directory, "directory", "D", "which directory of the template to use [default: /]")
-}
-
-// For cloning git repo with spinner
-func cloneGitRepo() (string, error) {
-	outCh := make(chan string, 1)
-	errCh := make(chan error, 1)
-
-	err := spinner.New().Action(func() { options.NewOpts.CloneRepo(outCh, errCh) }).Run()
-	if err != nil {
-		return "", err
-	}
-
-	return <-outCh, <-errCh
 }
 
 // To catch interrupts and gracefully cleanup
