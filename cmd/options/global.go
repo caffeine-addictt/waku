@@ -13,3 +13,7 @@ type GlobalOptions struct {
 	// Wheter or not verbose mode should be enabled
 	Verbose bool
 }
+
+func (o *GlobalOptions) DebugOrVerbose() bool {
+	return o.Debug || o.Verbose
+}
