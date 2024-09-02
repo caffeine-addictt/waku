@@ -17,8 +17,16 @@ type TemplateJson struct {
 }
 
 func (t *TemplateJson) Validate(root string) error {
-	if t.Name == "" && (t.Styles == nil || len(*t.Styles) == 0) {
-		return fmt.Errorf("'%v' is an invalid name", t.Name)
+	// Ensure that `Name` is required if `Styles` is not present or empty
+	// If `Styles` is present, `Name` must not be present
+	if t.Styles == nil || len(*t.Styles) == 0 {
+		if t.Name == "" {
+			return fmt.Errorf("'name' is required when 'styles' is not present or empty")
+		}
+	} else {
+		if t.Name != "" {
+			return fmt.Errorf("'name' must not be present when 'styles' is provided")
+		}
 	}
 
 	if t.Setup != nil {
