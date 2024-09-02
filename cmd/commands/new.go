@@ -48,13 +48,21 @@ var NewCmd = &cobra.Command{
 		}
 
 		// Parse template.json
-		if _, err := template.ParseConfig(rootDir); err != nil {
+		tmpl, err := template.ParseConfig(rootDir)
+		if err != nil {
 			cmd.PrintErrln(err)
 			os.Exit(1)
 		}
 
 		// TODO: handle Prompts
 		// TODO: handle writing files in async
+
+		// Get file paths
+		paths, err := utils.WalkDirRecursive(rootDir)
+		if err != nil {
+			cmd.PrintErrln(err)
+			os.Exit(1)
+		}
 	},
 }
 
