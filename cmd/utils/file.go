@@ -20,7 +20,7 @@ func WalkDirRecursive(root string) ([]string, error) {
 			if err != nil {
 				return err
 			}
-			paths = append(paths, relPath)
+			paths = append(paths, filepath.ToSlash(relPath))
 		}
 
 		return nil
