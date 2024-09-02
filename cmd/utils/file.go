@@ -4,7 +4,31 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"path/filepath"
 )
+
+func WalkDirRecursive(root string) ([]string, error) {
+	var paths []string
+
+	err := filepath.WalkDir(root, func(path string, d os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// Ignore the root directory itself; just collect its contents
+		if path != root {
+			relPath, err := filepath.Rel(root, path)
+			if err != nil {
+				return err
+			}
+			paths = append(paths, relPath)
+		}
+
+		return nil
+	})
+
+	return paths, err
+}
 
 func IsDir(path string) (bool, error) {
 	fileinfo, err := os.Stat(path)
