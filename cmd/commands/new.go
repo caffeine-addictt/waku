@@ -23,13 +23,19 @@ var NewCmd = &cobra.Command{
 		return options.NewOpts.Validate()
 	},
 	Run: func(cmd *cobra.Command, args []string) {
+		exitCode := 0
+
 		tmpDir, err := options.NewOpts.CloneRepo()
 		if err != nil {
 			cmd.PrintErrf("Could not clone git repo: %s", err)
-			os.Exit(1)
+			exitCode = 1
+			return
 		}
 		gracefullyCleanupDir(tmpDir)
-		defer cleanupDir(tmpDir)
+		defer func() {
+			cleanupDir(tmpDir)
+			os.Exit(exitCode)
+		}()
 
 		// Resolve dir
 		rootDir := tmpDir
@@ -39,11 +45,13 @@ var NewCmd = &cobra.Command{
 			ok, err := utils.IsDir(rootDir)
 			if err != nil {
 				cmd.PrintErrln(err)
-				os.Exit(1)
+				exitCode = 1
+				return
 			}
 			if !ok {
 				cmd.PrintErrf("directory '%s' does not exist\n", options.NewOpts.Directory.Value())
-				os.Exit(1)
+				exitCode = 1
+				return
 			}
 		}
 
@@ -51,7 +59,8 @@ var NewCmd = &cobra.Command{
 		tmpl, err := template.ParseConfig(filepath.Join(rootDir, "template.json"))
 		if err != nil {
 			cmd.PrintErrln(err)
-			os.Exit(1)
+			exitCode = 1
+			return
 		}
 
 		// TODO: handle Prompts
@@ -61,7 +70,8 @@ var NewCmd = &cobra.Command{
 		paths, err := utils.WalkDirRecursive(rootDir)
 		if err != nil {
 			cmd.PrintErrln(err)
-			os.Exit(1)
+			exitCode = 1
+			return
 		}
 
 		// Handle ignores
@@ -100,6 +110,4 @@ func cleanupDir(dir string) {
 		os.Exit(1)
 		return
 	}
-
-	os.Exit(0)
 }
