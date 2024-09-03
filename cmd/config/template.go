@@ -12,7 +12,6 @@ type TemplateJson struct {
 	Ignore  *TemplateIgnore   `json:"ignore,omitempty"`  // The files that should be ignored when copying
 	Labels  *TemplateLabel    `json:"labels,omitempty"`  // The repository labels
 	Styles  *TemplateStyles   `json:"styles,omitempty"`  // The name of the style mapped to the path to the direcotry
-	Skip    *TemplateSteps    `json:"skip,omitempty"`    // The setps to skip in using the template
 	Prompts *TemplatePrompts  `json:"prompts,omitempty"` // The additional prompts to use
 	Name    types.CleanString `json:"name,omitempty"`    // The name of the template
 }

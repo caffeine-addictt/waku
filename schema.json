@@ -69,18 +69,6 @@
       },
       "description": "Labels with associated colors."
     },
-    "skip": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "enum": [
-          "license"
-        ],
-        "description": "Currently, only 'license' is valid."
-      },
-      "uniqueItems": true,
-      "description": "A list of steps to skip during template processing."
-    },
     "prompts": {
       "type": "object",
       "patternProperties": {
@@ -160,18 +148,6 @@
                 "additionalProperties": false
               },
               "description": "Labels with associated colors for this style."
-            },
-            "skip": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "license"
-                ],
-                "description": "Currently, only 'license' is valid."
-              },
-              "uniqueItems": true,
-              "description": "A list of steps to skip during template processing for this style."
             },
             "prompts": {
               "type": "object",
