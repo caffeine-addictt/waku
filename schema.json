@@ -81,6 +81,17 @@
       "uniqueItems": true,
       "description": "A list of steps to skip during template processing."
     },
+    "prompts": {
+      "type": "object",
+      "patternProperties": {
+        "^[^\\s].*[^\\s]$": {
+          "type": "string",
+          "description": "The text used to ask for a value from the user. The key cannot be empty, have leading or trailing spaces, and the value can be empty but it's not advisable."
+        }
+      },
+      "additionalProperties": false,
+      "description": "An optional object that defines user prompts."
+    },
     "styles": {
       "type": "object",
       "description": "An object containing style configurations.",
@@ -161,6 +172,17 @@
               },
               "uniqueItems": true,
               "description": "A list of steps to skip during template processing for this style."
+            },
+            "prompts": {
+              "type": "object",
+              "patternProperties": {
+                "^[^\\s].*[^\\s]$": {
+                  "type": "string",
+                  "description": "The text used to ask for a value from the user. The key cannot be empty, have leading or trailing spaces, and the value can be empty but it's not advisable."
+                }
+              },
+              "additionalProperties": false,
+              "description": "An optional object that defines user prompts."
             }
           },
           "required": [

@@ -10,11 +10,12 @@ import (
 )
 
 type TemplateStyles map[types.CleanString]struct {
-	Setup  *TemplateSetup    `json:"setup,omitempty"`  // Paths to executable files for post-setup
-	Ignore *TemplateIgnore   `json:"ignore,omitempty"` // The files that should be ignored when copying
-	Labels *TemplateLabel    `json:"labels,omitempty"` // The repository labels
-	Skip   *TemplateSteps    `json:"skip,omitempty"`   // The setps to skip in using the template
-	Source types.CleanString `json:"source"`           // The source template path
+	Setup   *TemplateSetup    `json:"setup,omitempty"`   // Paths to executable files for post-setup
+	Ignore  *TemplateIgnore   `json:"ignore,omitempty"`  // The files that should be ignored when copying
+	Labels  *TemplateLabel    `json:"labels,omitempty"`  // The repository labels
+	Skip    *TemplateSteps    `json:"skip,omitempty"`    // The setps to skip in using the template
+	Prompts *TemplatePrompts  `json:"prompts,omitempty"` // The additional prompts to use
+	Source  types.CleanString `json:"source"`            // The source template path
 }
 
 func (t *TemplateStyles) Validate(root string) error {
@@ -46,6 +47,11 @@ func (t *TemplateStyles) Validate(root string) error {
 		}
 		if style.Ignore != nil {
 			if err := style.Ignore.Validate(root); err != nil {
+				return err
+			}
+		}
+		if style.Prompts != nil {
+			if err := style.Prompts.Validate(); err != nil {
 				return err
 			}
 		}

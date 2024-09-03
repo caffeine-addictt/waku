@@ -8,12 +8,13 @@ import (
 
 // The template.json file
 type TemplateJson struct {
-	Setup  *TemplateSetup    `json:"setup,omitempty"`  // Paths to executable files for post-setup
-	Ignore *TemplateIgnore   `json:"ignore,omitempty"` // The files that should be ignored when copying
-	Labels *TemplateLabel    `json:"labels,omitempty"` // The repository labels
-	Styles *TemplateStyles   `json:"styles,omitempty"` // The name of the style mapped to the path to the direcotry
-	Skip   *TemplateSteps    `json:"skip,omitempty"`   // The setps to skip in using the template
-	Name   types.CleanString `json:"name,omitempty"`   // The name of the template
+	Setup   *TemplateSetup    `json:"setup,omitempty"`   // Paths to executable files for post-setup
+	Ignore  *TemplateIgnore   `json:"ignore,omitempty"`  // The files that should be ignored when copying
+	Labels  *TemplateLabel    `json:"labels,omitempty"`  // The repository labels
+	Styles  *TemplateStyles   `json:"styles,omitempty"`  // The name of the style mapped to the path to the direcotry
+	Skip    *TemplateSteps    `json:"skip,omitempty"`    // The setps to skip in using the template
+	Prompts *TemplatePrompts  `json:"prompts,omitempty"` // The additional prompts to use
+	Name    types.CleanString `json:"name,omitempty"`    // The name of the template
 }
 
 func (t *TemplateJson) Validate(root string) error {
@@ -41,6 +42,11 @@ func (t *TemplateJson) Validate(root string) error {
 	}
 	if t.Styles != nil {
 		if err := t.Styles.Validate(root); err != nil {
+			return err
+		}
+	}
+	if t.Prompts != nil {
+		if err := t.Prompts.Validate(); err != nil {
 			return err
 		}
 	}
