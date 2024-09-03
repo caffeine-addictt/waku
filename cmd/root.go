@@ -17,8 +17,8 @@ var RootCmd = &cobra.Command{
 
 // Setting up configuration
 func init() {
-	RootCmd.PersistentFlags().BoolVarP(&options.GlobalOpts.Debug, "debug", "d", false, "debug mode [default: false]")
-	RootCmd.PersistentFlags().BoolVarP(&options.GlobalOpts.Verbose, "verbose", "v", false, "verbose mode [default: false]")
+	RootCmd.PersistentFlags().BoolVarP(&options.GlobalOpts.Debug, "debug", "d", false, "debug mode")
+	RootCmd.PersistentFlags().BoolVarP(&options.GlobalOpts.Verbose, "verbose", "v", false, "verbose mode")
 	RootCmd.PersistentFlags().BoolVarP(&options.GlobalOpts.Accessible, "accessible", "A", false, "accessible mode")
 
 	commands.InitCommands(RootCmd)
