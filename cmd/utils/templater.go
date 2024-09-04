@@ -3,6 +3,7 @@ package utils
 import (
 	"bufio"
 	"regexp"
+	"strings"
 )
 
 // This handles consuming a file stream,
@@ -32,4 +33,13 @@ func ParseTemplateFile(tmpl map[string]string, reader *bufio.Scanner, writer *bu
 	}
 
 	return nil
+}
+
+// ParseLicenseText handles templating license text
+func ParseLicenseText(tmpl map[string]string, s string) string {
+	for k, v := range tmpl {
+		s = strings.ReplaceAll(s, `[`+k+`]`, v)
+	}
+
+	return s
 }
