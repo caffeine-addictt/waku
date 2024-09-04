@@ -37,6 +37,14 @@ var NewCmd = &cobra.Command{
 		options.Debugln("project name:", name)
 		options.Debugln("project location:", projectRootDir)
 
+		options.Infof("creating project in '%s'...\n", projectRootDir)
+		if err := os.Mkdir(projectRootDir, os.ModePerm); err != nil {
+			cmd.PrintErrln(err)
+			exitCode = 1
+			return
+		}
+
+		// Clone repo
 		tmpDir, err := options.NewOpts.CloneRepo()
 		if err != nil {
 			cmd.PrintErrf("Could not clone git repo: %s", err)
