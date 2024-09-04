@@ -25,6 +25,18 @@ var NewCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		exitCode := 0
 
+		// Get proj details
+		var name string
+		var projectRootDir string
+		if err := template.PromptForProjectName(&name, &projectRootDir); err != nil {
+			cmd.PrintErrln(err)
+			exitCode = 1
+			return
+		}
+
+		options.Debugln("project name:", name)
+		options.Debugln("project location:", projectRootDir)
+
 		tmpDir, err := options.NewOpts.CloneRepo()
 		if err != nil {
 			cmd.PrintErrf("Could not clone git repo: %s", err)
@@ -70,7 +82,7 @@ var NewCmd = &cobra.Command{
 
 		// Get file paths
 		options.Infoln("Getting file paths...")
-		paths, err := utils.WalkDirRecursive(rootDir)
+		paths, err := utils.WalkDirRecursive(projectRootDir)
 		if err != nil {
 			cmd.PrintErrln(err)
 			exitCode = 1
