@@ -97,6 +97,7 @@ func AddNewCmdFlags(cmd *cobra.Command) {
 	cmd.Flags().VarP(&options.NewOpts.Repo, "repo", "r", "community source repository for templates")
 	cmd.Flags().VarP(&options.NewOpts.Branch, "branch", "b", "branch to clone from [default: main/master]")
 	cmd.Flags().VarP(&options.NewOpts.Directory, "directory", "D", "which directory of the template to use [default: /]")
+	cmd.Flags().VarP(&options.NewOpts.Name, "name", "n", "name of the project")
 }
 
 // To catch interrupts and gracefully cleanup

@@ -4,7 +4,6 @@ import (
 	"errors"
 	"os"
 	"os/exec"
-	"strings"
 
 	"github.com/caffeine-addictt/template/cmd/utils"
 	"github.com/caffeine-addictt/template/cmd/utils/types"
@@ -14,9 +13,10 @@ const defaultRepo = "https://github.com/caffeine-addictt/template.git"
 
 // The options for the new command
 var NewOpts = NewOptions{
-	Repo:      *types.NewValueGuard("", func(v string) (string, error) { return strings.TrimSpace(v), nil }, types.REPO),
-	Branch:    *types.NewValueGuard("", func(v string) (string, error) { return strings.TrimSpace(v), nil }, types.BRANCH),
-	Directory: *types.NewValueGuard("", func(v string) (string, error) { return strings.TrimSpace(v), nil }, types.PATH),
+	Repo:      *types.NewValueGuard("", cmdOpt, types.REPO),
+	Branch:    *types.NewValueGuard("", cmdOpt, types.BRANCH),
+	Directory: *types.NewValueGuard("", cmdOpt, types.PATH),
+	Name:      *types.NewValueGuard("", cmdOpt, types.STRING),
 }
 
 type NewOptions struct {
@@ -29,6 +29,13 @@ type NewOptions struct {
 
 	// The directory of the template to use
 	Directory types.ValueGuard[string]
+
+	// The name of your project
+	Name types.ValueGuard[string]
+}
+
+func cmdOpt(v string) (string, error) {
+	return utils.CleanString(v), nil
 }
 
 // TO be invoked before a command is ran
