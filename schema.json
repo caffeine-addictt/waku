@@ -33,9 +33,7 @@
           "description": "Path to the setup script for macOS (Darwin)."
         }
       },
-      "required": [
-        "*"
-      ],
+      "required": ["*"],
       "additionalProperties": false
     },
     "ignore": {
@@ -62,9 +60,7 @@
             "description": "An optional description for the label."
           }
         },
-        "required": [
-          "color"
-        ],
+        "required": ["color"],
         "additionalProperties": false
       },
       "description": "Labels with associated colors."
@@ -113,9 +109,7 @@
                   "description": "Path to the setup script for macOS (Darwin)."
                 }
               },
-              "required": [
-                "*"
-              ],
+              "required": ["*"],
               "additionalProperties": false
             },
             "ignore": {
@@ -142,9 +136,7 @@
                     "description": "An optional description for the label."
                   }
                 },
-                "required": [
-                  "color"
-                ],
+                "required": ["color"],
                 "additionalProperties": false
               },
               "description": "Labels with associated colors for this style."
@@ -161,9 +153,7 @@
               "description": "An optional object that defines user prompts."
             }
           },
-          "required": [
-            "source"
-          ],
+          "required": ["source"],
           "additionalProperties": false
         }
       }
@@ -172,30 +162,22 @@
   "allOf": [
     {
       "if": {
-        "required": [
-          "styles"
-        ]
+        "required": ["styles"]
       },
       "then": {
         "not": {
-          "required": [
-            "name"
-          ]
+          "required": ["name"]
         }
       }
     },
     {
       "if": {
         "not": {
-          "required": [
-            "styles"
-          ]
+          "required": ["styles"]
         }
       },
       "then": {
-        "required": [
-          "name"
-        ]
+        "required": ["name"]
       }
     }
   ],
