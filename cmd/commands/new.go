@@ -50,7 +50,7 @@ var NewCmd = &cobra.Command{
 		}
 
 		options.Infof("creating project in '%s'...\n", projectRootDir)
-		if err := os.Mkdir(projectRootDir, os.ModePerm); err != nil {
+		if err := os.Mkdir(projectRootDir, utils.PermOwnerReadWrite); err != nil {
 			cmd.PrintErrln(err)
 			exitCode = 1
 			return
