@@ -23,9 +23,9 @@
 
 <!-- Description -->
 
-A simple repository template to get started with GitHub.
+A simple tool to kick-start your next project.
 Say goodbye to repetitive setup tasks and configuration headaches!
-Simplify your workflow, save time, and ensure consistency across projects.
+Streamline your workflow, save time, and ensure consistency across every project.
 
 Let's make starting new projects feel like a **_breeze_** again.
 
