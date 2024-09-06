@@ -3,6 +3,7 @@ package utils_test
 import (
 	"bufio"
 	"bytes"
+	"context"
 	"testing"
 
 	"github.com/caffeine-addictt/template/cmd/utils"
@@ -91,13 +92,14 @@ func TestParseTemplateFile(t *testing.T) {
 		},
 	}
 
+	ctx := context.Background()
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			reader := bufio.NewScanner(bytes.NewReader([]byte(tt.input)))
 			var output bytes.Buffer
 			writer := bufio.NewWriter(&output)
 
-			err := utils.ParseTemplateFile(tt.tmpl, reader, writer)
+			err := utils.ParseTemplateFile(ctx, tt.tmpl, reader, writer)
 			assert.NoError(t, err, "failed to parse")
 
 			writer.Flush()
@@ -133,6 +135,7 @@ func BenchmarkParseTemplateFile(b *testing.B) {
 		{"Complex input", inputComplex},
 	}
 
+	ctx := context.Background()
 	for _, tt := range tests {
 		b.Run(tt.name, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
@@ -140,7 +143,7 @@ func BenchmarkParseTemplateFile(b *testing.B) {
 				var output bytes.Buffer
 				writer := bufio.NewWriter(&output)
 
-				err := utils.ParseTemplateFile(tmpl, reader, writer)
+				err := utils.ParseTemplateFile(ctx, tmpl, reader, writer)
 				if err != nil {
 					b.Fatalf("ParseTemplateFile() error = %v", err)
 				}

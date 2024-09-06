@@ -2,6 +2,7 @@ package utils
 
 import (
 	"bufio"
+	"context"
 	"regexp"
 	"strings"
 )
@@ -14,14 +15,20 @@ import (
 // `find` should be X where the actual template searched for is "{{X}}" {{{x}}}
 //
 // Time complexity through the roof: HAVE TO OPTIMIZE
-func ParseTemplateFile(tmpl map[string]string, reader *bufio.Scanner, writer *bufio.Writer) error {
+func ParseTemplateFile(ctx context.Context, tmpl map[string]string, reader *bufio.Scanner, writer *bufio.Writer) error {
 	// generate the regexp
-	reg := map[*regexp.Regexp]string{}
+	reg := make(map[*regexp.Regexp]string, len(tmpl))
 	for find, replace := range tmpl {
 		reg[regexp.MustCompile(`{\s*{\s*`+CleanStringNoRegex(find)+`\s*}\s*}`)] = replace
 	}
 
 	for reader.Scan() {
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+		}
+
 		line := reader.Text()
 		for find, replace := range reg {
 			line = find.ReplaceAllString(line, replace)
