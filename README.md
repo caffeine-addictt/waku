@@ -37,6 +37,7 @@ Let's make starting new projects feel like a **_breeze_** again.
 
 **[<kbd> <br> Features <br> </kbd>](#features)**
 **[<kbd> <br> Quick Start <br> </kbd>](#quick-start)**
+**[<kbd> <br> Documentation <br> </kbd>][docs-url]**
 **[<kbd> <br> Contribute <br> </kbd>][contribute]**
 
 ---
@@ -130,6 +131,7 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 <!---------------- {{Links}} ---------------->
 
 [use-url]: https://github.com/new?template_name=template&template_owner=caffeine-addictt
+[docs-url]: https://github.com/caffeine-addictt/template/blob/main/docs/README.md
 [goreport-url]: https://goreportcard.com/report/github.com/caffeine-addictt/template
 [contribute]: https://github.com/caffeine-addictt/template/blob/main/CONTRIBUTING.md
 
