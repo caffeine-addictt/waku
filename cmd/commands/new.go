@@ -1,11 +1,15 @@
 package commands
 
 import (
+	"bufio"
+	"context"
+	"errors"
 	"fmt"
 	"os"
 	"os/signal"
 	"path/filepath"
 	"strings"
+	"sync"
 	"syscall"
 
 	"github.com/caffeine-addictt/template/cmd/config"
@@ -97,7 +101,6 @@ var NewCmd = &cobra.Command{
 			return
 		}
 
-		// TODO: handle writing files in async
 		// Resolve style to use
 		var style types.CleanString
 		var styleInfo config.TemplateStyle
@@ -209,6 +212,18 @@ var NewCmd = &cobra.Command{
 		ignoredPaths := template.ResolveIncludes(types.NewSet(paths...), ignoreRules)
 
 		options.Debugf("resolved files to write: %v", ignoredPaths)
+
+		// Handle writing files
+		cmd.Println("writing files...")
+		finalTmpl := extraPrompts
+		finalTmpl["NAME"] = name
+		finalTmpl["LICENSE"] = license.Spdx
+
+		if err := WriteFiles(rootDir, projectRootDir, ignoredPaths.ToSlice(), licenseText.Body, finalTmpl, licenseTmpl); err != nil {
+			fmt.Printf("failed to write files: %s\n", err)
+			exitCode = 1
+			return
+		}
 	},
 }
 
@@ -223,6 +238,113 @@ func AddNewCmdFlags(cmd *cobra.Command) {
 	cmd.Flags().VarP(&options.NewOpts.Name, "name", "n", "name of the project")
 	cmd.Flags().VarP(&options.NewOpts.License, "license", "l", "license to use for the project")
 	cmd.Flags().VarP(&options.NewOpts.Style, "style", "S", "which style to use")
+}
+
+func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string, tmpl, licenseTmpl map[string]string) error {
+	var wg sync.WaitGroup
+	wg.Add(len(paths) + 1)
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	errChan := make(chan error, 1)
+
+	for _, path := range paths {
+		tmpPath := filepath.Join(tmpRoot, path)
+		newPath := filepath.Join(projectRoot, path)
+		options.Infof("resolved %s -> %s\n", tmpPath, newPath)
+
+		// write dirs
+		dir := filepath.Dir(newPath)
+		if dir != "." {
+			if err := os.MkdirAll(dir, utils.PermOwnerReadWrite); err != nil {
+				return errors.Join(fmt.Errorf("failed to create directory at %s", dir), err)
+			}
+		}
+
+		// write files
+		go func() {
+			defer wg.Done()
+
+			tmpFile, err := os.Open(filepath.Clean(tmpPath))
+			if err != nil {
+				errChan <- err
+				return
+			}
+			defer tmpFile.Close()
+			options.Debugf("opened file for reading: %s\n", tmpPath)
+
+			newFile, err := os.OpenFile(filepath.Clean(newPath), os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.PermOwnerReadWrite)
+			if err != nil {
+				errChan <- err
+				return
+			}
+			defer newFile.Close()
+			options.Debugf("opened file for writing: %s", newPath)
+
+			reader := bufio.NewScanner(tmpFile)
+			writer := bufio.NewWriter(newFile)
+			if err := utils.ParseTemplateFile(ctx, tmpl, reader, writer); err != nil {
+				errChan <- err
+				return
+			}
+
+			options.Debugf("flushing buffer for %s", newPath)
+			if err := writer.Flush(); err != nil {
+				errChan <- err
+				return
+			}
+
+			options.Debugf("wrote file: %s\n", newPath)
+		}()
+	}
+
+	go func() {
+		defer wg.Done()
+
+		newLicenseText := utils.ParseLicenseText(licenseTmpl, licenseText)
+
+		newPath := filepath.Join(projectRoot, "LICENSE")
+		options.Infof("writing to %s\n", newPath)
+
+		newFile, err := os.OpenFile(filepath.Clean(newPath), os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.PermOwnerReadWrite)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		defer newFile.Close()
+		options.Debugf("opened file for writing: %s\n", newPath)
+
+		if _, err := newFile.WriteString(newLicenseText); err != nil {
+			errChan <- err
+			return
+		}
+
+		options.Debugf("flushing buffer for %s", newPath)
+		if err := newFile.Sync(); err != nil {
+			errChan <- err
+			return
+		}
+
+		options.Debugf("wrote file: %s\n", newPath)
+	}()
+
+	// handle canceling if anything goes wrong
+	var exitErr error
+	go func() {
+		options.Infoln("watching for errors")
+		if err := <-errChan; err != nil {
+			cancel()
+			exitErr = err
+		}
+	}()
+
+	fmt.Printf("waiting for %d files to write\n", len(paths))
+	wg.Wait()
+	close(errChan)
+
+	fmt.Println("all files written")
+	return exitErr
 }
 
 // To catch interrupts and gracefully cleanup
