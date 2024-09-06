@@ -44,7 +44,7 @@ func validateStyle(ll *config.TemplateStyles, optsL []string, val string, setK *
 	}
 
 	for n, v := range *ll {
-		if strings.ToLower(string(n)) == val {
+		if strings.EqualFold(string(n), val) {
 			*setV = v
 			*setK = n
 			break
@@ -63,8 +63,7 @@ func PromptForLicense(value *license.License) (*huh.Select[string], error) {
 
 	licenses := make([]string, 0, len(*fetchedL))
 	for _, v := range *fetchedL {
-		licenses = append(licenses, strings.ToLower(v.Name))
-		licenses = append(licenses, strings.ToLower(v.Spdx))
+		licenses = append(licenses, strings.ToLower(v.Name), strings.ToLower(v.Spdx))
 	}
 	sorting.QuicksortASC(licenses)
 
@@ -88,7 +87,7 @@ func validateLicense(ll *[]license.License, optsL []string, val string, setV *li
 	}
 
 	for _, v := range *ll {
-		if strings.ToLower(v.Name) == val || strings.ToLower(v.Spdx) == val {
+		if strings.EqualFold(v.Name, val) || strings.EqualFold(v.Spdx, val) {
 			*setV = v
 			break
 		}
@@ -98,7 +97,7 @@ func validateLicense(ll *[]license.License, optsL []string, val string, setV *li
 
 // PromptForProjectName prompts user to enter project name
 // or returns the name from options if it's provided.
-func PromptForProjectName(name *string, projectRootDir *string) *huh.Input {
+func PromptForProjectName(name, projectRootDir *string) *huh.Input {
 	if options.NewOpts.Name.Value() != "" {
 		if err := validateProjectName(options.NewOpts.Name.Value(), name, projectRootDir); err == nil {
 			return nil
