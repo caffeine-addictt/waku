@@ -203,8 +203,21 @@ var NewCmd = &cobra.Command{
 		if tmpl.Ignore != nil {
 			ignoreRules.Union(types.Set[string](*tmpl.Ignore))
 		}
+		if tmpl.Setup != nil {
+			ignoreRules.Add(tmpl.Setup.Any)
+			ignoreRules.Add(tmpl.Setup.Linux)
+			ignoreRules.Add(tmpl.Setup.Darwin)
+			ignoreRules.Add(tmpl.Setup.Windows)
+		}
 		if tmpl.Styles != nil && styleInfo.Ignore != nil {
 			ignoreRules.Union(types.Set[string](*styleInfo.Ignore))
+
+			if styleInfo.Setup != nil {
+				ignoreRules.Add(styleInfo.Setup.Any)
+				ignoreRules.Add(styleInfo.Setup.Linux)
+				ignoreRules.Add(styleInfo.Setup.Darwin)
+				ignoreRules.Add(styleInfo.Setup.Windows)
+			}
 		}
 
 		// account for template.json having a '!.git/'
