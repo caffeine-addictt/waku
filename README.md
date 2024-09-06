@@ -72,6 +72,7 @@ Install template for your operating system [here][docs-url] or run:
 
 ```sh
 go install github.com/caffeine-addictt/template@latest
+docker run --rm -it caffeinec/waku:latest
 ```
 
 ### 2. Create a new project

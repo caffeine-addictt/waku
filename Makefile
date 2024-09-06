@@ -1,4 +1,15 @@
-BINARY_NAME:=template
+BINARY_NAME:=waku
+TAG ?= latest
+
+ifeq ($(OS),Windows_NT)
+RM_CMD:=rd /s /q
+NULL:=/dev/nul
+EXT:=.exe
+else
+RM_CMD:=rm -rf
+NULL:=/dev/null
+EXT=
+endif
 
 
 # =================================== DEFAULT =================================== #
@@ -70,6 +81,7 @@ docs:
 	@echo ''
 	@echo 'Prerequisites:'
 	@echo ' 1. Go 1.23.0 or later'
+	@echo ' 2. Docker 27.0.0 or later'
 	@echo ' 3. NPM 10.8.2 or later'
 	@echo ' 4. Node 22.7.0 or later'
 	@echo ''
@@ -80,12 +92,14 @@ docs:
 
 # =================================== DEVELOPMENT =================================== #
 
-## build: Builds Python, Go binaries and Docker image
+## build: Builds Go binary
 .PHONY: build
 build:
-	npx cross-env GOARCH=amd64 GOOS=linux   go build -ldflags="-s -w" -o ./bin/$(BINARY_NAME)-linux main.go
-	npx cross-env GOARCH=amd64 GOOS=darwin  go build -ldflags="-s -w" -o ./bin/$(BINARY_NAME)-darwin main.go
-	npx cross-env GOARCH=amd64 GOOS=windows go build -ldflags="-s -w" -o ./bin/$(BINARY_NAME)-windows.exe main.go
+	go build -ldflags="-s -w" -o $(BINARY_NAME)$(EXT) main.go
+
+### build/docker: Builds Docker image
+build/docker:
+	docker build . -t $(BINARY_NAME):$(TAG)
 
 
 
@@ -150,7 +164,7 @@ format/npm:
 .PHONY: tidy
 tidy:
 	go clean ./...
-	${RM_CMD} bin
+	${RM_CMD} $(BINARY_NAME)$(EXT)
 
 
 
