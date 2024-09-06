@@ -5,13 +5,55 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/caffeine-addictt/template/cmd/license"
 	"github.com/caffeine-addictt/template/cmd/options"
 	"github.com/caffeine-addictt/template/cmd/utils"
+	"github.com/caffeine-addictt/template/cmd/utils/searching"
+	"github.com/caffeine-addictt/template/cmd/utils/sorting"
+	"github.com/caffeine-addictt/template/cmd/utils/types"
 	"github.com/charmbracelet/huh"
 )
 
-func ProptForLicense() error {
-	return huh.NewForm().Run()
+// PromptForLicense prompts user to select license
+func PromptForLicense(value *license.License) (*huh.Select[string], error) {
+	fetchedL, err := license.GetLicenses()
+	if err != nil {
+		return nil, err
+	}
+
+	licenses := make([]string, 0, len(*fetchedL))
+	for _, v := range *fetchedL {
+		licenses = append(licenses, strings.ToLower(v.Name))
+		licenses = append(licenses, strings.ToLower(v.Spdx))
+	}
+	sorting.QuicksortASC(licenses)
+
+	if options.NewOpts.License.Value() != "" {
+		if err := validateLicense(fetchedL, licenses, strings.ToLower(options.NewOpts.License.Value()), value); err == nil {
+			return nil, nil
+		}
+	}
+
+	return huh.NewSelect[string]().Title("Your project license").Options(huh.NewOptions(licenses...)...).Validate(func(s string) error {
+		return validateLicense(fetchedL, licenses, s, value)
+	}), nil
+}
+
+func validateLicense(ll *[]license.License, optsL []string, val string, setV *license.License) error {
+	val = strings.ToLower(val)
+
+	i := searching.BinarySearchAuto(optsL, val)
+	if i == -1 {
+		return fmt.Errorf("unknown license: %s", val)
+	}
+
+	for _, v := range *ll {
+		if strings.ToLower(v.Name) == val || strings.ToLower(v.Spdx) == val {
+			*setV = v
+			break
+		}
+	}
+	return nil
 }
 
 // PromptForProjectName prompts user to enter project name
