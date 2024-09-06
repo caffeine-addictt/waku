@@ -66,42 +66,21 @@ Let's make starting new projects feel like a **_breeze_** again.
 
 # Quick Start
 
-### 1. Creating a repository
+### 1. Install template
 
-Click the green "Use this template" button in the top right corner of the page
-or the button below to create your new repository.
-
-[![Use Template][badge-use]][use-url]
-
-### 2. Run the setup script
-
-> [!NOTE]
-> Only Node.Js versions 16, 18, 20 and latest are officially supported.
-
-Run the following command and answer the prompts to complete the setup.
+Install template for your operating system [here][docs-url] or run:
 
 ```sh
-node ./dist/setup.js
+go install github.com/caffeine-addictt/template@latest
 ```
 
-### 3. Final touches
+### 2. Create a new project
 
-You are almost ready to start building your project.
-Just a few more steps and you're ready to go!
+Run the following command and answer the prompts to create a new project:
 
-- Update `CITATION.cff` file with your project information.
-- Create and add project images to the `images/` directory
-  and update `README.md` file.
-- Update `LICENSE.txt` file with your preferred license.
-- Update `.github/CODESTYLE.md` with your project's preferred code style.
-- Update `CONTRIBUTING.md` with your project's preferred contribution guidelines.
-- Update the workflow files in the `.github/workflows/` directory.
-
-> [!NOTE]
-> We know that there is still a fair amount of manual setup required,
-> and we are committed to making this process as smooth and painless as possible.
->
-> If you have any feedback, please feel free to create an issue or a pull request.
+```sh
+template new
+```
 
 Want to support this project? **✨ Star it on GitHub** and help us spread the word!
 
@@ -130,7 +109,6 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 
 <!---------------- {{Links}} ---------------->
 
-[use-url]: https://github.com/new?template_name=template&template_owner=caffeine-addictt
 [docs-url]: https://github.com/caffeine-addictt/template/blob/main/docs/README.md
 [goreport-url]: https://goreportcard.com/report/github.com/caffeine-addictt/template
 [contribute]: https://github.com/caffeine-addictt/template/blob/main/CONTRIBUTING.md
@@ -148,5 +126,4 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 [badge-pr]: https://img.shields.io/github/issues-pr/caffeine-addictt/template
 [badge-language]: https://img.shields.io/github/languages/top/caffeine-addictt/template
 [badge-license]: https://img.shields.io/github/license/caffeine-addictt/template
-[badge-use]: https://img.shields.io/badge/Use%20template-FFFFFF?style=for-the-badge
 [badge-goreport]: https://goreportcard.com/badge/github.com/caffeine-addictt/template
