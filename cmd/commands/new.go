@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"strings"
 	"syscall"
 
 	"github.com/caffeine-addictt/template/cmd/config"
@@ -121,6 +122,39 @@ var NewCmd = &cobra.Command{
 			rootDir = filepath.Join(rootDir, styleInfo.Source.String())
 		}
 		options.Debugf("resolved style to: %s\n", rootDir)
+
+		// Handle prompts
+		options.Debugln("resolving prompts...")
+		extraPrompts := map[string]string{}
+		if tmpl.Prompts != nil {
+			for val, ask := range *tmpl.Prompts {
+				extraPrompts[string(val)] = string(ask)
+			}
+		}
+		if tmpl.Styles != nil && styleInfo.Prompts != nil {
+			for val, ask := range *styleInfo.Prompts {
+				extraPrompts[string(val)] = string(ask)
+			}
+		}
+		options.Debugf("resolved prompts to: %v\n", extraPrompts)
+
+		prompts := make([]*huh.Group, len(extraPrompts))
+		for n, v := range extraPrompts {
+			prompts = append(prompts, huh.NewGroup(huh.NewText().Title(v).Validate(func(s string) error {
+				s = strings.TrimSpace(s)
+				if s == "" {
+					return fmt.Errorf("cannot be empty")
+				}
+
+				extraPrompts[n] = s
+				return nil
+			})))
+		}
+		if err := huh.NewForm(prompts...).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
+			cmd.PrintErrln(err)
+			exitCode = 1
+			return
+		}
 
 		// Get file paths
 		options.Infoln("Getting file paths...")
