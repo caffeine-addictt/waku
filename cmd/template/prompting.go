@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/caffeine-addictt/template/cmd/config"
 	"github.com/caffeine-addictt/template/cmd/license"
 	"github.com/caffeine-addictt/template/cmd/options"
 	"github.com/caffeine-addictt/template/cmd/utils"
@@ -13,6 +14,45 @@ import (
 	"github.com/caffeine-addictt/template/cmd/utils/types"
 	"github.com/charmbracelet/huh"
 )
+
+// PromptForStyle prompts user to select style
+func PromptForStyle(styles config.TemplateStyles, setK *types.CleanString, setV *config.TemplateStyle) *huh.Select[string] {
+	opts := make([]string, 0, len(styles))
+
+	for n := range styles {
+		opts = append(opts, strings.ToLower(string(n)))
+	}
+	sorting.QuicksortASC(opts)
+
+	if options.NewOpts.Style.Value() != "" {
+		if err := validateStyle(&styles, opts, options.NewOpts.Style.Value(), setK, setV); err == nil {
+			return nil
+		}
+	}
+
+	return huh.NewSelect[string]().Title("The style to use").Options(huh.NewOptions(opts...)...).Validate(func(s string) error {
+		return validateStyle(&styles, opts, s, setK, setV)
+	})
+}
+
+func validateStyle(ll *config.TemplateStyles, optsL []string, val string, setK *types.CleanString, setV *config.TemplateStyle) error {
+	val = strings.ToLower(val)
+
+	i := searching.BinarySearchAuto(optsL, val)
+	if i == -1 {
+		return fmt.Errorf("unknown style: %s", val)
+	}
+
+	for n, v := range *ll {
+		if strings.ToLower(string(n)) == val {
+			*setV = v
+			*setK = n
+			break
+		}
+	}
+
+	return nil
+}
 
 // PromptForLicense prompts user to select license
 func PromptForLicense(value *license.License) (*huh.Select[string], error) {
