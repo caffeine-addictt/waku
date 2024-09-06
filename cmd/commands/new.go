@@ -7,10 +7,12 @@ import (
 	"path/filepath"
 	"syscall"
 
+	"github.com/caffeine-addictt/template/cmd/license"
 	"github.com/caffeine-addictt/template/cmd/options"
 	"github.com/caffeine-addictt/template/cmd/template"
 	"github.com/caffeine-addictt/template/cmd/utils"
 	"github.com/caffeine-addictt/template/cmd/utils/types"
+	"github.com/charmbracelet/huh"
 	"github.com/spf13/cobra"
 )
 
@@ -25,17 +27,25 @@ var NewCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		exitCode := 0
 
-		// Get proj details
 		var name string
 		var projectRootDir string
-		if err := template.PromptForProjectName(&name, &projectRootDir); err != nil {
+		var license license.License
+
+		licenseSelect, err := template.PromptForLicense(&license)
+		if err != nil {
 			cmd.PrintErrln(err)
 			exitCode = 1
 			return
 		}
 
-		options.Debugln("project name:", name)
-		options.Debugln("project location:", projectRootDir)
+		if err := huh.NewForm(
+			huh.NewGroup(template.PromptForProjectName(&name, &projectRootDir)),
+			huh.NewGroup(licenseSelect),
+		).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
+			cmd.PrintErrln(err)
+			exitCode = 1
+			return
+		}
 
 		options.Infof("creating project in '%s'...\n", projectRootDir)
 		if err := os.Mkdir(projectRootDir, os.ModePerm); err != nil {
