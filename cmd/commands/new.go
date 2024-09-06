@@ -97,7 +97,6 @@ var NewCmd = &cobra.Command{
 			return
 		}
 
-		// TODO: handle Prompts
 		// TODO: handle writing files in async
 		// Resolve style to use
 		var style types.CleanString
@@ -122,6 +121,20 @@ var NewCmd = &cobra.Command{
 			rootDir = filepath.Join(rootDir, styleInfo.Source.String())
 		}
 		options.Debugf("resolved style to: %s\n", rootDir)
+
+		// Handle license stuff
+		licenseText, err := license.GetLicenseText()
+		if err != nil {
+			cmd.PrintErrf("failed to get license text: %s\n", err)
+			exitCode = 1
+			return
+		}
+
+		licenseWants := licenseText.GetWants()
+		licenseTmpl := make(map[string]string, len(licenseWants))
+		for _, v := range licenseWants {
+			licenseTmpl[v] = fmt.Sprintf("Value for license %s?", v)
+		}
 
 		// Handle prompts
 		options.Debugln("resolving prompts...")
@@ -150,6 +163,18 @@ var NewCmd = &cobra.Command{
 				return nil
 			})))
 		}
+		for n, v := range licenseTmpl {
+			prompts = append(prompts, huh.NewGroup(huh.NewText().Title(v).Validate(func(s string) error {
+				s = strings.TrimSpace(s)
+				if s == "" {
+					return fmt.Errorf("cannot be empty")
+				}
+
+				extraPrompts[n] = s
+				return nil
+			})))
+		}
+
 		if err := huh.NewForm(prompts...).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
 			cmd.PrintErrln(err)
 			exitCode = 1
