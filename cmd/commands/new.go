@@ -58,7 +58,7 @@ var NewCmd = &cobra.Command{
 		// Clone repo
 		tmpDir, err := options.NewOpts.CloneRepo()
 		if err != nil {
-			cmd.PrintErrf("Could not clone git repo: %s", err)
+			cmd.PrintErrf("could not clone git repo: %s", err)
 			exitCode = 1
 			return
 		}
