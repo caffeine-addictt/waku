@@ -7,6 +7,11 @@ import (
 	"github.com/caffeine-addictt/template/cmd/utils/types"
 )
 
+var (
+	reRepeatingAsterisk = regexp.MustCompile(`\*+`)
+	reSpecialChars      = []string{".", "+", "?", "^", "$", "(", ")", "[", "]", "{", "}", "|", "\\"}
+)
+
 // Resolve paths to include
 //
 // Negation always takes priority. i.e. Set["path/to/file", "!path/**"] = Set[]
@@ -65,7 +70,13 @@ a:
 			isRecusive = true
 			break a
 		default:
-			newPattern += strings.ReplaceAll(patternParts[nonRecursePartsCount], "*", ".*") + `/`
+			s := patternParts[nonRecursePartsCount]
+			for _, c := range reSpecialChars {
+				s = strings.ReplaceAll(s, c, "\\"+c)
+			}
+
+			s = reRepeatingAsterisk.ReplaceAllString(s, "*")
+			newPattern += strings.ReplaceAll(s, "*", ".*") + `/`
 		}
 
 		nonRecursePartsCount++

@@ -70,6 +70,12 @@ func TestResolveIncludes(t *testing.T) {
 			expected: types.NewSet("path/to/one", "path/to/two", "path/to/three"),
 			name:     "include negated recursive dir level glob",
 		},
+		{
+			paths:    types.NewSet("path/to/one.+?^$()[]{}|\\"),
+			ignores:  types.NewSet("path/to/one.+?^$()[]{}|\\"),
+			expected: types.NewSet[string](),
+			name:     "regex characters are escaped",
+		},
 	}
 
 	for _, tc := range tests {
