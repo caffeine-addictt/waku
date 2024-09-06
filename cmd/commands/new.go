@@ -183,7 +183,7 @@ var NewCmd = &cobra.Command{
 
 		// Get file paths
 		options.Infoln("Getting file paths...")
-		paths, err := utils.WalkDirRecursive(projectRootDir)
+		paths, err := utils.WalkDirRecursive(rootDir)
 		if err != nil {
 			cmd.PrintErrln(err)
 			exitCode = 1
