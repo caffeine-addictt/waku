@@ -118,6 +118,8 @@ func AddNewCmdFlags(cmd *cobra.Command) {
 	cmd.Flags().VarP(&options.NewOpts.Branch, "branch", "b", "branch to clone from [default: main/master]")
 	cmd.Flags().VarP(&options.NewOpts.Directory, "directory", "D", "which directory of the template to use [default: /]")
 	cmd.Flags().VarP(&options.NewOpts.Name, "name", "n", "name of the project")
+	cmd.Flags().VarP(&options.NewOpts.License, "license", "l", "license to use for the project")
+	cmd.Flags().VarP(&options.NewOpts.Style, "style", "S", "which style to use")
 }
 
 // To catch interrupts and gracefully cleanup

@@ -17,6 +17,8 @@ var NewOpts = NewOptions{
 	Branch:    *types.NewValueGuard("", cmdOpt, types.BRANCH),
 	Directory: *types.NewValueGuard("", cmdOpt, types.PATH),
 	Name:      *types.NewValueGuard("", cmdOpt, types.STRING),
+	License:   *types.NewValueGuard("", cmdOpt, types.STRING),
+	Style:     *types.NewValueGuard("", cmdOpt, types.STRING),
 }
 
 type NewOptions struct {
@@ -32,6 +34,12 @@ type NewOptions struct {
 
 	// The name of your project
 	Name types.ValueGuard[string]
+
+	// The license of your project
+	License types.ValueGuard[string]
+
+	// The style to use
+	Style types.ValueGuard[string]
 }
 
 func cmdOpt(v string) (string, error) {
