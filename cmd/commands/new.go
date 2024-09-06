@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"syscall"
 
+	"github.com/caffeine-addictt/template/cmd/config"
 	"github.com/caffeine-addictt/template/cmd/license"
 	"github.com/caffeine-addictt/template/cmd/options"
 	"github.com/caffeine-addictt/template/cmd/template"
@@ -97,6 +98,29 @@ var NewCmd = &cobra.Command{
 
 		// TODO: handle Prompts
 		// TODO: handle writing files in async
+		// Resolve style to use
+		var style types.CleanString
+		var styleInfo config.TemplateStyle
+
+		if tmpl.Styles != nil && len(*tmpl.Styles) == 1 {
+			for s, v := range *tmpl.Styles {
+				style = s
+				styleInfo = v
+				rootDir = filepath.Join(rootDir, v.Source.String())
+				break
+			}
+		} else if tmpl.Styles != nil {
+			if err := huh.NewForm(huh.NewGroup(
+				template.PromptForStyle(*tmpl.Styles, &style, &styleInfo),
+			)).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
+				cmd.PrintErrln(err)
+				exitCode = 1
+				return
+			}
+
+			rootDir = filepath.Join(rootDir, styleInfo.Source.String())
+		}
+		options.Debugf("resolved style to: %s\n", rootDir)
 
 		// Get file paths
 		options.Infoln("Getting file paths...")
