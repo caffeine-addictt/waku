@@ -12,6 +12,7 @@
 
 <!-- Badges -->
 
+[![badge-goreport]][goreport-url]
 ![badge-workflow]
 [![badge-license]][license]
 ![badge-language]
@@ -129,6 +130,7 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 <!---------------- {{Links}} ---------------->
 
 [use-url]: https://github.com/new?template_name=template&template_owner=caffeine-addictt
+[goreport-url]: https://goreportcard.com/report/github.com/caffeine-addictt/template
 [contribute]: https://github.com/caffeine-addictt/template/blob/main/CONTRIBUTING.md
 
 <!---------------- {{Thanks}} ---------------->
@@ -145,3 +147,4 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 [badge-language]: https://img.shields.io/github/languages/top/caffeine-addictt/template
 [badge-license]: https://img.shields.io/github/license/caffeine-addictt/template
 [badge-use]: https://img.shields.io/badge/Use%20template-FFFFFF?style=for-the-badge
+[badge-goreport]: https://goreportcard.com/badge/github.com/caffeine-addictt/template
