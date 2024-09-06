@@ -191,14 +191,24 @@ var NewCmd = &cobra.Command{
 		}
 
 		// Handle ignores
+		options.Infoln("Applying ignores...")
+		ignoreRules := types.NewSet(
+			".git/",
+			"LICENSE*",
+			"template.json",
+		)
 		if tmpl.Ignore != nil {
-			options.Infoln("Applying ignores...")
-			pathsSet := template.ResolveIncludes(types.NewSet(paths...), types.Set[string](*tmpl.Ignore))
-			paths = pathsSet.ToSlice()
+			ignoreRules.Union(types.Set[string](*tmpl.Ignore))
 		}
-		options.Debugf("Resolved files to write: %v", paths)
+		if tmpl.Styles != nil && styleInfo.Ignore != nil {
+			ignoreRules.Union(types.Set[string](*styleInfo.Ignore))
+		}
 
-		// cmd.Printf("%v", paths)
+		// account for template.json having a '!.git/'
+		ignoreRules = template.ResolveIncludes(ignoreRules, types.NewSet(".git/", "LICENSE"))
+		ignoredPaths := template.ResolveIncludes(types.NewSet(paths...), ignoreRules)
+
+		options.Debugf("resolved files to write: %v", ignoredPaths)
 	},
 }
 
