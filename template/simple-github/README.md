@@ -89,7 +89,7 @@ _Below is an example of how you can install and use {{PROJECT_NAME}}_
 
 <!---------------- {{Thanks}} ---------------->
 
-[template-repo]: https://github.com/caffeine-addictt/template
+[template-repo]: https://github.com/caffeine-addictt/waku
 [hyprland]: https://github.com/hyprwm/Hyprland
 [hyprdots]: https://github.com/prasanthrangan/hyprdots
 [img-shields]: https://shields.io

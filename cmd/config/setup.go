@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"reflect"
 
-	"github.com/caffeine-addictt/template/cmd/utils"
+	"github.com/caffeine-addictt/waku/cmd/utils"
 )
 
 type TemplateSetupKey string

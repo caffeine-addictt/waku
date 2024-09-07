@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/caffeine-addictt/template/cmd/options"
-	"github.com/caffeine-addictt/template/cmd/utils/types"
+	"github.com/caffeine-addictt/waku/cmd/options"
+	"github.com/caffeine-addictt/waku/cmd/utils/types"
 )
 
 // TemplatePrompts are the additional things that are formatted

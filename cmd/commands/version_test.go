@@ -3,9 +3,9 @@ package commands_test
 import (
 	"testing"
 
-	"github.com/caffeine-addictt/template/cmd/commands"
-	"github.com/caffeine-addictt/template/cmd/global"
-	"github.com/caffeine-addictt/template/cmd/helpers"
+	"github.com/caffeine-addictt/waku/cmd/commands"
+	"github.com/caffeine-addictt/waku/cmd/global"
+	"github.com/caffeine-addictt/waku/cmd/helpers"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -1,4 +1,4 @@
-module github.com/caffeine-addictt/template
+module github.com/caffeine-addictt/waku
 
 go 1.23.0
 

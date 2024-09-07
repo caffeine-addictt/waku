@@ -3,8 +3,8 @@ package cmd
 import (
 	"log"
 
-	"github.com/caffeine-addictt/template/cmd/commands"
-	"github.com/caffeine-addictt/template/cmd/options"
+	"github.com/caffeine-addictt/waku/cmd/commands"
+	"github.com/caffeine-addictt/waku/cmd/options"
 	"github.com/spf13/cobra"
 )
 

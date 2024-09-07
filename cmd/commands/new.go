@@ -12,12 +12,12 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/caffeine-addictt/template/cmd/config"
-	"github.com/caffeine-addictt/template/cmd/license"
-	"github.com/caffeine-addictt/template/cmd/options"
-	"github.com/caffeine-addictt/template/cmd/template"
-	"github.com/caffeine-addictt/template/cmd/utils"
-	"github.com/caffeine-addictt/template/cmd/utils/types"
+	"github.com/caffeine-addictt/waku/cmd/config"
+	"github.com/caffeine-addictt/waku/cmd/license"
+	"github.com/caffeine-addictt/waku/cmd/options"
+	"github.com/caffeine-addictt/waku/cmd/template"
+	"github.com/caffeine-addictt/waku/cmd/utils"
+	"github.com/caffeine-addictt/waku/cmd/utils/types"
 	"github.com/charmbracelet/huh"
 	"github.com/spf13/cobra"
 )

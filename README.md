@@ -4,8 +4,8 @@
 
 <!-- Project Banner -->
 
-<a href="https://github.com/caffeine-addictt/template">
-  <img src="https://github.com/caffeine-addictt/template/blob/main/assets/transparent-logo.svg" width="750" height="300" alt="">
+<a href="https://github.com/caffeine-addictt/waku">
+  <img src="https://github.com/caffeine-addictt/waku/blob/main/assets/transparent-logo.svg" width="750" height="300" alt="">
 </a>
 
 <br>
@@ -66,12 +66,12 @@ Let's make starting new projects feel like a **_breeze_** again.
 
 # Quick Start
 
-### 1. Install template
+### 1. Install waku
 
-Install template for your operating system [here][docs-url] or run:
+Install waku for your operating system [here][docs-url] or run:
 
 ```sh
-go install github.com/caffeine-addictt/template@latest
+go install github.com/caffeine-addictt/waku@latest
 docker run --rm -it caffeinec/waku:latest
 ```
 
@@ -80,7 +80,7 @@ docker run --rm -it caffeinec/waku:latest
 Run the following command and answer the prompts to create a new project:
 
 ```sh
-template new
+waku new
 ```
 
 Want to support this project? **✨ Star it on GitHub** and help us spread the word!
@@ -103,16 +103,16 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[stars-graph]: https://starchart.cc/caffeine-addictt/template.svg?variant=adaptive
-[prs]: https://github.com/caffeine-addictt/template/pulls
-[issues]: https://github.com/caffeine-addictt/template/issues
-[license]: https://github.com/caffeine-addictt/template/blob/main/LICENSE
+[stars-graph]: https://starchart.cc/caffeine-addictt/waku.svg?variant=adaptive
+[prs]: https://github.com/caffeine-addictt/waku/pulls
+[issues]: https://github.com/caffeine-addictt/waku/issues
+[license]: https://github.com/caffeine-addictt/waku/blob/main/LICENSE
 
 <!---------------- {{Links}} ---------------->
 
-[docs-url]: https://github.com/caffeine-addictt/template/blob/main/docs/README.md
-[goreport-url]: https://goreportcard.com/report/github.com/caffeine-addictt/template
-[contribute]: https://github.com/caffeine-addictt/template/blob/main/CONTRIBUTING.md
+[docs-url]: https://github.com/caffeine-addictt/waku/blob/main/docs/README.md
+[goreport-url]: https://goreportcard.com/report/github.com/caffeine-addictt/waku
+[contribute]: https://github.com/caffeine-addictt/waku/blob/main/CONTRIBUTING.md
 
 <!---------------- {{Thanks}} ---------------->
 
@@ -122,9 +122,9 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 
 <!---------------- {{Badges}} ---------------->
 
-[badge-workflow]: https://github.com/caffeine-addictt/template/actions/workflows/test-worker.yml/badge.svg
-[badge-issues]: https://img.shields.io/github/issues/caffeine-addictt/template
-[badge-pr]: https://img.shields.io/github/issues-pr/caffeine-addictt/template
-[badge-language]: https://img.shields.io/github/languages/top/caffeine-addictt/template
-[badge-license]: https://img.shields.io/github/license/caffeine-addictt/template
-[badge-goreport]: https://goreportcard.com/badge/github.com/caffeine-addictt/template
+[badge-workflow]: https://github.com/caffeine-addictt/waku/actions/workflows/test-worker.yml/badge.svg
+[badge-issues]: https://img.shields.io/github/issues/caffeine-addictt/waku
+[badge-pr]: https://img.shields.io/github/issues-pr/caffeine-addictt/waku
+[badge-language]: https://img.shields.io/github/languages/top/caffeine-addictt/waku
+[badge-license]: https://img.shields.io/github/license/caffeine-addictt/waku
+[badge-goreport]: https://goreportcard.com/badge/github.com/caffeine-addictt/waku

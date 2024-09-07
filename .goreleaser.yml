@@ -1,5 +1,5 @@
 # Release Configuration
-project_name: template
+project_name: waku
 report_sizes: true
 
 before:
@@ -35,20 +35,20 @@ archives:
 nfpms:
   - maintainer: Jun Xiang <contact@ngjx.org>
     description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
-    homepage: "https://github.com/caffeine-addictt/template"
+    homepage: "https://github.com/caffeine-addictt/waku"
     license: MIT
     formats: [rpm, apk, termux.deb, deb, archlinux]
     dependencies: [git]
 
 brews:
-  - homepage: "https://github.com/caffeine-addictt/template"
+  - homepage: "https://github.com/caffeine-addictt/waku"
     license: "MIT"
     skip_upload: auto
-    directory: Formula/template
+    directory: Formula/waku
     repository:
       owner: caffeine-addictt
       name: homebrew-tap
-      branch: "template"
+      branch: "waku"
       token: "{{ .Env.TAP_GITHUB_TOKEN }}"
     commit_author:
       name: goreleaserbot
@@ -57,23 +57,23 @@ brews:
     description: "A simple template repository generator. Lets make starting new proejcts feel like a breeze again!"
 
 chocolateys:
-  - name: template
-    title: Repository templatehtt
+  - name: waku
+    title: Repository template
     owners: caffeine-addictt
     authors: caffeine-addictt
-    project_url: https://github.com/caffeine-addictt/template
-    package_source_url: https://github.com/caffeine-addictt/template
-    url_template: "https://github.com/caffeine-addictt/template/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    project_url: https://github.com/caffeine-addictt/waku
+    package_source_url: https://github.com/caffeine-addictt/waku
+    url_template: "https://github.com/caffeine-addictt/waku/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
     # icon_url: "" https://docs.chocolatey.org/en-us/create/create-packages/#package-icon-guidelines
     copyright: 2024 Jun Xiang
-    license_url: https://github.com/caffeine-addictt/template/blob/main/LICENSE
+    license_url: https://github.com/caffeine-addictt/waku/blob/main/LICENSE
     require_license_acceptance: false
-    docs_url: https://github.com/caffeine-addictt/template/blob/main/README.md
-    bug_tracker_url: https://github.com/caffeine-addictt/template/issues
+    docs_url: https://github.com/caffeine-addictt/waku/blob/main/README.md
+    bug_tracker_url: https://github.com/caffeine-addictt/waku/issues
     tags: "repository git generator simple quick quickstart template project project-generator"
     summary: "A simple template repository generator."
     description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
-    release_notes: "https://github.com/caffeine-addictt/template/releases/tag/{{ .Tag }}"
+    release_notes: "https://github.com/caffeine-addictt/waku/releases/tag/{{ .Tag }}"
     dependencies:
       - id: git
     api_key: "{{ .Env.CHOCOLATEY_API_KEY }}"

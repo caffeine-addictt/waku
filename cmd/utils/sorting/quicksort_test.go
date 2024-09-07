@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/caffeine-addictt/template/cmd/utils/sorting"
+	"github.com/caffeine-addictt/waku/cmd/utils/sorting"
 	"github.com/stretchr/testify/assert"
 )
 

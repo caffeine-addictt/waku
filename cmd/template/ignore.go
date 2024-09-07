@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/caffeine-addictt/template/cmd/utils/types"
+	"github.com/caffeine-addictt/waku/cmd/utils/types"
 )
 
 var (

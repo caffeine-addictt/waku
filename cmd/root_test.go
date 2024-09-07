@@ -3,8 +3,8 @@ package cmd_test
 import (
 	"testing"
 
-	"github.com/caffeine-addictt/template/cmd"
-	"github.com/caffeine-addictt/template/cmd/helpers"
+	"github.com/caffeine-addictt/waku/cmd"
+	"github.com/caffeine-addictt/waku/cmd/helpers"
 	"github.com/stretchr/testify/assert"
 )
 

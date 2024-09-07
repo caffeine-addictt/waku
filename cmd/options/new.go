@@ -5,11 +5,11 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/caffeine-addictt/template/cmd/utils"
-	"github.com/caffeine-addictt/template/cmd/utils/types"
+	"github.com/caffeine-addictt/waku/cmd/utils"
+	"github.com/caffeine-addictt/waku/cmd/utils/types"
 )
 
-const defaultRepo = "https://github.com/caffeine-addictt/template.git"
+const defaultRepo = "https://github.com/caffeine-addictt/waku.git"
 
 // The options for the new command
 var NewOpts = NewOptions{
@@ -59,9 +59,9 @@ func (o *NewOptions) Validate() error {
 
 	case
 		defaultRepo,
-		"https://github.com/caffeine-addictt/template",
-		"git://github.com/caffeine-addictt/template.git",
-		"git@github.com:caffeine-addictt/template.git":
+		"https://github.com/caffeine-addictt/waku",
+		"git://github.com/caffeine-addictt/waku.git",
+		"git@github.com:caffeine-addictt/waku.git":
 		if err := o.Directory.Set("template"); err != nil {
 			return err
 		}

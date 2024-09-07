@@ -9,7 +9,7 @@ assignees: caffeine-addictt
 # Documentation Issue Report
 
 Your issue may already be reported!
-Please check out our [active issues](https://github.com/caffeine-addictt/template/issues) before creating one.
+Please check out our [active issues](https://github.com/caffeine-addictt/waku/issues) before creating one.
 
 ## Describe the Bug
 

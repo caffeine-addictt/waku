@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/caffeine-addictt/template/cmd/template"
-	"github.com/caffeine-addictt/template/cmd/utils"
+	"github.com/caffeine-addictt/waku/cmd/template"
+	"github.com/caffeine-addictt/waku/cmd/utils"
 	"github.com/spf13/cobra"
 )
 

@@ -59,8 +59,8 @@ install/go:
 .PHONY: links
 links:
 	@echo 'Links:'
-	@echo ' Github Repository:      https://github.com/caffeine-addictt/template'
-	@echo ' Official Documentation: https://github.com/caffeine-addictt/template/blob/main/docs/index.md'
+	@echo ' Github Repository:      https://github.com/caffeine-addictt/waku'
+	@echo ' Official Documentation: https://github.com/caffeine-addictt/waku/blob/main/docs/index.md'
 
 
 
@@ -69,7 +69,7 @@ links:
 .PHONY: issue
 issue:
 	@echo 'Create an issue at:'
-	@echo ' https://github.com/caffeine-addictt/template/issues/new'
+	@echo ' https://github.com/caffeine-addictt/waku/issues/new'
 
 
 
@@ -88,7 +88,7 @@ docs:
 	@echo 'Steps to run the CLI:'
 	@echo ' 1. Run the CLI with "go run main.go"'
 	@echo ''
-	@echo 'Learn more at https://github.com/caffeine-addictt/template/blob/main/CONTRIBUTING.md'
+	@echo 'Learn more at https://github.com/caffeine-addictt/waku/blob/main/CONTRIBUTING.md'
 
 # =================================== DEVELOPMENT =================================== #
 

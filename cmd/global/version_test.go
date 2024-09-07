@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/caffeine-addictt/template/cmd/global"
+	"github.com/caffeine-addictt/waku/cmd/global"
 	"github.com/stretchr/testify/assert"
 )
 

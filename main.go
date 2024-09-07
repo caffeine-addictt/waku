@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/caffeine-addictt/template/cmd"
+	"github.com/caffeine-addictt/waku/cmd"
 )
 
 func main() {

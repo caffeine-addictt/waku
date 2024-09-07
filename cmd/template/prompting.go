@@ -5,13 +5,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/caffeine-addictt/template/cmd/config"
-	"github.com/caffeine-addictt/template/cmd/license"
-	"github.com/caffeine-addictt/template/cmd/options"
-	"github.com/caffeine-addictt/template/cmd/utils"
-	"github.com/caffeine-addictt/template/cmd/utils/searching"
-	"github.com/caffeine-addictt/template/cmd/utils/sorting"
-	"github.com/caffeine-addictt/template/cmd/utils/types"
+	"github.com/caffeine-addictt/waku/cmd/config"
+	"github.com/caffeine-addictt/waku/cmd/license"
+	"github.com/caffeine-addictt/waku/cmd/options"
+	"github.com/caffeine-addictt/waku/cmd/utils"
+	"github.com/caffeine-addictt/waku/cmd/utils/searching"
+	"github.com/caffeine-addictt/waku/cmd/utils/sorting"
+	"github.com/caffeine-addictt/waku/cmd/utils/types"
 	"github.com/charmbracelet/huh"
 )
 

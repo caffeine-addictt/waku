@@ -3,7 +3,7 @@ package config
 import (
 	"fmt"
 
-	"github.com/caffeine-addictt/template/cmd/utils/types"
+	"github.com/caffeine-addictt/waku/cmd/utils/types"
 )
 
 // The template.json file

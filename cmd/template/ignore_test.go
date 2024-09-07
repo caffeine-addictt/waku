@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/caffeine-addictt/template/cmd/template"
-	"github.com/caffeine-addictt/template/cmd/utils/types"
+	"github.com/caffeine-addictt/waku/cmd/template"
+	"github.com/caffeine-addictt/waku/cmd/utils/types"
 	"github.com/stretchr/testify/assert"
 )
 
