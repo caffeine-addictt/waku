@@ -30,7 +30,7 @@ RUN go test -v ./...
 ###################
 # 3. Deploying
 ###################
-FROM alpine:3.20.2 AS deploy-stage
+FROM alpine:3.20.3 AS deploy-stage
 WORKDIR /app
 
 # Install git
