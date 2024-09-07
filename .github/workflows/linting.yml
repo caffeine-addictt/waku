@@ -47,6 +47,8 @@ jobs:
               - '*.yml'
               - docs/**
               - .github/**
+              - package.json
+              - package-lock.json
 
   go:
     name: Linting Go
