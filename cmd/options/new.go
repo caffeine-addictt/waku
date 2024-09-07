@@ -91,8 +91,11 @@ func (o *NewOptions) CloneRepo() (string, error) {
 
 	c := exec.Command("git", args...)
 	c.Stdin = os.Stdin
-	c.Stdout = os.Stdout
-	c.Stderr = os.Stderr
+
+	if GlobalOpts.DebugOrVerbose() {
+		c.Stdout = os.Stdout
+		c.Stderr = os.Stderr
+	}
 
 	if err := c.Run(); err != nil {
 		if errCleanup := os.RemoveAll(tmpDirPath); errCleanup != nil {
