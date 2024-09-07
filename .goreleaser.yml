@@ -32,6 +32,34 @@ archives:
         format: zip
     files: [LICENSE, README.md]
 
+aurs:
+  - homepage: https://github.com/caffeine-addictt/waku
+    description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
+    maintainers:
+      - Jun Xiang <contact@ngjx.org>
+    private_key: "{{ .Env.AUR_PRIVATE_KEY }}"
+    license: AGPL-3.0
+    git_url: "ssh://aur@aur.archlinux.org/waku-bin.git"
+    skip_upload: true
+    depends:
+      - git
+    package: |-
+      # bin
+      install -Dm755 "./$pkgname" -t "$pkgdir/usr/bin/$pkgname"
+
+      # license
+      install -Dm644 "./LICENSE" "$pkgdir/usr/share/licenses/$pkgname"
+
+      # completions
+      # not too sure how to provide them
+
+      # man page
+      # not too sure how to provide them
+    commit_author:
+      name: goreleaserbot
+      email: bot@goreleaser.com
+    url_template: "https://github.com/caffeine-addictt/waku/releases/{{ .Tag }}/{{ .ArtifactName }}"
+
 nfpms:
   - maintainer: Jun Xiang <contact@ngjx.org>
     description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
