@@ -150,18 +150,16 @@ changelog:
   abbrev: 0
   filters:
     exclude:
-      - "^ci"
-      - "^chore"
-      - " (T|t)ypo "
+      - "^(T|t)ypo"
   groups:
     - title: Features
-      regexp: '^.*?feat(\(.+\))??!?:.+$'
+      regexp: '^.*?(F|f)eat(\(.+\))??!?:.+$'
       order: 0
     - title: Bug fixes
-      regexp: '^.*?fix(\(.+\))??!?:.+$'
+      regexp: '^.*?(F|f)ix(\(.+\))??!?:.+$'
       order: 1
     - title: Improvements
-      regexp: '^.*?(docs?|style|test|build|perf|refactor)(\(.+\))??!?:.+$'
+      regexp: '^.*?((D|d)ocs?|(S|s)tyle|(T|t)est|(B|b)uild|(P|p)erf|(R|r)efactor)(\(.+\))??!?:.+$'
       order: 2
     - title: Security issues
       regexp: ^.*?(S|s)ecurity.*?$
