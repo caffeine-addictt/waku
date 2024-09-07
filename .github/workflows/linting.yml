@@ -2,6 +2,9 @@ name: Linting
 
 on:
   push:
+    branches:
+      - main
+      - v*
   pull_request:
   workflow_dispatch:
 
@@ -9,23 +12,96 @@ permissions:
   contents: read
 
 jobs:
-  linting:
-    name: Linting
+  changed-files:
+    name: Changed Files
     runs-on: ubuntu-latest
+    outputs:
+      lint-go: ${{ steps.changed-files.outputs.lint-go_any_modified == 'true' }}
+      lint-npm: ${{ steps.changed-files.outputs.lint-npm_any_modified == 'true' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 50 # Assume PRs are less than 50 commits
+
+      - name: Find changed files
+        uses: tj-actions/changed-files@v44
+        id: changed-files
+        with:
+          files_yaml: |
+            common: &common
+              - .github/workflows/linting.yml
+              - Makefile
+
+            lint-go:
+              - *common
+              - cmd/**
+              - go.*
+              - '*.go'
+
+            lint-npm:
+              - *common
+              - template/**
+              - '*.md'
+              - '*.yml'
+              - docs/**
+              - .github/**
+
+  go:
+    name: Linting Go
+    runs-on: ubuntu-latest
+    needs: changed-files
+    if: ${{ needs.changed-files.outputs.lint-go == 'true' }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up node
-        uses: actions/setup-node@v4.0.3
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.23.0
+
+      - name: Lint
+        run: |
+          set -xe
+          make lint/go
+
+  npm:
+    name: Linting NPM
+    runs-on: ubuntu-latest
+    needs: changed-files
+    if: ${{ needs.changed-files.outputs.lint-npm == 'true' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
 
       - name: Install dependencies
         run: |
-          set -xe
-          npm install
+          make install/npm
 
-      - name: Run linting
+      - name: Lint
         run: |
           set -xe
-          npm run lint
+          make lint/npm
+
+  check:
+    if: always()
+    name: Linting Successful
+    runs-on: ubuntu-latest
+    needs: [go, npm]
+
+    steps:
+      - name: Whether the whole test suite passed
+        uses: re-actors/alls-green@v1.2.2
+        with:
+          allowed-skips: ${{ toJSON(needs) }}
+          jobs: ${{ toJSON(needs) }}

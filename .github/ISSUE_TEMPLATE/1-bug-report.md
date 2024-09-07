@@ -1,15 +1,15 @@
 ---
-name: 'Bug Report'
-about: 'Report an issue to help the project improve.'
-title: '[Bug] '
-labels: 'Type: Bug'
+name: "Bug Report"
+about: "Report an issue to help the project improve."
+title: "[Bug] "
+labels: "Type: Bug"
 assignees: caffeine-addictt
 ---
 
 # Bug report
 
 Your issue may already be reported!
-Please check out our [active issues](https://github.com/caffeine-addictt/template/issues) before creating one.
+Please check out our [active issues](https://github.com/caffeine-addictt/waku/issues) before creating one.
 
 ## Expected Behavior
 

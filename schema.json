@@ -1,0 +1,185 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Allows a reference to a schema, typically a relative or absolute URI.",
+      "format": "uri-reference"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the template. Required if 'styles' is empty.",
+      "minLength": 1
+    },
+    "setup": {
+      "type": "object",
+      "description": "an object containing setup scripts for the template.",
+      "properties": {
+        "*": {
+          "type": "string",
+          "description": "Path to the default setup script, required."
+        },
+        "linux": {
+          "type": "string",
+          "description": "Path to the setup script for Linux."
+        },
+        "windows": {
+          "type": "string",
+          "description": "Path to the setup script for Windows."
+        },
+        "darwin": {
+          "type": "string",
+          "description": "Path to the setup script for macOS (Darwin)."
+        }
+      },
+      "required": ["*"],
+      "additionalProperties": false
+    },
+    "ignore": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "A path or pattern to ignore. Supports glob patterns.",
+        "pattern": "^(?![ ]*$)(!?([^*?/]+/)*([^*?/]+|\\*|\\*\\*|[^*?/]+/\\*|[^*?/]+/\\*\\*))$"
+      },
+      "description": "A list of paths or patterns to ignore."
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string",
+            "description": "A HEX color code.",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$"
+          },
+          "description": {
+            "type": "string",
+            "description": "An optional description for the label."
+          }
+        },
+        "required": ["color"],
+        "additionalProperties": false
+      },
+      "description": "Labels with associated colors."
+    },
+    "prompts": {
+      "type": "object",
+      "patternProperties": {
+        "^[^\\s].*[^\\s]$": {
+          "type": "string",
+          "description": "The text used to ask for a value from the user. The key cannot be empty, have leading or trailing spaces, and the value can be empty but it's not advisable."
+        }
+      },
+      "additionalProperties": false,
+      "description": "An optional object that defines user prompts."
+    },
+    "styles": {
+      "type": "object",
+      "description": "An object containing style configurations.",
+      "patternProperties": {
+        "^[a-zA-Z0-9 ]+$": {
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": "string",
+              "description": "The path to the directory to use as a style.",
+              "format": "uri-reference"
+            },
+            "setup": {
+              "type": "object",
+              "description": "an object containing setup scripts for the template.",
+              "properties": {
+                "*": {
+                  "type": "string",
+                  "description": "Path to the default setup script, required."
+                },
+                "linux": {
+                  "type": "string",
+                  "description": "Path to the setup script for Linux."
+                },
+                "windows": {
+                  "type": "string",
+                  "description": "Path to the setup script for Windows."
+                },
+                "darwin": {
+                  "type": "string",
+                  "description": "Path to the setup script for macOS (Darwin)."
+                }
+              },
+              "required": ["*"],
+              "additionalProperties": false
+            },
+            "ignore": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "A path or pattern to ignore. Supports glob patterns.",
+                "pattern": "^(?![ ]*$)(!?([^*?/]+/)*([^*?/]+|\\*|\\*\\*|[^*?/]+/\\*|[^*?/]+/\\*\\*))$"
+              },
+              "description": "A list of paths or patterns to ignore for this style."
+            },
+            "labels": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "color": {
+                    "type": "string",
+                    "description": "A HEX color code.",
+                    "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "An optional description for the label."
+                  }
+                },
+                "required": ["color"],
+                "additionalProperties": false
+              },
+              "description": "Labels with associated colors for this style."
+            },
+            "prompts": {
+              "type": "object",
+              "patternProperties": {
+                "^[^\\s].*[^\\s]$": {
+                  "type": "string",
+                  "description": "The text used to ask for a value from the user. The key cannot be empty, have leading or trailing spaces, and the value can be empty but it's not advisable."
+                }
+              },
+              "additionalProperties": false,
+              "description": "An optional object that defines user prompts."
+            }
+          },
+          "required": ["source"],
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": ["styles"]
+      },
+      "then": {
+        "not": {
+          "required": ["name"]
+        }
+      }
+    },
+    {
+      "if": {
+        "not": {
+          "required": ["styles"]
+        }
+      },
+      "then": {
+        "required": ["name"]
+      }
+    }
+  ],
+  "additionalProperties": false
+}

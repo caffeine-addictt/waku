@@ -1,0 +1,16 @@
+name: Labeler
+
+on:
+  - pull_request_target
+
+# This workflow will require write permissions on pull requests
+# 1. Repository Settings -> Actions -> General -> Workflow permissions
+#   Check "Read and write permissions"
+
+jobs:
+  labeler:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/labeler@v5
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"

@@ -1,0 +1,168 @@
+# Release Configuration
+project_name: waku
+report_sizes: true
+
+before:
+  hooks:
+    - go mod download
+    - go mod tidy
+    - go run github.com/securego/gosec/v2/cmd/gosec@latest -quiet ./...
+    - go run github.com/go-critic/go-critic/cmd/gocritic@latest check -enableAll ./...
+    - go run github.com/google/osv-scanner/cmd/osv-scanner@latest -r .
+    - go test -race ./...
+
+builds:
+  - id: default
+    env: [CGO_ENABLED=0]
+    goos: [linux, windows, darwin]
+    goarch: [amd64, arm64]
+
+upx:
+  - ids: [default]
+    enabled: true
+    compress: best
+    lzma: true
+    brute: true
+    goos: [linux, windows] # skip darwin (macOS 13.x Ventura is not support now)
+    goarch: [amd64, arm64]
+
+archives:
+  - format_overrides:
+      - goos: windows
+        format: zip
+
+aurs:
+  - homepage: https://github.com/caffeine-addictt/waku
+    description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
+    maintainers:
+      - Jun Xiang <contact@ngjx.org>
+    private_key: "{{ .Env.AUR_PRIVATE_KEY }}"
+    license: AGPL-3.0
+    git_url: "ssh://aur@aur.archlinux.org/waku-bin.git"
+    skip_upload: false
+    depends:
+      - git
+    package: |-
+      # bin
+      install -Dm755 "./$pkgname" -t "$pkgdir/usr/bin/$pkgname"
+
+      # license
+      install -Dm644 "./LICENSE" "$pkgdir/usr/share/licenses/$pkgname"
+
+      # completions
+      # not too sure how to provide them
+
+      # man page
+      # not too sure how to provide them
+    commit_author:
+      name: goreleaserbot
+      email: bot@goreleaser.com
+    url_template: "https://github.com/caffeine-addictt/waku/releases/{{ .Tag }}/{{ .ArtifactName }}"
+
+dockers:
+  - image_templates:
+      - "caffeinec/waku:latest"
+      - "caffeinec/waku:{{ .Major }}"
+      - "caffeinec/waku:{{ .Tag }}"
+      - "ghcr.io/caffeine-addictt/waku:latest"
+      - "ghcr.io/caffeine-addictt/waku:{{ .Major }}"
+      - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}"
+    skip_push: false
+    dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/caffeine-addictt/waku/main/README.md"
+      # - "--label=io.artifacthub.package.logo-url=https://goreleaser.com/static/avatar.png"
+      - '--label=io.artifacthub.package.maintainers=[{"name":"Jun Xiang","email":"contact@ngjx.org"}]'
+      - "--label=io.artifacthub.package.license=AGPL-3.0"
+      - "--label=org.opencontainers.image.description=A simple template repository generator. Lets make starting new proejcts feel like a breeze again!"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.name={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--platform=linux/amd64"
+
+nfpms:
+  - maintainer: Jun Xiang <contact@ngjx.org>
+    description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
+    homepage: "https://github.com/caffeine-addictt/waku"
+    license: AGPL-3.0
+    formats: [rpm, apk, termux.deb, deb, archlinux]
+    dependencies: [git]
+
+brews:
+  - homepage: "https://github.com/caffeine-addictt/waku"
+    license: "AGPL-3.0"
+    skip_upload: auto
+    directory: Formula/waku
+    repository:
+      owner: caffeine-addictt
+      name: homebrew-tap
+      branch: "waku"
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+    commit_author:
+      name: goreleaserbot
+      email: bot@goreleaser.com
+    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
+    description: "A simple template repository generator. Lets make starting new proejcts feel like a breeze again!"
+
+chocolateys:
+  - name: waku
+    title: Repository template
+    owners: caffeine-addictt
+    authors: caffeine-addictt
+    project_url: https://github.com/caffeine-addictt/waku
+    package_source_url: https://github.com/caffeine-addictt/waku
+    url_template: "https://github.com/caffeine-addictt/waku/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    # icon_url: "" https://docs.chocolatey.org/en-us/create/create-packages/#package-icon-guidelines
+    copyright: 2024 Jun Xiang
+    license_url: https://github.com/caffeine-addictt/waku/blob/main/LICENSE
+    require_license_acceptance: false
+    docs_url: https://github.com/caffeine-addictt/waku/blob/main/README.md
+    bug_tracker_url: https://github.com/caffeine-addictt/waku/issues
+    tags: "repository git generator simple quick quickstart template project project-generator"
+    summary: "A simple template repository generator."
+    description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
+    release_notes: "https://github.com/caffeine-addictt/waku/releases/tag/{{ .Tag }}"
+    dependencies:
+      - id: git
+    api_key: "{{ .Env.CHOCOLATEY_API_KEY }}"
+    source_repo: "https://push.chocolatey.org/"
+    skip_publish: false
+
+release:
+  ids: [default]
+  draft: true
+  replace_existing_draft: true
+  target_commitish: "{{ .Commit }}"
+  prerelease: auto
+  mode: replace
+  skip_upload: false
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  use: github
+  sort: asc
+  abbrev: 0
+  filters:
+    exclude:
+      - "^(T|t)ypo"
+  groups:
+    - title: Features
+      regexp: '^.*?(F|f)eat(\(.+\))??!?:.+$'
+      order: 0
+    - title: Bug fixes
+      regexp: '^.*?(F|f)ix(\(.+\))??!?:.+$'
+      order: 1
+    - title: Improvements
+      regexp: '^.*?((D|d)ocs?|(S|s)tyle|(T|t)est|(B|b)uild|(P|p)erf|(R|r)efactor)(\(.+\))??!?:.+$'
+      order: 2
+    - title: Security issues
+      regexp: ^.*?(S|s)ecurity.*?$
+      order: 4
+    - title: Others
+      order: 999
