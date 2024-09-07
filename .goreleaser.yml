@@ -89,13 +89,13 @@ nfpms:
   - maintainer: Jun Xiang <contact@ngjx.org>
     description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
     homepage: "https://github.com/caffeine-addictt/waku"
-    license: MIT
+    license: AGPL-3.0
     formats: [rpm, apk, termux.deb, deb, archlinux]
     dependencies: [git]
 
 brews:
   - homepage: "https://github.com/caffeine-addictt/waku"
-    license: "MIT"
+    license: "AGPL-3.0"
     skip_upload: auto
     directory: Formula/waku
     repository:
