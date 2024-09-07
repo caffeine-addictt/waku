@@ -62,6 +62,14 @@ otherwise, you can install Docker from their [docs](https://docs.docker.com/get-
 
 ### Our images are hosted on Docker Hub and GitHub
 
+> [!NOTE]
+> At present, out images do not yet support using
+> your system's Git, and thus will only be able to
+> access publicly available repositories.
+>
+> Want to help us out?
+> Check out our [Contributing Guide](https://github.com/caffeine-addictt/waku/blob/main/CONTRIBUTING.md).
+
 You will need to mount your current directory to `/app` in the Docker container
 for `Waku` to run correctly.
 
