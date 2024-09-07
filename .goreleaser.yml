@@ -39,7 +39,7 @@ aurs:
     private_key: "{{ .Env.AUR_PRIVATE_KEY }}"
     license: AGPL-3.0
     git_url: "ssh://aur@aur.archlinux.org/waku-bin.git"
-    skip_upload: true
+    skip_upload: false
     depends:
       - git
     package: |-
@@ -67,7 +67,7 @@ dockers:
       - "ghcr.io/caffeine-addictt/waku:latest"
       - "ghcr.io/caffeine-addictt/waku:{{ .Major }}"
       - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}"
-    skip_push: true
+    skip_push: false
     dockerfile: Dockerfile
     use: buildx
     build_flag_templates:
@@ -130,7 +130,7 @@ chocolateys:
       - id: git
     api_key: "{{ .Env.CHOCOLATEY_API_KEY }}"
     source_repo: "https://push.chocolatey.org/"
-    skip_publish: true # update this
+    skip_publish: false
 
 release:
   ids: [default]
