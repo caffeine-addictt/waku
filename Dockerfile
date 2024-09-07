@@ -36,6 +36,9 @@ WORKDIR /app
 # Install git
 RUN apk add --update --no-cache git && rm -rf /var/cache/apk/*
 
+RUN adduser -D waku
+USER waku
+
 # Copy bins from build stage
 COPY --from=build-stage /waku-cli/waku /usr/bin/waku
 
