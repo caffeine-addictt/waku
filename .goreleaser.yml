@@ -60,6 +60,31 @@ aurs:
       email: bot@goreleaser.com
     url_template: "https://github.com/caffeine-addictt/waku/releases/{{ .Tag }}/{{ .ArtifactName }}"
 
+dockers:
+  - image_templates:
+      - "caffeinec/waku:latest"
+      - "caffeinec/waku:{{ .Major }}"
+      - "caffeinec/waku:{{ .Tag }}"
+      - "ghcr.io/caffeine-addictt/waku:latest"
+      - "ghcr.io/caffeine-addictt/waku:{{ .Major }}"
+      - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}"
+    skip_push: true
+    dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/caffeine-addictt/waku/main/README.md"
+      # - "--label=io.artifacthub.package.logo-url=https://goreleaser.com/static/avatar.png"
+      - '--label=io.artifacthub.package.maintainers=[{"name":"Jun Xiang","email":"contact@ngjx.org"}]'
+      - "--label=io.artifacthub.package.license=AGPL-3.0"
+      - "--label=org.opencontainers.image.description=A simple template repository generator. Lets make starting new proejcts feel like a breeze again!"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.name={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--platform=linux/amd64"
+
 nfpms:
   - maintainer: Jun Xiang <contact@ngjx.org>
     description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
