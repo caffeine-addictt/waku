@@ -30,7 +30,6 @@ archives:
   - format_overrides:
       - goos: windows
         format: zip
-    files: [LICENSE, README.md]
 
 aurs:
   - homepage: https://github.com/caffeine-addictt/waku
