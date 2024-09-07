@@ -7,7 +7,10 @@ import (
 	"path/filepath"
 )
 
-const PermOwnerReadWrite = 0o600 // RW perms for owner only
+const (
+	FilePerms = 0o644 // -rw-r--r--
+	DirPerms  = 0o755 // drwxr-xr-x
+)
 
 func WalkDirRecursive(root string) ([]string, error) {
 	var paths []string

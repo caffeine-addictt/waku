@@ -54,7 +54,7 @@ var NewCmd = &cobra.Command{
 		}
 
 		options.Infof("creating project in '%s'...\n", projectRootDir)
-		if err := os.Mkdir(projectRootDir, utils.PermOwnerReadWrite); err != nil {
+		if err := os.Mkdir(projectRootDir, utils.DirPerms); err != nil {
 			cmd.PrintErrln(err)
 			exitCode = 1
 			return
@@ -270,7 +270,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 		// write dirs
 		dir := filepath.Dir(newPath)
 		if dir != "." {
-			if err := os.MkdirAll(dir, utils.PermOwnerReadWrite); err != nil {
+			if err := os.MkdirAll(dir, utils.DirPerms); err != nil {
 				return errors.Join(fmt.Errorf("failed to create directory at %s", dir), err)
 			}
 		}
@@ -287,7 +287,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 			defer tmpFile.Close()
 			options.Debugf("opened file for reading: %s\n", tmpPath)
 
-			newFile, err := os.OpenFile(filepath.Clean(newPath), os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.PermOwnerReadWrite)
+			newFile, err := os.OpenFile(filepath.Clean(newPath), os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.FilePerms)
 			if err != nil {
 				errChan <- err
 				return
@@ -320,7 +320,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 		newPath := filepath.Join(projectRoot, "LICENSE")
 		options.Infof("writing to %s\n", newPath)
 
-		newFile, err := os.OpenFile(filepath.Clean(newPath), os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.PermOwnerReadWrite)
+		newFile, err := os.OpenFile(filepath.Clean(newPath), os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.FilePerms)
 		if err != nil {
 			errChan <- err
 			return
