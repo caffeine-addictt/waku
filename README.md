@@ -35,6 +35,7 @@ Let's make starting new projects feel like a **_breeze_** again.
 
 <!-- TOC -->
 
+**[<kbd> <br> Install <br> </kbd>][install-url]**
 **[<kbd> <br> Features <br> </kbd>](#features)**
 **[<kbd> <br> Quick Start <br> </kbd>](#quick-start)**
 **[<kbd> <br> Documentation <br> </kbd>][docs-url]**
@@ -110,6 +111,7 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 
 <!---------------- {{Links}} ---------------->
 
+[install-url]: https://github.com/caffeine-addictt/waku/blob/main/docs/install.md
 [docs-url]: https://github.com/caffeine-addictt/waku/blob/main/docs/README.md
 [goreport-url]: https://goreportcard.com/report/github.com/caffeine-addictt/waku
 [contribute]: https://github.com/caffeine-addictt/waku/blob/main/CONTRIBUTING.md
