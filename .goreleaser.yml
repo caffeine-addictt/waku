@@ -61,13 +61,13 @@ aurs:
       install -Dm644 <(./waku completion fish) "$pkgdir/usr/share/fish/completions/waku.fish"
 
       # man page
-      mkdir -p man1
-      ./waku main man1
-      for manpage in "$srcdir/man1"/*.1; do
-        install -Dm644 "$manpage" -t "$pkgdir/usr/share/man/man1"
-      done
+      man_dir="$(mktemp -d)"
+      ./waku man "$man_dir"
 
       mkdir -p "$pkgdir/usr/share/man/man1"
+      install -Dm644 "$man_dir"/*.1 "$pkgdir/usr/share/man/man1"
+
+      rm -r "$man_dir"
     commit_author:
       name: goreleaserbot
       email: bot@goreleaser.com
