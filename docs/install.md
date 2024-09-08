@@ -74,7 +74,7 @@ You will need to mount your current directory to `/app` in the Docker container
 for `Waku` to run correctly.
 
 ```sh
-docker run -v $PWD:/app caffeine/waku:latest
+docker run -v $PWD:/app caffeinec/waku:latest
 docker run -v $PWD:/app ghcr.io/caffeine-addictt/waku:latest
 ```
 
