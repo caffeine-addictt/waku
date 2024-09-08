@@ -7,6 +7,27 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestMultilineString(t *testing.T) {
+	tt := []struct {
+		out   string
+		rule  string
+		input []string
+	}{
+		{"Hello World\nHello World", "two lines", []string{"Hello World", "Hello World"}},
+		{"Hello World", "one line", []string{"Hello World"}},
+		{"", "empty", []string{}},
+		{"\n\n", "empty newlines", []string{"", "", ""}},
+		{"Hello World\nHello World", "newline character", []string{"Hello World\nHello World"}},
+	}
+
+	for _, tc := range tt {
+		t.Run(tc.rule, func(t *testing.T) {
+			got := utils.MultilineString(tc.input...)
+			assert.Equal(t, tc.out, got, tc.rule)
+		})
+	}
+}
+
 func TestStringStartsWith(t *testing.T) {
 	tt := []struct {
 		inputs [2]string

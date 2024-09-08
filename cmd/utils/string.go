@@ -5,6 +5,12 @@ import (
 	"unicode"
 )
 
+// MultilineString provides a
+// pleasing way to write multiline strings.
+func MultilineString(s ...string) string {
+	return strings.Join(s, "\n")
+}
+
 // StringStartsWith returns true if the given string
 // starts with the given string look, or if they start similarily.
 func StringStartsWith(s, look string) bool {

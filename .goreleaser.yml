@@ -2,6 +2,8 @@
 project_name: waku
 report_sizes: true
 
+version: 2
+
 before:
   hooks:
     - go mod download
@@ -51,10 +53,17 @@ aurs:
       install -Dm644 "./LICENSE" "$pkgdir/usr/share/licenses/$pkgname"
 
       # completions
-      # not too sure how to provide them
+      install -Dm644 <(./waku compleetion bash") "$pkgdir/usr/share/bash-completion/completions/$pkgname"
+      install -Dm644 <(./waku compleetion zsh") "$pkgdir/usr/share/zsh/site-functions/_waku"
+      install -Dm644 <(./waku compleetion fish") "$pkgdir/usr/share/fish/completions/waku.fish"
 
       # man page
-      # not too sure how to provide them
+      mkdir -p man1
+      ./waku main man1
+      for manpage in "$srcdir/man1"/*.1; do
+        install -Dm644 "$manpage" -t "$pkgdir/usr/share/man/man1"
+      done
+
     commit_author:
       name: goreleaserbot
       email: bot@goreleaser.com
@@ -63,11 +72,16 @@ aurs:
 dockers:
   - image_templates:
       - "caffeinec/waku:latest"
-      - "caffeinec/waku:{{ .Major }}"
+      - "caffeinec/waku:v{{ .Major }}"
       - "caffeinec/waku:{{ .Tag }}"
       - "ghcr.io/caffeine-addictt/waku:latest"
-      - "ghcr.io/caffeine-addictt/waku:{{ .Major }}"
+      - "ghcr.io/caffeine-addictt/waku:v{{ .Major }}"
       - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}"
+    extra_files:
+      - cmd/
+      - go.mod
+      - go.sum
+      - main.go
     skip_push: false
     dockerfile: Dockerfile
     use: buildx
@@ -123,7 +137,7 @@ chocolateys:
     require_license_acceptance: false
     docs_url: https://github.com/caffeine-addictt/waku/blob/main/README.md
     bug_tracker_url: https://github.com/caffeine-addictt/waku/issues
-    tags: "repository git generator simple quick quickstart template project project-generator"
+    tags: "repository git generator simple quick quickstart template project project-generator cli command-line go"
     summary: "A simple template repository generator."
     description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
     release_notes: "https://github.com/caffeine-addictt/waku/releases/tag/{{ .Tag }}"
