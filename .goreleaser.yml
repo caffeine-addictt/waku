@@ -32,7 +32,8 @@ archives:
         format: zip
 
 aurs:
-  - homepage: https://github.com/caffeine-addictt/waku
+  - name: waku
+    homepage: https://github.com/caffeine-addictt/waku
     description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
     maintainers:
       - Jun Xiang <contact@ngjx.org>
