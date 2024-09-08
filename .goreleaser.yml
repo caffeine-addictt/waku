@@ -53,7 +53,9 @@ aurs:
       install -Dm644 "./LICENSE" "$pkgdir/usr/share/licenses/$pkgname"
 
       # completions
-      # not too sure how to provide them
+      install -Dm644 <(./waku compleetion bash") "$pkgdir/usr/share/bash-completion/completions/$pkgname"
+      install -Dm644 <(./waku compleetion zsh") "$pkgdir/usr/share/zsh/site-functions/_waku"
+      install -Dm644 <(./waku compleetion fish") "$pkgdir/usr/share/fish/completions/waku.fish"
 
       # man page
       # not too sure how to provide them
