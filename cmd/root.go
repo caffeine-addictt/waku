@@ -10,7 +10,7 @@ import (
 
 // The Root command
 var RootCmd = &cobra.Command{
-	Use:   "template",
+	Use:   "waku",
 	Short: "let's make starting new projects feel like a breeze again",
 	Long:  "This tool helps you to create a new project from templates.\n\nLet's make starting new projects feel like a breeze again.",
 }

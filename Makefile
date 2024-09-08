@@ -25,7 +25,7 @@ all: build test
 ## help: print this help message
 .PHONY: help
 help:
-	@echo 'Template - You can run the CLI with "go run main.go"'
+	@echo 'Waku - You can run the CLI with "go run main.go"'
 	@echo ''
 	@echo 'Usage: make [target]'
 	@echo ''
