@@ -5,7 +5,7 @@
 <!-- Project Banner -->
 
 <a href="https://github.com/caffeine-addictt/waku">
-  <img src="https://github.com/caffeine-addictt/waku/blob/main/assets/transparent-logo.svg" width="750" height="300" alt="">
+    <img src="https://github.com/caffeine-addictt/waku/blob/main/assets/logo-full-transparent.png" style="max-width:1125px;" alt="">
 </a>
 
 <br>
