@@ -5,6 +5,7 @@ import (
 
 	"github.com/caffeine-addictt/waku/cmd/commands"
 	"github.com/caffeine-addictt/waku/cmd/options"
+	"github.com/caffeine-addictt/waku/cmd/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -12,7 +13,11 @@ import (
 var RootCmd = &cobra.Command{
 	Use:   "waku",
 	Short: "let's make starting new projects feel like a breeze again",
-	Long:  "This tool helps you to create a new project from templates.\n\nLet's make starting new projects feel like a breeze again.",
+	Long: utils.MultilineString(
+		"Waku helps you kickstart new projects from templates.",
+		"",
+		"Let's make starting new projects feel like a breeze again.",
+	),
 }
 
 // Setting up configuration
