@@ -72,11 +72,16 @@ aurs:
 dockers:
   - image_templates:
       - "caffeinec/waku:latest"
-      - "caffeinec/waku:{{ .Major }}"
+      - "caffeinec/waku:v{{ .Major }}"
       - "caffeinec/waku:{{ .Tag }}"
       - "ghcr.io/caffeine-addictt/waku:latest"
-      - "ghcr.io/caffeine-addictt/waku:{{ .Major }}"
+      - "ghcr.io/caffeine-addictt/waku:v{{ .Major }}"
       - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}"
+    extra_files:
+      - cmd/
+      - go.mod
+      - go.sum
+      - main.go
     skip_push: false
     dockerfile: Dockerfile
     use: buildx
