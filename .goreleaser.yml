@@ -47,7 +47,7 @@ aurs:
       - git
     package: |-
       # bin
-      install -Dm755 "./waku" -t "$pkgdir/usr/bin/waku"
+      install -Dm755 "./waku" -t "$pkgdir/usr/bin"
 
       # license
       install -Dm644 "./LICENSE" "$pkgdir/usr/share/licenses/waku"
