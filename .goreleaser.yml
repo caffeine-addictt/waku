@@ -34,7 +34,7 @@ archives:
         format: zip
 
 aurs:
-  - name: waku
+  - name: waku-bin
     homepage: https://github.com/caffeine-addictt/waku
     description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
     maintainers:
@@ -47,10 +47,10 @@ aurs:
       - git
     package: |-
       # bin
-      install -Dm755 "./$pkgname" -t "$pkgdir/usr/bin/$pkgname"
+      install -Dm755 "./waku" -t "$pkgdir/usr/bin/waku"
 
       # license
-      install -Dm644 "./LICENSE" "$pkgdir/usr/share/licenses/$pkgname"
+      install -Dm644 "./LICENSE" "$pkgdir/usr/share/licenses/waku"
 
       # completions
       install -Dm644 <(./waku compleetion bash") "$pkgdir/usr/share/bash-completion/completions/$pkgname"
