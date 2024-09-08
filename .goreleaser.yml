@@ -137,7 +137,7 @@ chocolateys:
     require_license_acceptance: false
     docs_url: https://github.com/caffeine-addictt/waku/blob/main/README.md
     bug_tracker_url: https://github.com/caffeine-addictt/waku/issues
-    tags: "repository git generator simple quick quickstart template project project-generator"
+    tags: "repository git generator simple quick quickstart template project project-generator cli command-line go"
     summary: "A simple template repository generator."
     description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
     release_notes: "https://github.com/caffeine-addictt/waku/releases/tag/{{ .Tag }}"
