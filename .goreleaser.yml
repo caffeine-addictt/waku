@@ -129,7 +129,7 @@ brews:
 
 chocolateys:
   - name: waku
-    title: Repository template
+    title: Waku
     owners: caffeine-addictt
     authors: caffeine-addictt
     project_url: https://github.com/caffeine-addictt/waku
