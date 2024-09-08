@@ -71,7 +71,7 @@ aurs:
     commit_author:
       name: goreleaserbot
       email: bot@goreleaser.com
-    url_template: "https://github.com/caffeine-addictt/waku/releases/{{ .Tag }}/{{ .ArtifactName }}"
+    url_template: "https://github.com/caffeine-addictt/waku/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
 
 dockers:
   - image_templates:
