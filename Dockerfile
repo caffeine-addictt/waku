@@ -34,7 +34,7 @@ FROM alpine:3.20.3 AS deploy-stage
 WORKDIR /app
 
 # Install git
-RUN apk add --update --no-cache git && rm -rf /var/cache/apk/*
+RUN apk add --update --no-cache tini git && rm -rf /var/cache/apk/*
 
 RUN adduser -D waku
 USER waku
@@ -43,4 +43,4 @@ USER waku
 COPY --from=build-stage /waku-cli/waku /usr/bin/waku
 
 # Run
-ENTRYPOINT ["waku"]
+ENTRYPOINT ["/sbin/tini", "--", "waku"]
