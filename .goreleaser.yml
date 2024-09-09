@@ -81,13 +81,8 @@ dockers:
       - "ghcr.io/caffeine-addictt/waku:latest"
       - "ghcr.io/caffeine-addictt/waku:v{{ .Major }}"
       - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}"
-    extra_files:
-      - cmd/
-      - go.mod
-      - go.sum
-      - main.go
     skip_push: false
-    dockerfile: Dockerfile
+    dockerfile: Dockerfile.release
     use: buildx
     build_flag_templates:
       - "--pull"
