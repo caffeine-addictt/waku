@@ -8,10 +8,10 @@ var GlobalOpts = GlobalOptions{
 }
 
 type GlobalOptions struct {
-	// Wheter or not debug mode should be enabled
+	// Whether or not debug mode should be enabled
 	Debug bool
 
-	// Wheter or not verbose mode should be enabled
+	// Whether or not verbose mode should be enabled
 	Verbose bool
 
 	// Mainly for screen-reader support, dropping
