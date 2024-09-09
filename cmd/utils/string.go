@@ -12,7 +12,7 @@ func MultilineString(s ...string) string {
 }
 
 // StringStartsWith returns true if the given string
-// starts with the given string look, or if they start similarily.
+// starts with the given string look, or if they start similarly.
 func StringStartsWith(s, look string) bool {
 	if len(s) >= len(look) {
 		return look == s
