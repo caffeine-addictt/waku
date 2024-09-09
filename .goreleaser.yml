@@ -75,19 +75,10 @@ aurs:
 
 dockers:
   - image_templates:
-      - "caffeinec/waku:latest"
-      - "caffeinec/waku:v{{ .Major }}"
-      - "caffeinec/waku:{{ .Tag }}"
-      - "ghcr.io/caffeine-addictt/waku:latest"
-      - "ghcr.io/caffeine-addictt/waku:v{{ .Major }}"
-      - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}"
-    extra_files:
-      - cmd/
-      - go.mod
-      - go.sum
-      - main.go
+      - "caffeinec/waku:{{ .Tag }}-amd64"
+      - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}-amd64"
     skip_push: false
-    dockerfile: Dockerfile
+    dockerfile: Dockerfile.release
     use: buildx
     build_flag_templates:
       - "--pull"
@@ -102,6 +93,55 @@ dockers:
       - "--label=org.opencontainers.image.version={{.Version}}"
       - "--label=org.opencontainers.image.source={{.GitURL}}"
       - "--platform=linux/amd64"
+
+  - image_templates:
+      - "caffeinec/waku:{{ .Tag }}-arm64"
+      - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}-arm64"
+    skip_push: false
+    dockerfile: Dockerfile.release
+    use: buildx
+    goarch: arm64
+    build_flag_templates:
+      - "--pull"
+      - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/caffeine-addictt/waku/main/README.md"
+      - "--label=io.artifacthub.package.logo-url=https://raw.githubusercontent.com/caffeine-addictt/waku/main/assets/logo.png"
+      - '--label=io.artifacthub.package.maintainers=[{"name":"Jun Xiang","email":"contact@ngjx.org"}]'
+      - "--label=io.artifacthub.package.license=AGPL-3.0"
+      - "--label=org.opencontainers.image.description=A simple template repository generator. Lets make starting new proejcts feel like a breeze again!"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.name={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--platform=linux/arm64"
+
+docker_manifests:
+  - name_template: "caffeinec/waku:{{ .Tag }}"
+    image_templates:
+      - "caffeinec/waku:{{ .Tag }}-amd64"
+      - "caffeinec/waku:{{ .Tag }}-arm64"
+  - name_template: "ghcr.io/caffeine-addictt/waku:{{ .Tag }}"
+    image_templates:
+      - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}-amd64"
+      - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}-arm64"
+
+  - name_template: "{{ if not .Prerelease }}caffeinec/waku:latest{{ end }}"
+    image_templates:
+      - "caffeinec/waku:{{ .Tag }}-amd64"
+      - "caffeinec/waku:{{ .Tag }}-arm64"
+  - name_template: "{{ if not .Prerelease }}caffeinec/waku:v{{ .Major }}{{ end }}"
+    image_templates:
+      - "caffeinec/waku:{{ .Tag }}-amd64"
+      - "caffeinec/waku:{{ .Tag }}-arm64"
+
+  - name_template: "{{ if not .Prerelease }}ghcr.io/caffeine-addictt/waku:latest{{ end }}"
+    image_templates:
+      - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}-amd64"
+      - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}-arm64"
+  - name_template: "{{ if not .Prerelease }}ghcr.io/caffeine-addictt/waku:v{{ .Major }}{{ end }}"
+    image_templates:
+      - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}-amd64"
+      - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}-arm64"
 
 nfpms:
   - maintainer: Jun Xiang <contact@ngjx.org>
