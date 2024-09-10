@@ -9,6 +9,7 @@ Here you will find all the ways you can install `Waku` on your system.
   - [AUR](#aur)
   - [Golang](#golang)
   - [Download](#download)
+  - [Snapcraft](#snapcraft)
   - [Homebrew](#homebrew)
   - [Choco](#choco)
   - [Docker](#docker)
@@ -37,6 +38,12 @@ go install github.com/caffeine-addictt/waku@latest
 
 You can also download `Waku` from our
 [GitHub release page](https://github.com/caffeine-addictt/waku/releases/latest).
+
+## Snapcraft
+
+```sh
+sudo snap install waku --classic
+```
 
 ## Homebrew
 

@@ -35,6 +35,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: setup-snapcraft
+        run: |
+          sudo apt-get update
+          sudo apt-get -yq --no-install-suggests --no-install-recommends install snapcraft
+
       - name: Set up Chocolately
         run: |
           set -xe
@@ -69,3 +74,4 @@ jobs:
           TAP_GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           AUR_PRIVATE_KEY: ${{ secrets.AUR_KEY }}
           CHOCOLATEY_API_KEY: ${{ secrets.CHOCOLATEY_API_KEY }}
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_LOGIN }}
