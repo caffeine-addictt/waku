@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"os/exec"
 	"os/signal"
 	"path/filepath"
 	"strings"
@@ -237,6 +238,20 @@ var NewCmd = &cobra.Command{
 			exitCode = 1
 			return
 		}
+
+		if options.NewOpts.NoGit {
+			options.Infoln("skipping git initialization")
+		} else {
+			cmd.Println("initializing git...")
+			initGit := exec.Command("git", "init")
+			initGit.Dir = projectRootDir
+
+			if err := initGit.Run(); err != nil {
+				fmt.Printf("failed to initialize git: %s\n", err)
+				exitCode = 1
+				return
+			}
+		}
 	},
 }
 
@@ -251,6 +266,7 @@ func AddNewCmdFlags(cmd *cobra.Command) {
 	cmd.Flags().VarP(&options.NewOpts.Name, "name", "n", "name of the project")
 	cmd.Flags().VarP(&options.NewOpts.License, "license", "l", "license to use for the project")
 	cmd.Flags().VarP(&options.NewOpts.Style, "style", "S", "which style to use")
+	cmd.Flags().BoolVarP(&options.NewOpts.NoGit, "no-git", "G", options.NewOpts.NoGit, "whether to not initialize git")
 }
 
 func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string, tmpl, licenseTmpl map[string]string) error {

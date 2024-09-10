@@ -19,6 +19,7 @@ var NewOpts = NewOptions{
 	Name:      *types.NewValueGuard("", cmdOpt, types.STRING),
 	License:   *types.NewValueGuard("", cmdOpt, types.STRING),
 	Style:     *types.NewValueGuard("", cmdOpt, types.STRING),
+	NoGit:     false,
 }
 
 type NewOptions struct {
@@ -40,6 +41,9 @@ type NewOptions struct {
 
 	// The style to use
 	Style types.ValueGuard[string]
+
+	// Whether to skip initializing git
+	NoGit bool
 }
 
 func cmdOpt(v string) (string, error) {
