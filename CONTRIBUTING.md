@@ -19,7 +19,6 @@ please follow it in all your interactions with the project.
 5. [Code Quality](#code-quality)
     - [Testing](#testing)
     - [Linting](#linting)
-    - [Building](#building)
 
 <!--toc:end-->
 <!-- prettier-ignore-end -->
@@ -43,16 +42,11 @@ Don't forget to give the project a star! Thanks again!
 
 ## Pull Request Process
 
-1. Ensure any install or build dependencies are removed before the end of the layer
-   when doing a build.
+1. Ensure any install or build dependencies are removed.
 2. Ensure that tests and linting pass.
-3. Ensure that `dist/` is updated with `npm run build`.
-4. Update the README.md with details of changes to the interface;
-   this includes new environment variables, exposed ports,
-   valid file locations and container parameters.
-5. Increase the version numbers in any examples files and the README.md
+3. Increase the version numbers in any examples files and the README.md
    that this Pull Request would represent. The versioning scheme we use is [SemVer](http://semver.org/).
-6. You may merge the Pull Request once you have the sign-off of two other developers,
+4. You may merge the Pull Request once you have the sign-off of two other developers,
    or if you do not have permission to do that, you may request the second reviewer
    to merge it for you.
 
@@ -92,45 +86,26 @@ git commit -m "docs: Moved README.md"
 
 ## Code Quality
 
-> [!IMPORTANT]
-> To ensure our script can be ran directly with `Node.js`,
-> without any additional install or build steps,
-> the use of any external libraries or packages is not allowed.
->
-> (This does not apply to development dependencies.)
-
-To prevent any unintentional errors, we develop this project with [TypeScript](https://www.typescriptlang.org/).
-
 ### Testing
 
-We use [Jest](https://jestjs.io/) to test our code.
+We use `gotest` to test our code.
 Please ensure that tests are updated and pass before merging a Pull Request.
 
 ```sh
 # To test your code, run:
-npm run test
+make test
 ```
 
 ### Linting
 
-We use [Prettier](https://prettier.io/) and [ESLint](https://eslint.org/)
+We use `gofmt`
 to ensure that code is consistent and follows our [code style](./.github/CODESTYLE.md).
 Please ensure that your code passes linting before merging a Pull Request.
 
 ```sh
 # To lint your code, run:
-npm run lint
+make lint
 
-# To fix any linting errors, run:
-npm run lint:fix
-```
-
-### Building
-
-We pre-transpile our code to JavaScript in the `dist/` directory.
-Please ensure that the `dist/` directory is updated before merging a Pull Request.
-
-```sh
-# To build your code, run:
-npm run build
+# To format your code, run:
+make format
 ```
