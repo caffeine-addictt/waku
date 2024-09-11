@@ -199,7 +199,7 @@ snapcrafts:
       Lets make starting new proejcts feel like a breeze again!
     license: AGPL-3.0
     grade: stable
-    confinement: strict
+    confinement: classic
     publish: true
 
 release:
