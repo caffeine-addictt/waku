@@ -160,7 +160,7 @@ brews:
       owner: caffeine-addictt
       name: homebrew-tap
       branch: "waku"
-      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+      token: "{{ .Env.GITHUB_PAT }}"
     commit_author:
       name: goreleaserbot
       email: bot@goreleaser.com
@@ -201,6 +201,21 @@ snapcrafts:
     grade: stable
     confinement: classic
     publish: true
+
+scoops:
+  - repository:
+      owner: caffeine-addictt
+      name: scoop-bucket
+      token: "{{ .Env.GITHUB_PAT }}"
+    skip_upload: auto
+    commit_author:
+      name: goreleaserbot
+      email: bot@goreleaser.com
+    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
+    directory: bucket
+    homepage: https://github.com/caffeine-addictt/waku
+    description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
+    license: AGPL-3.0
 
 release:
   ids: [default]

@@ -55,6 +55,13 @@ brew tap caffeine-addictt/tap
 brew install caffeine-addictt/tap/waku
 ```
 
+## Scoop
+
+```sh
+scoop bucket add caffeine https://github.com/caffeine-addictt/scoop-bucket.git
+scoop install <name>
+```
+
 ## Choco
 
 ```ps1
