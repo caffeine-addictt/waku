@@ -210,6 +210,8 @@ brews:
       email: bot@goreleaser.com
     commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
     description: "A simple template repository generator. Lets make starting new proejcts feel like a breeze again!"
+    dependencies:
+      - git
     extra_install: |-
       bash_completion.install "completions/waku.bash" => "waku"
       zsh_completion.install "completions/waku.zsh" => "_waku"
