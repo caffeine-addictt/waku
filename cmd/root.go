@@ -14,8 +14,9 @@ var RootCmd = &cobra.Command{
 	Use:   "waku",
 	Short: "let's make starting new projects feel like a breeze again",
 	Long: utils.MultilineString(
-		"Waku helps you kickstart new projects from templates.",
+		"Waku (waku!) 枠組み",
 		"",
+		"Waku helps you kickstart new projects from templates.",
 		"Let's make starting new projects feel like a breeze again.",
 	),
 }
