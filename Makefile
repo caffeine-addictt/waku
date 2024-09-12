@@ -122,6 +122,18 @@ test:
 bench:
 	go test -v -bench=. -benchmem ./...
 
+
+
+
+## bump: Quickly bump Waku version (X.X.X, X.X.X-rc.X, etc.)
+bump:
+	@VERSION=$(version) ; \
+	if [ -z "$$VERSION" ]; then \
+		echo "Usage: make bump version=x.x.x"; \
+		exit 1; \
+	fi; \
+	./scripts/version_bump.sh "$$VERSION"
+
 # =================================== QUALITY ================================== #
 
 ## lint: Lint code
