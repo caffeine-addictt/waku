@@ -16,14 +16,15 @@ builds:
     goos: [linux, windows, darwin]
     goarch: [amd64, arm64]
 
-upx:
-  - ids: [default]
-    enabled: true
-    compress: best
-    lzma: true
-    brute: true
-    goos: [linux, windows] # skip darwin (macOS 13.x Ventura is not support now)
-    goarch: [amd64, arm64]
+# Lets disable this for now and follow goreleaser upstream https://github.com/goreleaser/goreleaser/blob/main/.goreleaser.yaml#L67
+# upx:
+#   - ids: [default]
+#     enabled: true
+#     compress: best
+#     lzma: true
+#     brute: true
+#     goos: [linux, windows] # skip darwin (macOS 13.x Ventura is not support now)
+#     goarch: [amd64, arm64]
 
 archives:
   - format_overrides:
