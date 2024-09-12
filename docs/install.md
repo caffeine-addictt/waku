@@ -11,12 +11,17 @@ Here you will find all the ways you can install `Waku` on your system.
   - [Download](#download)
   - [Snapcraft](#snapcraft)
   - [Homebrew](#homebrew)
+  - [Scoop](#scoop)
   - [Choco](#choco)
   - [Docker](#docker)
     - [Our images are hosted on Docker Hub and GitHub](#our-images-are-hosted-on-docker-hub-and-github)
     - [Scripts](#scripts)
       - [Linux/MacOS](#linuxmacos)
       - [Windows](#windows)
+  - [Verify](#verify)
+    - [1. Download the checksums.txt file](#1-download-the-checksumstxt-file)
+    - [2. Verify checksums signature](#2-verify-checksums-signature)
+    - [3. Verify the SHA256 sums match](#3-verify-the-sha256-sums-match)
 
 <!--toc:end-->
 <!-- prettier-ignore-end -->
@@ -112,4 +117,34 @@ iwr -useb https://github.com/caffeine-addictt/waku/releases/latest/download/waku
 
 # If you prefer to use Waku from GitHub
 iwr -useb https://github.com/caffeine-addictt/waku/releases/latest/download/waku.ps1 | iex; Run-Waku "ghcr"
+```
+
+## Verify
+
+### 1. Download the checksums.txt file
+
+Either from our [releases page](https://github.com/caffeine-addictt/waku/releases/latest)
+or by running the following command:
+
+```sh
+curl -sSL https://github.com/caffeine-addictt/waku/releases/latest/download/checksums.txt -o checksums.txt
+```
+
+### 2. Verify checksums signature
+
+We sign our checksums with [Cosign](https://github.com/sigstore/cosign)
+
+```sh
+cosign verify-blob \
+  --certificate-identity 'https://github.com/caffeine-addictt/waku/.github/workflows/release.yml@refs/tags/v0.2.5' \
+  --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' \
+  --cert 'https://github.com/caffeine-addictt/waku/releases/download/v0.2.5/checksums.txt.pem' \
+  --signature 'https://github.com/caffeine-addictt/waku/releases/download/v0.2.5/checksums.txt.sig' \
+  ./checksums.txt
+```
+
+### 3. Verify the SHA256 sums match
+
+```sh
+sha256sum --ignore-missing -c checksums.txt
 ```

@@ -6,32 +6,81 @@ version: 2
 
 before:
   hooks:
-    - go mod download
     - go mod tidy
-    - go run github.com/securego/gosec/v2/cmd/gosec@latest -quiet ./...
-    - go run github.com/go-critic/go-critic/cmd/gocritic@latest check -enableAll ./...
-    - go run github.com/google/osv-scanner/cmd/osv-scanner@latest -r .
-    - go test -race ./...
+    - ./scripts/completions.sh
+    - ./scripts/manpages.sh
 
 builds:
-  - id: default
-    env: [CGO_ENABLED=0]
-    goos: [linux, windows, darwin]
-    goarch: [amd64, arm64]
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - "386"
+      - amd64
+      - arm
+      - arm64
+      - ppc64
+    goarm:
+      - "7"
+    ignore:
+      - goos: windows
+        goarch: arm
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    flags:
+      - -trimpath
 
-upx:
-  - ids: [default]
-    enabled: true
-    compress: best
-    lzma: true
-    brute: true
-    goos: [linux, windows] # skip darwin (macOS 13.x Ventura is not support now)
-    goarch: [amd64, arm64]
+universal_binaries:
+  - replace: false
+
+# Lets disable this for now and follow goreleaser upstream https://github.com/goreleaser/goreleaser/blob/main/.goreleaser.yaml#L67
+# upx:
+#   - ids: [default]
+#     enabled: true
+#     compress: best
+#     lzma: true
+#     brute: true
+#     goos: [linux, windows] # skip darwin (macOS 13.x Ventura is not support now)
+#     goarch: [amd64, arm64]
 
 archives:
-  - format_overrides:
+  - name_template: >-
+      {{- .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end -}}
+    format_overrides:
       - goos: windows
         format: zip
+    builds_info:
+      group: root
+      owner: root
+      mtime: "{{ .CommitDate }}"
+    files:
+      - src: README.md
+        info:
+          owner: root
+          group: root
+          mtime: "{{ .CommitDate }}"
+      - src: LICENSE
+        info:
+          owner: root
+          group: root
+          mtime: "{{ .CommitDate }}"
+      - src: completions/*
+        info:
+          owner: root
+          group: root
+          mtime: "{{ .CommitDate }}"
+      - src: manpages/*
+        info:
+          owner: root
+          group: root
+          mtime: "{{ .CommitDate }}"
 
 aurs:
   - name: waku-bin
@@ -56,18 +105,13 @@ aurs:
       mkdir -p "${pkgdir}/usr/share/bash-completion/completions/"
       mkdir -p "${pkgdir}/usr/share/zsh/site-functions/"
       mkdir -p "${pkgdir}/usr/share/fish/vendor_completions.d/"
-      install -Dm644 <(./waku completion bash) "$pkgdir/usr/share/bash-completion/completions/waku"
-      install -Dm644 <(./waku completion zsh) "$pkgdir/usr/share/zsh/site-functions/_waku"
-      install -Dm644 <(./waku completion fish) "$pkgdir/usr/share/fish/completions/waku.fish"
+      install -Dm644 "./completions/waku.bash" "$pkgdir/usr/share/bash-completion/completions/waku"
+      install -Dm644 "./completions/waku.zsh" "$pkgdir/usr/share/zsh/site-functions/_waku"
+      install -Dm644 "./completions/waku.fish" "$pkgdir/usr/share/fish/vendor_completions.d/waku.fish"
 
       # man page
-      man_dir="$(mktemp -d)"
-      ./waku man "$man_dir"
-
       mkdir -p "$pkgdir/usr/share/man/man1"
-      install -Dm644 "$man_dir"/*.1 "$pkgdir/usr/share/man/man1"
-
-      rm -r "$man_dir"
+      install -Dm644 "./manpages/waku.1.gz" "$pkgdir/usr/share/man/man1/waku.1.gz"
     commit_author:
       name: goreleaserbot
       email: bot@goreleaser.com
@@ -166,6 +210,15 @@ brews:
       email: bot@goreleaser.com
     commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
     description: "A simple template repository generator. Lets make starting new proejcts feel like a breeze again!"
+    dependencies:
+      - git
+    test: |
+      system "#{bin}/waku version"
+    extra_install: |-
+      bash_completion.install "completions/waku.bash" => "waku"
+      zsh_completion.install "completions/waku.zsh" => "_waku"
+      fish_completion.install "completions/waku.fish"
+      man1.install "manpages/waku.1.gz"
 
 # chocolateys:
 #   - name: waku
@@ -216,6 +269,27 @@ scoops:
     homepage: https://github.com/caffeine-addictt/waku
     description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
     license: AGPL-3.0
+
+signs:
+  - cmd: cosign
+    certificate: "${artifact}.pem"
+    output: true
+    artifacts: checksum
+    args:
+      - sign-blob
+      - "--output-certificate=${certificate}"
+      - "--output-signature=${signature}"
+      - "${artifact}"
+      - --yes
+
+docker_signs:
+  - cmd: cosign
+    artifacts: manifests
+    output: true
+    args:
+      - "sign"
+      - "${artifact}@${digest}"
+      - --yes
 
 release:
   ids: [default]

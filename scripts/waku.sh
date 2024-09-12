@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
-if ! command -v docker &>/dev/null; then
+if ! command -v docker >/dev/null 2>&1; then
   echo "Error: Docker is not installed. Please install Docker and try again."
   exit 1
 fi
@@ -8,7 +8,7 @@ fi
 IMG="caffeinec/waku:latest"
 
 # Check if GHCR is preferred over DockerHub
-if [[ "$1" == "ghcr" ]]; then
+if [ "$1" = "ghcr" ]; then
   IMG="ghcr.io/caffeine-addictt/waku:latest"
   shift # Remove 'ghcr' from the args
 fi
