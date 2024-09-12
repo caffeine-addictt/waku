@@ -16,7 +16,8 @@ var ManCmd = &cobra.Command{
 		"Generate man pages for the command.",
 		"By default, man pages are generated in /usr/share/man/man1.",
 	),
-	Args: cobra.MaximumNArgs(1),
+	Hidden: true,
+	Args:   cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		dirPathDirty := "/usr/share/man/man1/"
 		if len(args) == 1 {
