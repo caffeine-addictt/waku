@@ -6,6 +6,8 @@ on:
       - "*"
 
 permissions:
+  id-token: write
+  packages: write
   contents: write
 
 env:
