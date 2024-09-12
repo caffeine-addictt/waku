@@ -212,6 +212,8 @@ brews:
     description: "A simple template repository generator. Lets make starting new proejcts feel like a breeze again!"
     dependencies:
       - git
+    test: |
+      system "#{bin}/waku version"
     extra_install: |-
       bash_completion.install "completions/waku.bash" => "waku"
       zsh_completion.install "completions/waku.zsh" => "_waku"
