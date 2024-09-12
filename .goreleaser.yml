@@ -270,6 +270,27 @@ scoops:
     description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
     license: AGPL-3.0
 
+signs:
+  - cmd: cosign
+    certificate: "${artifact}.pem"
+    output: true
+    artifacts: checksum
+    args:
+      - sign-blob
+      - "--output-certificate=${certificate}"
+      - "--output-signature=${signature}"
+      - "${artifact}"
+      - --yes
+
+docker_signs:
+  - cmd: cosign
+    artifacts: manifests
+    output: true
+    args:
+      - "sign"
+      - "${artifact}@${digest}"
+      - --yes
+
 release:
   ids: [default]
   draft: false
