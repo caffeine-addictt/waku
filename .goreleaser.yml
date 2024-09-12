@@ -11,10 +11,29 @@ before:
     - ./scripts/manpages.sh
 
 builds:
-  - id: default
-    env: [CGO_ENABLED=0]
-    goos: [linux, windows, darwin]
-    goarch: [amd64, arm64]
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - "386"
+      - amd64
+      - arm
+      - arm64
+      - ppc64
+    goarm:
+      - "7"
+    ignore:
+      - goos: windows
+        goarch: arm
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    flags:
+      - -trimpath
+
+universal_binaries:
+  - replace: false
 
 # Lets disable this for now and follow goreleaser upstream https://github.com/goreleaser/goreleaser/blob/main/.goreleaser.yaml#L67
 # upx:
