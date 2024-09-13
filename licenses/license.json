@@ -21,6 +21,12 @@
       "spdx": "AGPL-3.0",
       "filename": "agpl-3.0.txt",
       "wants": []
+    },
+    {
+      "name": "Apache License Version 2.0",
+      "spdx": "Apache-2.0",
+      "filename": "apache-2.0.txt",
+      "wants": []
     }
   ]
 }
