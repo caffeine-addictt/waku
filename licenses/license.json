@@ -66,6 +66,12 @@
         "year",
         "fullname"
       ]
+    },
+    {
+      "name": "Boost Software License 1.0",
+      "spdx": "BSL-1.0",
+      "filename": "bsl-1.0.txt",
+      "wants": []
     }
   ]
 }
