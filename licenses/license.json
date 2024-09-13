@@ -27,6 +27,12 @@
       "spdx": "Apache-2.0",
       "filename": "apache-2.0.txt",
       "wants": []
+    },
+    {
+      "name": "Artistic License 2.0",
+      "spdx": "Artistic-2.0",
+      "filename": "artistic-2.0.txt",
+      "wants": []
     }
   ]
 }
