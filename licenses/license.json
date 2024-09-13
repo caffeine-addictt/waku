@@ -102,6 +102,12 @@
       "spdx": "GPL-3.0",
       "filename": "gpl-3.0.txt",
       "wants": []
+    },
+    {
+      "name": "GNU Lesser General Public License v2.1",
+      "spdx": "LGPL-2.1-only",
+      "filename": "lgpl-2.1.txt",
+      "wants": []
     }
   ]
 }
