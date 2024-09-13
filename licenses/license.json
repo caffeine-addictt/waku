@@ -33,6 +33,12 @@
       "spdx": "Artistic-2.0",
       "filename": "artistic-2.0.txt",
       "wants": []
+    },
+    {
+      "name": "Blue Oak Model License 1.0.0",
+      "spdx": "BlueOak-1.0.0",
+      "filename": "blueoak-1.0.0.txt",
+      "wants": []
     }
   ]
 }
