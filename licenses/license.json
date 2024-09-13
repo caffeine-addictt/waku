@@ -57,6 +57,15 @@
         "year",
         "fullname"
       ]
+    },
+    {
+      "name": "BSD 4-Clause \"Original\" or \"Old\" License",
+      "spdx": "BSD-4-Clause",
+      "filename": "bsd-4-clause.txt",
+      "wants": [
+        "year",
+        "fullname"
+      ]
     }
   ]
 }
