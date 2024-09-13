@@ -114,6 +114,15 @@
       "spdx": " LGPL-3.0-only",
       "filename": "lgpl-3.0.txt",
       "wants": []
+    },
+    {
+      "name": "MIT License",
+      "spdx": "MIT",
+      "filename": "mit.txt",
+      "wants": [
+        "year",
+        "fullname"
+      ]
     }
   ]
 }
