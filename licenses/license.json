@@ -135,6 +135,12 @@
       "spdx": "Unlicense",
       "filename": "unlicense.txt",
       "wants": []
+    },
+    {
+      "name": "Do What The F*ck You Want To Public License",
+      "spdx": "WTFPL",
+      "filename": "wtfpl.txt",
+      "wants": []
     }
   ]
 }
