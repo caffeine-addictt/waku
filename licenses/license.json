@@ -72,6 +72,12 @@
       "spdx": "BSL-1.0",
       "filename": "bsl-1.0.txt",
       "wants": []
+    },
+    {
+      "name": "Creative Commons Attribution 4.0 International",
+      "spdx": "CC-BY-4.0",
+      "filename": "cc-by-4.0.txt",
+      "wants": []
     }
   ]
 }
