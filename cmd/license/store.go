@@ -7,7 +7,10 @@ import (
 	"github.com/goccy/go-json"
 )
 
-const API_VERSION = "2022-11-28"
+const (
+	LICENSE_LIST = "license.json"
+	BASE_URL     = "https://raw.githubusercontent.com/caffeine-addictt/waku/main/licenses/"
+)
 
 // The global "cache" per say so we only
 // need to hit the endpoint once per session.
@@ -20,13 +23,12 @@ func GetLicenses() (*[]License, error) {
 		return Licenses, nil
 	}
 
-	req, err := http.NewRequest(http.MethodGet, "https://api.github.com/licenses", http.NoBody)
+	req, err := http.NewRequest(http.MethodGet, BASE_URL+LICENSE_LIST, http.NoBody)
 	if err != nil {
 		return nil, err
 	}
 
-	req.Header.Set("Accept", "application/vnd.github+json")
-	req.Header.Set("X-GitHub-Api-Version", API_VERSION)
+	req.Header.Set("Accept", "text/plain")
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -39,11 +41,13 @@ func GetLicenses() (*[]License, error) {
 		return nil, err
 	}
 
-	var l []License
+	var l struct {
+		Licenses []License `json:"licenses"`
+	}
 	if err := json.Unmarshal(body, &l); err != nil {
 		return nil, err
 	}
 
-	Licenses = &l
+	Licenses = &l.Licenses
 	return Licenses, nil
 }

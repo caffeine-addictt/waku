@@ -134,9 +134,8 @@ var NewCmd = &cobra.Command{
 			return
 		}
 
-		licenseWants := licenseText.GetWants()
-		licenseTmpl := make(map[string]string, len(licenseWants))
-		for _, v := range licenseWants {
+		licenseTmpl := make(map[string]string, len(license.Wants))
+		for _, v := range license.Wants {
 			licenseTmpl[v] = fmt.Sprintf("Value for license %s?", v)
 		}
 
@@ -233,7 +232,7 @@ var NewCmd = &cobra.Command{
 		finalTmpl["NAME"] = name
 		finalTmpl["LICENSE"] = license.Spdx
 
-		if err := WriteFiles(rootDir, projectRootDir, ignoredPaths.ToSlice(), licenseText.Body, finalTmpl, licenseTmpl); err != nil {
+		if err := WriteFiles(rootDir, projectRootDir, ignoredPaths.ToSlice(), licenseText, finalTmpl, licenseTmpl); err != nil {
 			fmt.Printf("failed to write files: %s\n", err)
 			exitCode = 1
 			return
