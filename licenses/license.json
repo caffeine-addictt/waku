@@ -78,6 +78,12 @@
       "spdx": "CC-BY-4.0",
       "filename": "cc-by-4.0.txt",
       "wants": []
+    },
+    {
+      "name": "Creative Commons Zero v1.0 Universal",
+      "spdx": "CC0-1.0",
+      "filename": "cc0-1.0.txt",
+      "wants": []
     }
   ]
 }
