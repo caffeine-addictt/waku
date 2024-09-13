@@ -1,5 +1,14 @@
 {
   "$schema": "./license-schema.json",
   "licenses": [
+    {
+      "name": "BSD Zero Clause License",
+      "spdx": "0BSD",
+      "filename": "0BSD.txt",
+      "wants": [
+        "year",
+        "fullname"
+      ]
+    }
   ]
 }
