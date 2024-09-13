@@ -1,9 +1,11 @@
 package license
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/goccy/go-json"
 )
@@ -44,7 +46,16 @@ func (license *License) GetLicenseText() (string, error) {
 		return "", err
 	}
 
-	return string(body), nil
+	txt := string(body)
+	for i := range license.Wants {
+		if license.Wants[i] == "year" {
+			txt = strings.ReplaceAll(txt, "[year]", fmt.Sprintf("%d", time.Now().UTC().Year()))
+			license.Wants = append(license.Wants[:i], license.Wants[i+1:]...)
+			break
+		}
+	}
+
+	return txt, nil
 }
 
 type LicenseWants []string
