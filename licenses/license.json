@@ -129,6 +129,12 @@
       "spdx": "MPL-2.0",
       "filename": "mpl-2.0.txt",
       "wants": []
+    },
+    {
+      "name": "The Unlicense",
+      "spdx": "Unlicense",
+      "filename": "unlicense.txt",
+      "wants": []
     }
   ]
 }
