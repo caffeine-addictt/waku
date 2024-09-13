@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "licenses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The full name of the license."
+          },
+          "spdx": {
+            "type": "string",
+            "description": "The SPDX identifier for the license."
+          },
+          "filename": {
+            "type": "string",
+            "description": "The filename containing the plaintext of the license in the licenses/ directory."
+          },
+          "wants": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Fields that should be filled in the license text."
+            },
+            "description": "An array of fields expected to be filled in the license text, like 'name'."
+          }
+        },
+        "required": ["name", "spdx", "filename", "wants"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["licenses", "$schema"],
+  "additionalProperties": false
+}
