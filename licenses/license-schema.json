@@ -31,19 +31,11 @@
             "description": "An array of fields expected to be filled in the license text, like 'name'."
           }
         },
-        "required": [
-          "name",
-          "spdx",
-          "filename",
-          "wants"
-        ],
+        "required": ["name", "spdx", "filename", "wants"],
         "additionalProperties": false
       }
     }
   },
-  "required": [
-    "licenses",
-    "$schema"
-  ],
+  "required": ["licenses", "$schema"],
   "additionalProperties": false
 }

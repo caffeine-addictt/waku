@@ -5,10 +5,7 @@
       "name": "BSD Zero Clause License",
       "spdx": "0BSD",
       "filename": "0BSD.txt",
-      "wants": [
-        "year",
-        "fullname"
-      ]
+      "wants": ["year", "fullname"]
     },
     {
       "name": "Academic Free License v3.0",
@@ -44,28 +41,19 @@
       "name": "BSD 2-Clause \"Simplified\" License",
       "spdx": "BSD-2-Clause",
       "filename": "bsd-2-clause.txt",
-      "wants": [
-        "year",
-        "fullname"
-      ]
+      "wants": ["year", "fullname"]
     },
     {
       "name": "BSD 3-Clause \"New\" or \"Revised\" License",
       "spdx": "BSD-3-Clause",
       "filename": "bsd-3-clause.txt",
-      "wants": [
-        "year",
-        "fullname"
-      ]
+      "wants": ["year", "fullname"]
     },
     {
       "name": "BSD 4-Clause \"Original\" or \"Old\" License",
       "spdx": "BSD-4-Clause",
       "filename": "bsd-4-clause.txt",
-      "wants": [
-        "year",
-        "fullname"
-      ]
+      "wants": ["year", "fullname"]
     },
     {
       "name": "Boost Software License 1.0",
@@ -119,10 +107,7 @@
       "name": "MIT License",
       "spdx": "MIT",
       "filename": "mit.txt",
-      "wants": [
-        "year",
-        "fullname"
-      ]
+      "wants": ["year", "fullname"]
     },
     {
       "name": "Mozilla Public License 2.0",
