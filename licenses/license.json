@@ -84,6 +84,12 @@
       "spdx": "CC0-1.0",
       "filename": "cc0-1.0.txt",
       "wants": []
+    },
+    {
+      "name": "Eclipse Public License 2.0",
+      "spdx": "EPL-2.0",
+      "filename": "epl-2.0.txt",
+      "wants": []
     }
   ]
 }
