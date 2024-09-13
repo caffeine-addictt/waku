@@ -90,6 +90,12 @@
       "spdx": "EPL-2.0",
       "filename": "epl-2.0.txt",
       "wants": []
+    },
+    {
+      "name": "GNU General Public License v2.0",
+      "spdx": "GPL-2.0",
+      "filename": "gpl-2.0.txt",
+      "wants": []
     }
   ]
 }
