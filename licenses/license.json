@@ -39,6 +39,15 @@
       "spdx": "BlueOak-1.0.0",
       "filename": "blueoak-1.0.0.txt",
       "wants": []
+    },
+    {
+      "name": "BSD 2-Clause \"Simplified\" License",
+      "spdx": "BSD-2-Clause",
+      "filename": "bsd-2-clause.txt",
+      "wants": [
+        "year",
+        "fullname"
+      ]
     }
   ]
 }
