@@ -96,6 +96,12 @@
       "spdx": "GPL-2.0",
       "filename": "gpl-2.0.txt",
       "wants": []
+    },
+    {
+      "name": "GNU General Public License v3.0",
+      "spdx": "GPL-3.0",
+      "filename": "gpl-3.0.txt",
+      "wants": []
     }
   ]
 }
