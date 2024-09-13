@@ -48,6 +48,15 @@
         "year",
         "fullname"
       ]
+    },
+    {
+      "name": "BSD 3-Clause \"New\" or \"Revised\" License",
+      "spdx": "BSD-3-Clause",
+      "filename": "bsd-3-clause.txt",
+      "wants": [
+        "year",
+        "fullname"
+      ]
     }
   ]
 }
