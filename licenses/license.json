@@ -4,7 +4,7 @@
     {
       "name": "BSD Zero Clause License",
       "spdx": "0BSD",
-      "filename": "0BSD.txt",
+      "filename": "0bsd.txt",
       "wants": ["year", "fullname"]
     },
     {
@@ -99,7 +99,7 @@
     },
     {
       "name": "GNU Lesser General Public License v3.0",
-      "spdx": " LGPL-3.0-only",
+      "spdx": "LGPL-3.0-only",
       "filename": "lgpl-3.0.txt",
       "wants": []
     },
