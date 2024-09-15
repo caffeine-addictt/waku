@@ -230,8 +230,9 @@ var NewCmd = &cobra.Command{
 		// Handle writing files
 		cmd.Println("writing files...")
 		finalTmpl := extraPrompts
-		finalTmpl["NAME"] = name
-		finalTmpl["LICENSE"] = license.Spdx
+		finalTmpl["Name"] = name
+		finalTmpl["License"] = license.Spdx
+		options.Debugf("final template: %v", finalTmpl)
 
 		if err := WriteFiles(rootDir, projectRootDir, ignoredPaths.ToSlice(), licenseText, finalTmpl, licenseTmpl); err != nil {
 			fmt.Printf("failed to write files: %s\n", err)

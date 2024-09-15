@@ -40,7 +40,7 @@ func (t TemplatePrompts) Validate() error {
 		}
 
 		delete(t, k)
-		t[types.CleanString(strings.ToUpper(newK))] = types.CleanString(newV)
+		t[types.CleanString(newK)] = types.CleanString(newV)
 	}
 
 	return nil
