@@ -154,7 +154,7 @@ var NewCmd = &cobra.Command{
 		}
 		options.Debugf("resolved prompts to: %v\n", extraPrompts)
 
-		prompts := make([]*huh.Group, len(extraPrompts))
+		prompts := make([]*huh.Group, 0, len(extraPrompts))
 		for n, v := range extraPrompts {
 			prompts = append(prompts, huh.NewGroup(huh.NewText().Title(v).Validate(func(s string) error {
 				s = strings.TrimSpace(s)
@@ -178,6 +178,7 @@ var NewCmd = &cobra.Command{
 			})))
 		}
 
+		options.Debugf("resolved prompt groups to: %v\n", prompts)
 		if err := huh.NewForm(prompts...).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
 			cmd.PrintErrln(err)
 			exitCode = 1
