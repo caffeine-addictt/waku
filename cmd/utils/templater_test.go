@@ -20,24 +20,24 @@ func TestParseTemplateFile(t *testing.T) {
 		{
 			name: "Basic replacement",
 			tmpl: map[string]string{
-				"NAME": "John",
+				"Name": "John",
 			},
-			input:  "Hello {{NAME}}, welcome!",
+			input:  "Hello {{ .Name }}, welcome!",
 			output: "Hello John, welcome!\n",
 		},
 		{
 			name: "Multiple replacements",
 			tmpl: map[string]string{
-				"NAME":  "John",
-				"PLACE": "office",
+				"Name":  "John",
+				"Place": "office",
 			},
-			input:  "Hello {{NAME}}, welcome to the {{PLACE}}.",
+			input:  "Hello {{ .Name }}, welcome to the {{ .Place }}.",
 			output: "Hello John, welcome to the office.\n",
 		},
 		{
 			name: "No replacement",
 			tmpl: map[string]string{
-				"NAME": "John",
+				"Name": "John",
 			},
 			input:  "No template here.",
 			output: "No template here.\n",
@@ -45,7 +45,7 @@ func TestParseTemplateFile(t *testing.T) {
 		{
 			name: "Empty input",
 			tmpl: map[string]string{
-				"NAME": "John",
+				"Name": "John",
 			},
 			input:  "",
 			output: "",
@@ -53,41 +53,25 @@ func TestParseTemplateFile(t *testing.T) {
 		{
 			name: "Special characters in template key",
 			tmpl: map[string]string{
-				"URL": "https://example.com",
+				"Url": "https://example.com",
 			},
-			input:  "Visit {{{{URL}}}} for more info.",
+			input:  "Visit {{ \"{{\" }}{{ .Url }}{{ \"}}\" }} for more info.",
 			output: "Visit {{https://example.com}} for more info.\n",
-		},
-		{
-			name: "White space between braces",
-			tmpl: map[string]string{
-				"NAME": "John",
-			},
-			input:  "Hello { { NAME } }, welcome!",
-			output: "Hello John, welcome!\n",
-		},
-		{
-			name: "Unclosed brace",
-			tmpl: map[string]string{
-				"NAME": "John",
-			},
-			input:  "Hello {{NAME, welcome!",
-			output: "Hello {{NAME, welcome!\n", // No replacement since it's unclosed.
 		},
 		{
 			name: "Invalid template with no match",
 			tmpl: map[string]string{
-				"NAME": "John",
+				"Name": "John",
 			},
-			input:  "Hello {{USERNAME}}, welcome!",
-			output: "Hello {{USERNAME}}, welcome!\n", // No replacement since there's no match.
+			input:  "Hello {{ .Username }}, welcome!",
+			output: "Hello , welcome!\n",
 		},
 		{
 			name: "Valid template with multiple lines",
 			tmpl: map[string]string{
-				"NAME": "John",
+				"Name": "John",
 			},
-			input:  "Hello {{NAME}}, welcome!\nHello {{NAME}}, welcome!",
+			input:  "Hello {{ .Name }}, welcome!\nHello {{ .Name }}, welcome!",
 			output: "Hello John, welcome!\nHello John, welcome!\n",
 		},
 	}
@@ -103,7 +87,7 @@ func TestParseTemplateFile(t *testing.T) {
 			assert.NoError(t, err, "failed to parse")
 
 			writer.Flush()
-			assert.Equal(t, output.String(), tt.output, "wrong output")
+			assert.Equal(t, tt.output, output.String(), "wrong output")
 		})
 	}
 }
