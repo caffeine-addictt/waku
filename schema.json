@@ -50,6 +50,10 @@
       "items": {
         "type": "object",
         "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the label."
+          },
           "color": {
             "type": "string",
             "description": "A HEX color code.",
@@ -60,7 +64,7 @@
             "description": "An optional description for the label."
           }
         },
-        "required": ["color"],
+        "required": ["name", "color"],
         "additionalProperties": false
       },
       "description": "Labels with associated colors."
@@ -126,6 +130,10 @@
               "items": {
                 "type": "object",
                 "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the label."
+                  },
                   "color": {
                     "type": "string",
                     "description": "A HEX color code.",
@@ -136,7 +144,7 @@
                     "description": "An optional description for the label."
                   }
                 },
-                "required": ["color"],
+                "required": ["name", "color"],
                 "additionalProperties": false
               },
               "description": "Labels with associated colors for this style."
