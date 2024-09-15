@@ -298,7 +298,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 
 			tmpFile, err := os.Open(filepath.Clean(tmpPath))
 			if err != nil {
-				errChan <- err
+				errChan <- errors.Join(fmt.Errorf("%s", tmpPath), err)
 				return
 			}
 			defer tmpFile.Close()
@@ -306,7 +306,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 
 			newFile, err := os.OpenFile(filepath.Clean(newPath), os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.FilePerms)
 			if err != nil {
-				errChan <- err
+				errChan <- errors.Join(fmt.Errorf("%s", newPath), err)
 				return
 			}
 			defer newFile.Close()
@@ -315,13 +315,13 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 			reader := bufio.NewScanner(tmpFile)
 			writer := bufio.NewWriter(newFile)
 			if err := utils.ParseTemplateFile(ctx, tmpl, reader, writer); err != nil {
-				errChan <- err
+				errChan <- errors.Join(fmt.Errorf("failed to parse template from %s to %s", tmpPath, newPath), err)
 				return
 			}
 
 			options.Debugf("flushing buffer for %s", newPath)
 			if err := writer.Flush(); err != nil {
-				errChan <- err
+				errChan <- errors.Join(fmt.Errorf("failed to flush buffer for %s", newPath), err)
 				return
 			}
 
@@ -346,13 +346,13 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 		options.Debugf("opened file for writing: %s\n", newPath)
 
 		if _, err := newFile.WriteString(newLicenseText); err != nil {
-			errChan <- err
+			errChan <- fmt.Errorf("failed to write license text to %s", newPath)
 			return
 		}
 
 		options.Debugf("flushing buffer for %s", newPath)
 		if err := newFile.Sync(); err != nil {
-			errChan <- err
+			errChan <- fmt.Errorf("failed to flush buffer for %s", newPath)
 			return
 		}
 
