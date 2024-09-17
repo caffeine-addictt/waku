@@ -3,13 +3,17 @@ name: "Bug Report"
 about: "Report an issue to help the project improve."
 title: "[Bug] "
 labels: "Type: Bug"
-assignees: ["{{ASSIGNEES}}"]
+assignees:
+  - @{{ .User }}
+{{- range .Assignees }}
+  - {{ . }}
+{{- end }}
 ---
 
 # Bug report
 
 Your issue may already be reported!
-Please check out our [active issues](https://github.com/{{REPOSITORY}}/issues) before creating one.
+Please check out our [active issues](https://github.com/{{ .User }}/{{ .Repo }}/issues) before creating one.
 
 ## Expected Behavior
 

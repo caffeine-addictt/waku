@@ -2,7 +2,37 @@
   "$schema": "../schema.json",
   "styles": {
     "simple github": {
-      "source": "simple-github"
+      "source": "simple-github",
+      "prompts": [
+        {
+          "key": "User",
+          "type": "str",
+          "ask": "Your GitHub username"
+        },
+        {
+          "key": "Email",
+          "type": "str",
+          "ask": "Your email address",
+          "validate": "^.+@.+\\..+$"
+        },
+        {
+          "key": "Repo",
+          "type": "str",
+          "ask": "Your GitHub repository name"
+        },
+        {
+          "key": "Docs",
+          "type": "str",
+          "ask": "The documentation URL of your project (leave empty if none)",
+          "validate": ".*"
+        },
+        {
+          "key": "Assignees",
+          "type": "arr",
+          "ask": "Additional issue assignees by GitHub username",
+          "capture": "^\\s*@?(.*?)\\s*$"
+        }
+      ]
     }
   },
   "labels": [
