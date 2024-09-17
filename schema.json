@@ -33,7 +33,9 @@
           "description": "Path to the setup script for macOS (Darwin)."
         }
       },
-      "required": ["*"],
+      "required": [
+        "*"
+      ],
       "additionalProperties": false
     },
     "ignore": {
@@ -64,21 +66,57 @@
             "description": "An optional description for the label."
           }
         },
-        "required": ["name", "color"],
+        "required": [
+          "name",
+          "color"
+        ],
         "additionalProperties": false
       },
       "description": "Labels with associated colors."
     },
     "prompts": {
-      "type": "object",
-      "patternProperties": {
-        "^[^\\s].*[^\\s]$": {
-          "type": "string",
-          "description": "The text used to ask for a value from the user. The key cannot be empty, have leading or trailing spaces, and the value can be empty but it's not advisable."
-        }
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "A case-sensitive key formatted in template files"
+          },
+          "capture": {
+            "type": "string",
+            "description": "Regex capture group used to extract the value from the user input. Only the first group is used. Defaults to text stripping leading and trailing whitespace."
+          },
+          "sep": {
+            "type": "string",
+            "description": "The separator between values. Defaults to ','. This has no effect when type is 'str'."
+          },
+          "fmt": {
+            "type": "string",
+            "description": "How the value(s) will be formatted individually. At least one '*' is required as it is used to replace the inputted value. Defaults to '*'.",
+            "pattern": "\\*"
+          },
+          "ask": {
+            "type": "string",
+            "description": "The text used to ask for a value from the user. This is otherwise inferred from `key`."
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of prompt. Defaults to 'str'.",
+            "pattern": "^(str|arr)$"
+          },
+          "validate": {
+            "type": "string",
+            "description": "An optional regex to validate the value."
+          }
+        },
+        "required": [
+          "key",
+          "type"
+        ]
       },
       "additionalProperties": false,
-      "description": "An optional object that defines user prompts."
+      "description": "An optional array that defines user prompts."
     },
     "styles": {
       "type": "object",
@@ -113,7 +151,9 @@
                   "description": "Path to the setup script for macOS (Darwin)."
                 }
               },
-              "required": ["*"],
+              "required": [
+                "*"
+              ],
               "additionalProperties": false
             },
             "ignore": {
@@ -144,24 +184,62 @@
                     "description": "An optional description for the label."
                   }
                 },
-                "required": ["name", "color"],
+                "required": [
+                  "name",
+                  "color"
+                ],
                 "additionalProperties": false
               },
               "description": "Labels with associated colors for this style."
             },
             "prompts": {
-              "type": "object",
-              "patternProperties": {
-                "^[^\\s].*[^\\s]$": {
-                  "type": "string",
-                  "description": "The text used to ask for a value from the user. The key cannot be empty, have leading or trailing spaces, and the value can be empty but it's not advisable."
-                }
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "description": "A case-sensitive key formatted in template files"
+                  },
+                  "capture": {
+                    "type": "string",
+                    "description": "Regex capture group used to extract the value from the user input. Only the first group is used. Defaults to text stripping leading and trailing whitespace."
+                  },
+                  "sep": {
+                    "type": "string",
+                    "description": "The separator between values. Defaults to ','. This has no effect when type is 'str'."
+                  },
+                  "fmt": {
+                    "type": "string",
+                    "description": "How the value(s) will be formatted individually. At least one '*' is required as it is used to replace the inputted value. Defaults to '*'.",
+                    "pattern": "\\*"
+                  },
+                  "ask": {
+                    "type": "string",
+                    "description": "The text used to ask for a value from the user. This is otherwise inferred from `key`."
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "The type of prompt. Defaults to 'str'.",
+                    "pattern": "^(str|arr)$"
+                  },
+                  "validate": {
+                    "type": "string",
+                    "description": "An optional regex to validate the value."
+                  }
+                },
+                "required": [
+                  "key",
+                  "type"
+                ]
               },
               "additionalProperties": false,
-              "description": "An optional object that defines user prompts."
+              "description": "An optional array that defines user prompts."
             }
           },
-          "required": ["source"],
+          "required": [
+            "source"
+          ],
           "additionalProperties": false
         }
       }
@@ -170,22 +248,30 @@
   "allOf": [
     {
       "if": {
-        "required": ["styles"]
+        "required": [
+          "styles"
+        ]
       },
       "then": {
         "not": {
-          "required": ["name"]
+          "required": [
+            "name"
+          ]
         }
       }
     },
     {
       "if": {
         "not": {
-          "required": ["styles"]
+          "required": [
+            "styles"
+          ]
         }
       },
       "then": {
-        "required": ["name"]
+        "required": [
+          "name"
+        ]
       }
     }
   ],

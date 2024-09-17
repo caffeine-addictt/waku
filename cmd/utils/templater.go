@@ -15,7 +15,7 @@ import (
 // `find` should be X where the actual template searched for is "{{X}}" {{{x}}}
 //
 // Time complexity through the roof: HAVE TO OPTIMIZE
-func ParseTemplateFile(ctx context.Context, tmpl map[string]string, reader *bufio.Scanner, writer *bufio.Writer) error {
+func ParseTemplateFile(ctx context.Context, tmpl map[string]any, reader *bufio.Scanner, writer *bufio.Writer) error {
 	var s strings.Builder
 	for reader.Scan() {
 		select {

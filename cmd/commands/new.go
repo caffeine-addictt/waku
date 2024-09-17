@@ -134,37 +134,30 @@ var NewCmd = &cobra.Command{
 			return
 		}
 
-		licenseTmpl := make(map[string]string, len(license.Wants))
-		for _, v := range license.Wants {
-			licenseTmpl[v] = fmt.Sprintf("Value for license %s?", v)
-		}
-
 		// Handle prompts
 		options.Debugln("resolving prompts...")
-		extraPrompts := map[string]string{}
+		extraPrompts := map[string]config.TemplatePrompt{}
 		if tmpl.Prompts != nil {
-			for val, ask := range *tmpl.Prompts {
-				extraPrompts[string(val)] = string(ask)
+			for _, ask := range *tmpl.Prompts {
+				extraPrompts[string(ask.Key)] = ask
 			}
 		}
 		if tmpl.Styles != nil && styleInfo.Prompts != nil {
-			for val, ask := range *styleInfo.Prompts {
-				extraPrompts[string(val)] = string(ask)
+			for _, ask := range *styleInfo.Prompts {
+				extraPrompts[string(ask.Key)] = ask
 			}
+		}
+
+		licenseTmpl := make(map[string]string, len(license.Wants))
+		for _, v := range license.Wants {
+			licenseTmpl[v] = fmt.Sprintf("Value for license %s?", v)
+			delete(extraPrompts, v)
 		}
 		options.Debugf("resolved prompts to: %v\n", extraPrompts)
 
 		prompts := make([]*huh.Group, 0, len(extraPrompts))
-		for n, v := range extraPrompts {
-			prompts = append(prompts, huh.NewGroup(huh.NewText().Title(v).Validate(func(s string) error {
-				s = strings.TrimSpace(s)
-				if s == "" {
-					return fmt.Errorf("cannot be empty")
-				}
-
-				extraPrompts[n] = s
-				return nil
-			})))
+		for _, v := range extraPrompts {
+			prompts = append(prompts, huh.NewGroup(v.GetPrompt()))
 		}
 		for n, v := range licenseTmpl {
 			prompts = append(prompts, huh.NewGroup(huh.NewText().Title(v).Validate(func(s string) error {
@@ -173,7 +166,7 @@ var NewCmd = &cobra.Command{
 					return fmt.Errorf("cannot be empty")
 				}
 
-				extraPrompts[n] = s
+				licenseTmpl[n] = s
 				return nil
 			})))
 		}
@@ -229,7 +222,13 @@ var NewCmd = &cobra.Command{
 
 		// Handle writing files
 		cmd.Println("writing files...")
-		finalTmpl := extraPrompts
+		finalTmpl := make(map[string]any, len(extraPrompts)+len(licenseTmpl))
+		for k, v := range extraPrompts {
+			finalTmpl[k] = v.Value
+		}
+		for k, v := range licenseTmpl {
+			finalTmpl[k] = v
+		}
 		finalTmpl["Name"] = name
 		finalTmpl["License"] = license.Spdx
 		options.Debugf("final template: %v", finalTmpl)
@@ -270,7 +269,7 @@ func AddNewCmdFlags(cmd *cobra.Command) {
 	cmd.Flags().BoolVarP(&options.NewOpts.NoGit, "no-git", "G", options.NewOpts.NoGit, "whether to not initialize git")
 }
 
-func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string, tmpl, licenseTmpl map[string]string) error {
+func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string, tmpl map[string]any, licenseTmpl map[string]string) error {
 	var wg sync.WaitGroup
 	wg.Add(len(paths) + 1)
 

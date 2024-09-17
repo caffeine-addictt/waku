@@ -13,13 +13,13 @@ import (
 func TestParseTemplateFile(t *testing.T) {
 	tests := []struct {
 		name   string
-		tmpl   map[string]string
+		tmpl   map[string]any
 		input  string
 		output string
 	}{
 		{
 			name: "Basic replacement",
-			tmpl: map[string]string{
+			tmpl: map[string]any{
 				"Name": "John",
 			},
 			input:  "Hello {{ .Name }}, welcome!",
@@ -27,7 +27,7 @@ func TestParseTemplateFile(t *testing.T) {
 		},
 		{
 			name: "Multiple replacements",
-			tmpl: map[string]string{
+			tmpl: map[string]any{
 				"Name":  "John",
 				"Place": "office",
 			},
@@ -36,7 +36,7 @@ func TestParseTemplateFile(t *testing.T) {
 		},
 		{
 			name: "No replacement",
-			tmpl: map[string]string{
+			tmpl: map[string]any{
 				"Name": "John",
 			},
 			input:  "No template here.",
@@ -44,7 +44,7 @@ func TestParseTemplateFile(t *testing.T) {
 		},
 		{
 			name: "Empty input",
-			tmpl: map[string]string{
+			tmpl: map[string]any{
 				"Name": "John",
 			},
 			input:  "",
@@ -52,7 +52,7 @@ func TestParseTemplateFile(t *testing.T) {
 		},
 		{
 			name: "Special characters in template key",
-			tmpl: map[string]string{
+			tmpl: map[string]any{
 				"Url": "https://example.com",
 			},
 			input:  "Visit {{ \"{{\" }}{{ .Url }}{{ \"}}\" }} for more info.",
@@ -60,7 +60,7 @@ func TestParseTemplateFile(t *testing.T) {
 		},
 		{
 			name: "Invalid template with no match",
-			tmpl: map[string]string{
+			tmpl: map[string]any{
 				"Name": "John",
 			},
 			input:  "Hello {{ .Username }}, welcome!",
@@ -68,7 +68,7 @@ func TestParseTemplateFile(t *testing.T) {
 		},
 		{
 			name: "Valid template with multiple lines",
-			tmpl: map[string]string{
+			tmpl: map[string]any{
 				"Name": "John",
 			},
 			input:  "Hello {{ .Name }}, welcome!\nHello {{ .Name }}, welcome!",
@@ -93,7 +93,7 @@ func TestParseTemplateFile(t *testing.T) {
 }
 
 func BenchmarkParseTemplateFile(b *testing.B) {
-	tmpl := map[string]string{
+	tmpl := map[string]any{
 		"NAME":    "John",
 		"PLACE":   "office",
 		"URL":     "https://example.com",
