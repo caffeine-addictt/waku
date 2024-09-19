@@ -13,6 +13,83 @@
       "minLength": 1
     },
     "setup": {
+      "$ref": "#/definitions/setup"
+    },
+    "ignore": {
+      "$ref": "#/definitions/ignore"
+    },
+    "labels": {
+      "$ref": "#/definitions/labels"
+    },
+    "prompts": {
+      "$ref": "#/definitions/prompts"
+    },
+    "styles": {
+      "type": "object",
+      "description": "An object containing style configurations.",
+      "patternProperties": {
+        "^[a-zA-Z0-9 ]+$": {
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": "string",
+              "description": "The path to the directory to use as a style.",
+              "format": "uri-reference"
+            },
+            "setup": {
+              "$ref": "#/definitions/setup"
+            },
+            "ignore": {
+              "$ref": "#/definitions/ignore"
+            },
+            "labels": {
+              "$ref": "#/definitions/labels"
+            },
+            "prompts": {
+              "$ref": "#/definitions/prompts"
+            }
+          },
+          "required": [
+            "source"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "styles"
+        ]
+      },
+      "then": {
+        "not": {
+          "required": [
+            "name"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "not": {
+          "required": [
+            "styles"
+          ]
+        }
+      },
+      "then": {
+        "required": [
+          "name"
+        ]
+      }
+    }
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "setup": {
       "type": "object",
       "description": "an object containing setup scripts for the template.",
       "properties": {
@@ -72,7 +149,7 @@
         ],
         "additionalProperties": false
       },
-      "description": "Labels with associated colors."
+      "description": "Labels with associated colors for this style."
     },
     "prompts": {
       "type": "array",
@@ -117,163 +194,6 @@
       },
       "additionalProperties": false,
       "description": "An optional array that defines user prompts."
-    },
-    "styles": {
-      "type": "object",
-      "description": "An object containing style configurations.",
-      "patternProperties": {
-        "^[a-zA-Z0-9 ]+$": {
-          "type": "object",
-          "properties": {
-            "source": {
-              "type": "string",
-              "description": "The path to the directory to use as a style.",
-              "format": "uri-reference"
-            },
-            "setup": {
-              "type": "object",
-              "description": "an object containing setup scripts for the template.",
-              "properties": {
-                "*": {
-                  "type": "string",
-                  "description": "Path to the default setup script, required."
-                },
-                "linux": {
-                  "type": "string",
-                  "description": "Path to the setup script for Linux."
-                },
-                "windows": {
-                  "type": "string",
-                  "description": "Path to the setup script for Windows."
-                },
-                "darwin": {
-                  "type": "string",
-                  "description": "Path to the setup script for macOS (Darwin)."
-                }
-              },
-              "required": [
-                "*"
-              ],
-              "additionalProperties": false
-            },
-            "ignore": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "description": "A path or pattern to ignore. Supports glob patterns.",
-                "pattern": "^(?![ ]*$)(!?([^*?/]+/)*([^*?/]+|\\*|\\*\\*|[^*?/]+/\\*|[^*?/]+/\\*\\*))$"
-              },
-              "description": "A list of paths or patterns to ignore for this style."
-            },
-            "labels": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "The name of the label."
-                  },
-                  "color": {
-                    "type": "string",
-                    "description": "A HEX color code.",
-                    "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$"
-                  },
-                  "description": {
-                    "type": "string",
-                    "description": "An optional description for the label."
-                  }
-                },
-                "required": [
-                  "name",
-                  "color"
-                ],
-                "additionalProperties": false
-              },
-              "description": "Labels with associated colors for this style."
-            },
-            "prompts": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "key": {
-                    "type": "string",
-                    "description": "A case-sensitive key formatted in template files"
-                  },
-                  "capture": {
-                    "type": "string",
-                    "description": "Regex capture group used to extract the value from the user input. Only the first group is used. Defaults to text stripping leading and trailing whitespace."
-                  },
-                  "sep": {
-                    "type": "string",
-                    "description": "The separator between values. Defaults to ','. This has no effect when type is 'str'."
-                  },
-                  "fmt": {
-                    "type": "string",
-                    "description": "How the value(s) will be formatted individually. At least one '*' is required as it is used to replace the inputted value. Defaults to '*'.",
-                    "pattern": "\\*"
-                  },
-                  "ask": {
-                    "type": "string",
-                    "description": "The text used to ask for a value from the user. This is otherwise inferred from `key`."
-                  },
-                  "type": {
-                    "type": "string",
-                    "description": "The type of prompt. Defaults to 'str'.",
-                    "pattern": "^(str|arr)$"
-                  },
-                  "validate": {
-                    "type": "string",
-                    "description": "An optional regex to validate the value."
-                  }
-                },
-                "required": [
-                  "key",
-                  "type"
-                ]
-              },
-              "additionalProperties": false,
-              "description": "An optional array that defines user prompts."
-            }
-          },
-          "required": [
-            "source"
-          ],
-          "additionalProperties": false
-        }
-      }
     }
-  },
-  "allOf": [
-    {
-      "if": {
-        "required": [
-          "styles"
-        ]
-      },
-      "then": {
-        "not": {
-          "required": [
-            "name"
-          ]
-        }
-      }
-    },
-    {
-      "if": {
-        "not": {
-          "required": [
-            "styles"
-          ]
-        }
-      },
-      "then": {
-        "required": [
-          "name"
-        ]
-      }
-    }
-  ],
-  "additionalProperties": false
+  }
 }
