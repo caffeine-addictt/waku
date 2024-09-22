@@ -1,3 +1,7 @@
 # Ignore {{}} syntax in CITATION.cff
 template/CITATION.cff
 dist/*
+
+
+www/
+!www/mkdocs.yml

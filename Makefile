@@ -52,50 +52,24 @@ install/npm:
 install/go:
 	go get ./...
 
+# =================================== DEVELOPMENT =================================== #
 
-
-
-## links: Shows the project links
-.PHONY: links
-links:
-	@echo 'Links:'
-	@echo ' Github Repository:      https://github.com/caffeine-addictt/waku'
-	@echo ' Official Documentation: https://github.com/caffeine-addictt/waku/blob/main/docs/index.md'
-
-
-
-
-## issue: Where to create an issue
-.PHONY: issue
-issue:
-	@echo 'Create an issue at:'
-	@echo ' https://github.com/caffeine-addictt/waku/issues/new'
-
-
-
-
-## docs: Shows simple development documentation
+## docs: Runs Documentation
 .PHONY: docs
 docs:
-	@echo 'Development documentation'
-	@echo ''
-	@echo 'Prerequisites:'
-	@echo ' 1. Go 1.23.0 or later'
-	@echo ' 2. Docker 27.0.0 or later'
-	@echo ' 3. NPM 10.8.2 or later'
-	@echo ' 4. Node 22.7.0 or later'
-	@echo ''
-	@echo 'Steps to run the CLI:'
-	@echo ' 1. Run the CLI with "go run main.go"'
-	@echo ''
-	@echo 'Learn more at https://github.com/caffeine-addictt/waku/blob/main/CONTRIBUTING.md'
+	mkdocs serve -f www/mkdocs.yml -a 0.0.0.0:8000
 
-# =================================== DEVELOPMENT =================================== #
+
+
 
 ## build: Builds Go binary
 .PHONY: build
 build:
 	go build -ldflags="-s -w" -o $(BINARY_NAME)$(EXT) main.go
+
+## build/docs: Builds documentation
+build/docs:
+	mkdocs build -f www/mkdocs.yml
 
 ### build/docker: Builds Docker image
 build/docker:
