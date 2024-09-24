@@ -65,8 +65,15 @@ func (t *TemplatePrompt) FormattedAsk() string {
 	return s
 }
 
-func (t *TemplatePrompt) GetPrompt() *huh.Text {
-	return huh.NewText().Title(t.FormattedAsk()).Validate(t.Set)
+func (t *TemplatePrompt) GetPrompt(f *map[string]any) *huh.Text {
+	return huh.NewText().Title(t.FormattedAsk()).Validate(func(s string) error {
+		if err := t.Set(s); err != nil {
+			return err
+		}
+
+		(*f)[t.Key.String()] = t.Value
+		return nil
+	})
 }
 
 // Set sets the value provided by the user

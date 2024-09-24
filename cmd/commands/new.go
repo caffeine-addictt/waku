@@ -156,8 +156,10 @@ var NewCmd = &cobra.Command{
 		options.Debugf("resolved prompts to: %v\n", extraPrompts)
 
 		prompts := make([]*huh.Group, 0, len(extraPrompts))
+		finalTmpl := make(map[string]any, len(extraPrompts)+len(licenseTmpl))
+
 		for _, v := range extraPrompts {
-			prompts = append(prompts, huh.NewGroup(v.GetPrompt()))
+			prompts = append(prompts, huh.NewGroup(v.GetPrompt(&finalTmpl)))
 		}
 		for n, v := range licenseTmpl {
 			prompts = append(prompts, huh.NewGroup(huh.NewText().Title(v).Validate(func(s string) error {
@@ -167,6 +169,7 @@ var NewCmd = &cobra.Command{
 				}
 
 				licenseTmpl[n] = s
+				finalTmpl[n] = s
 				return nil
 			})))
 		}
@@ -222,13 +225,6 @@ var NewCmd = &cobra.Command{
 
 		// Handle writing files
 		cmd.Println("writing files...")
-		finalTmpl := make(map[string]any, len(extraPrompts)+len(licenseTmpl))
-		for k, v := range extraPrompts {
-			finalTmpl[k] = v.Value
-		}
-		for k, v := range licenseTmpl {
-			finalTmpl[k] = v
-		}
 		finalTmpl["Name"] = name
 		finalTmpl["License"] = license.Spdx
 		options.Debugf("final template: %v", finalTmpl)
