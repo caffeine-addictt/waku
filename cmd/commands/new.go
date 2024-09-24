@@ -315,12 +315,6 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 				return
 			}
 
-			options.Debugf("flushing buffer for %s", newPath)
-			if err := writer.Flush(); err != nil {
-				errChan <- errors.Join(fmt.Errorf("failed to flush buffer for %s", newPath), err)
-				return
-			}
-
 			options.Debugf("wrote file: %s\n", newPath)
 		}()
 	}
@@ -346,7 +340,6 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 			return
 		}
 
-		options.Debugf("flushing buffer for %s", newPath)
 		if err := newFile.Sync(); err != nil {
 			errChan <- fmt.Errorf("failed to flush buffer for %s", newPath)
 			return

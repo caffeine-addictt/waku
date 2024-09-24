@@ -33,7 +33,11 @@ func ParseTemplateFile(ctx context.Context, tmpl map[string]any, reader *bufio.S
 		return err
 	}
 
-	return t.Execute(writer, tmpl)
+	if err := t.Execute(writer, tmpl); err != nil {
+		return err
+	}
+
+	return writer.Flush()
 }
 
 // ParseLicenseText handles templating license text
