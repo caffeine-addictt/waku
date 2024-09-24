@@ -159,7 +159,7 @@ var NewCmd = &cobra.Command{
 		finalTmpl := make(map[string]any, len(extraPrompts)+len(licenseTmpl))
 
 		for _, v := range extraPrompts {
-			prompts = append(prompts, huh.NewGroup(v.GetPrompt(&finalTmpl)))
+			prompts = append(prompts, huh.NewGroup(v.GetPrompt(finalTmpl)))
 		}
 		for n, v := range licenseTmpl {
 			prompts = append(prompts, huh.NewGroup(huh.NewText().Title(v).Validate(func(s string) error {

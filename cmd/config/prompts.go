@@ -65,13 +65,13 @@ func (t *TemplatePrompt) FormattedAsk() string {
 	return s
 }
 
-func (t *TemplatePrompt) GetPrompt(f *map[string]any) *huh.Text {
+func (t *TemplatePrompt) GetPrompt(f map[string]any) *huh.Text {
 	return huh.NewText().Title(t.FormattedAsk()).Validate(func(s string) error {
 		if err := t.Set(s); err != nil {
 			return err
 		}
 
-		(*f)[t.Key.String()] = t.Value
+		f[t.Key.String()] = t.Value
 		return nil
 	})
 }
