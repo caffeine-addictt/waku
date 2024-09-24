@@ -4,8 +4,8 @@
 
 <!-- Project Banner -->
 
-<a href="https://github.com/{{ .User }}/{{ .Repo }}">
-  <img src="https://github.com/{{ .User }}/{{ .Repo }}/blob/main/assets/logo.svg" width="750" height="300" alt="">
+<a href="https://github.com/{{{ .User }}}/{{{ .Repo }}}">
+  <img src="https://github.com/{{{ .User }}}/{{{ .Repo }}}/blob/main/assets/logo.svg" width="750" height="300" alt="">
 </a>
 
 <br>
@@ -22,7 +22,7 @@
 
 <!-- Description -->
 
-{{ .Description }}
+{{{ .Description }}}
 
 <br><br>
 
@@ -31,7 +31,7 @@
 <!-- TOC -->
 
 **[<kbd> <br> Quick Start <br> </kbd>](#quick-start)**
-{{ if .Docs }}**[<kbd> <br> Documentation <br> </kbd>]({{ .Docs }})**{{ end }}
+{{{ if .Docs }}}**[<kbd> <br> Documentation <br> </kbd>]({{{ .Docs }}})**{{{ end }}}
 **[<kbd> <br> Thanks <br> </kbd>](#special-thanks)**
 **[<kbd> <br> Contribute <br> </kbd>][contribute]**
 
@@ -76,14 +76,14 @@ _Below is an example of how you can install and use {{ .Name }}_
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[stars-graph]: https://starchart.cc/{{ .User }}/{{ .Repo }}.svg?variant=adaptive
-[prs]: https://github.com/{{ .User }}/{{ .Repo }}/pulls
-[issues]: https://github.com/{{ .User }}/{{ .Repo }}/issues
-[license]: https://github.com/{{ .User }}/{{ .Repo }}/blob/main/LICENSE
+[stars-graph]: https://starchart.cc/{{{ .User }}}/{{{ .Repo }}}.svg?variant=adaptive
+[prs]: https://github.com/{{{ .User }}}/{{{ .Repo }}}/pulls
+[issues]: https://github.com/{{{ .User }}}/{{{ .Repo }}}/issues
+[license]: https://github.com/{{{ .User }}}/{{{ .Repo }}}/blob/main/LICENSE
 
 <!---------------- {Links} ---------------->
 
-[contribute]: https://github.com/{{ .User }}/{{ .Repo }}/blob/main/CONTRIBUTING.md
+[contribute]: https://github.com/{{{ .User }}}/{{{ .Repo }}}/blob/main/CONTRIBUTING.md
 
 <!---------------- {Thanks} ---------------->
 
@@ -94,8 +94,8 @@ _Below is an example of how you can install and use {{ .Name }}_
 
 <!---------------- {Badges} ---------------->
 
-[badge-workflow]: https://github.com/{{ .User }}/{{ .Repo }}/actions/workflows/test-worker.yml/badge.svg
-[badge-issues]: https://img.shields.io/github/issues/{{ .User }}/{{ .Repo }}
-[badge-pr]: https://img.shields.io/github/issues-pr/{{ .User }}/{{ .Repo }}
-[badge-language]: https://img.shields.io/github/languages/top/{{ .User }}/{{ .Repo }}
-[badge-license]: https://img.shields.io/github/license/{{ .User }}/{{ .Repo }}
+[badge-workflow]: https://github.com/{{{ .User }}}/{{{ .Repo }}}/actions/workflows/test-worker.yml/badge.svg
+[badge-issues]: https://img.shields.io/github/issues/{{{ .User }}}/{{{ .Repo }}}
+[badge-pr]: https://img.shields.io/github/issues-pr/{{{ .User }}}/{{{ .Repo }}}
+[badge-language]: https://img.shields.io/github/languages/top/{{{ .User }}}/{{{ .Repo }}}
+[badge-license]: https://img.shields.io/github/license/{{{ .User }}}/{{{ .Repo }}}

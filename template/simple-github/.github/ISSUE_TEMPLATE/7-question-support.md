@@ -4,10 +4,10 @@ about: "Questions and requests for support."
 title: ""
 labels: ["Type: Question", "help wanted"]
 assignees:
-  - @{{ .User }}
-{{- range .Assignees }}
-  - {{ . }}
-{{- end }}
+  - @{{{ .User }}}
+{{{- range .Assignees }}}
+  - @{{{ . }}}
+{{{- end }}}
 ---
 
 # Question or Support Request

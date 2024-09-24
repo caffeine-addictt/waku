@@ -4,10 +4,10 @@ about: "Report an issue to help the project improve."
 title: ""
 labels: "Type: Security"
 assignees:
-  - @{{ .User }}
-{{- range .Assignees }}
-  - {{ . }}
-{{- end }}
+  - @{{{ .User }}}
+{{{- range .Assignees }}}
+  - @{{{ . }}}
+{{{- end }}}
 ---
 
 <!--
@@ -49,7 +49,7 @@ The data that must NOT be posted here:
 # Security Report
 
 Your issue may already be reported!
-Please check out our [active issues](https://github.com/{{ .User }}/{{ .Repo }}/issues) before creating one.
+Please check out our [active issues](https://github.com/{{{ .User }}}/{{{ .Repo }}}/issues) before creating one.
 
 ## Describe the Security Issue
 

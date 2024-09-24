@@ -22,7 +22,7 @@ func TestParseTemplateFile(t *testing.T) {
 			tmpl: map[string]any{
 				"Name": "John",
 			},
-			input:  "Hello {{ .Name }}, welcome!",
+			input:  "Hello {{{ .Name }}}, welcome!",
 			output: "Hello John, welcome!\n",
 		},
 		{
@@ -31,7 +31,7 @@ func TestParseTemplateFile(t *testing.T) {
 				"Name":  "John",
 				"Place": "office",
 			},
-			input:  "Hello {{ .Name }}, welcome to the {{ .Place }}.",
+			input:  "Hello {{{ .Name }}}, welcome to the {{{ .Place }}}.",
 			output: "Hello John, welcome to the office.\n",
 		},
 		{
@@ -55,7 +55,7 @@ func TestParseTemplateFile(t *testing.T) {
 			tmpl: map[string]any{
 				"Url": "https://example.com",
 			},
-			input:  "Visit {{ \"{{\" }}{{ .Url }}{{ \"}}\" }} for more info.",
+			input:  "Visit {{{ \"{{\" }}}{{{ .Url }}}{{{ \"}}\" }}} for more info.",
 			output: "Visit {{https://example.com}} for more info.\n",
 		},
 		{
@@ -63,7 +63,7 @@ func TestParseTemplateFile(t *testing.T) {
 			tmpl: map[string]any{
 				"Name": "John",
 			},
-			input:  "Hello {{ .Username }}, welcome!",
+			input:  "Hello {{{ .Username }}}, welcome!",
 			output: "Hello , welcome!\n",
 		},
 		{
@@ -71,7 +71,7 @@ func TestParseTemplateFile(t *testing.T) {
 			tmpl: map[string]any{
 				"Name": "John",
 			},
-			input:  "Hello {{ .Name }}, welcome!\nHello {{ .Name }}, welcome!",
+			input:  "Hello {{{ .Name }}}, welcome!\nHello {{{ .Name }}}, welcome!",
 			output: "Hello John, welcome!\nHello John, welcome!\n",
 		},
 	}
@@ -94,36 +94,32 @@ func TestParseTemplateFile(t *testing.T) {
 
 func BenchmarkParseTemplateFile(b *testing.B) {
 	tmpl := map[string]any{
-		"NAME":    "John",
-		"PLACE":   "office",
-		"URL":     "https://example.com",
-		"PROJECT": "my proj",
+		"Name":    "John",
+		"Place":   "office",
+		"Url":     "https://example.com",
+		"Project": "my proj",
 	}
 
 	// Input strings to test different cases
-	input := "Hello {{NAME}}, welcome to the {{PLACE}}. For more details, visit {{URL}}. Your project is {{PROJECT}}."
-
-	inputInvalid := "Hello {{ NAME }}, this is an invalid {{ TEMPLATE."
-
-	inputComplex := "Hello {{{{NAME}}}}. Are you visiting the {{PLACE}}? The details are on {{URL}}. {{PROJECT}} is running well."
+	input := "Hello {{ .Name }}, welcome to the {{{ .Place }}}. For more details, visit {{{ .Url }}}. Your project is {{{ .Project }}}."
+	inputComplex := "Hello {{{{ .Name }}}}. Are you visiting the {{{ .Place }}}? The details are on {{{ .Url }}}. {{{ .Project }}} is running well."
 
 	// Benchmark different input sizes and complexities
-	tests := []struct {
+	tt := []struct {
 		name  string
 		input string
 	}{
-		{"Small input", "Hello {{NAME}}"},
+		{"Small input", "Hello {{{ .Name }}}"},
 		{"Medium input", input},
 		{"Large input", input + input + input},
-		{"Invalid input", inputInvalid},
 		{"Complex input", inputComplex},
 	}
 
 	ctx := context.Background()
-	for _, tt := range tests {
-		b.Run(tt.name, func(b *testing.B) {
+	for _, tc := range tt {
+		b.Run(tc.name, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				reader := bufio.NewScanner(bytes.NewReader([]byte(tt.input)))
+				reader := bufio.NewScanner(bytes.NewReader([]byte(tc.input)))
 				var output bytes.Buffer
 				writer := bufio.NewWriter(&output)
 

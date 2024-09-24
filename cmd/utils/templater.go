@@ -28,7 +28,7 @@ func ParseTemplateFile(ctx context.Context, tmpl map[string]any, reader *bufio.S
 		s.WriteRune('\n')
 	}
 
-	t, err := template.New("file").Parse(s.String())
+	t, err := template.New("file").Delims("{{{", "}}}").Parse(s.String())
 	if err != nil {
 		return err
 	}

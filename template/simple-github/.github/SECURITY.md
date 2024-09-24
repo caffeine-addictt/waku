@@ -10,7 +10,7 @@ a new issue using the ⚠️ Security Report 'issue template'.
 
 Read the instructions of this issue template carefully, and if your report
 could leak data or might expose how to gain access to a restricted area or
-break the system, please email [{{ .Email }}](mailto:{{ .Email }})
+break the system, please email [{{{ .Email }}}](mailto:{{{ .Email }}})
 and include the word "SECURITY" in the subject line.
 
 We'll endeavour to respond quickly and keep you updated throughout the process.

@@ -4,16 +4,16 @@ about: "Suggest an enhancement for this project. Improve an existing feature"
 title: ""
 labels: "Type: Enhancement"
 assignees:
-  - @{{ .User }}
-{{- range .Assignees }}
-  - {{ . }}
-{{- end }}
+  - @{{{ .User }}}
+{{{- range .Assignees }}}
+  - @{{{ . }}}
+{{{- end }}}
 ---
 
 # Enhancement Request
 
 Your issue may already be reported!
-Please check out our [active issues](https://github.com/{{ .User }}/{{ .Repo }}/issues) before creating one.
+Please check out our [active issues](https://github.com/{{{ .User }}}/{{{ .Repo }}}/issues) before creating one.
 
 ## Is Your Enhancement Request Related to an Issue?
 

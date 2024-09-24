@@ -4,16 +4,16 @@ about: "Report failing tests or CI jobs."
 title: "[Test] "
 labels: "Type: Test"
 assignees:
-  - @{{ .User }}
-{{- range .Assignees }}
-  - {{ . }}
-{{- end }}
+  - @{{{ .User }}}
+{{{- range .Assignees }}}
+  - @{{{ . }}}
+{{{- end }}}
 ---
 
 # Failing Test
 
 Your issue may already be reported!
-Please check out our [active issues](https://github.com/{{ .User }}/{{ .Repo }}/issues) before creating one.
+Please check out our [active issues](https://github.com/{{{ .User }}}/{{{ .Repo }}}/issues) before creating one.
 
 ## Which Jobs/Tests are Failing?
 

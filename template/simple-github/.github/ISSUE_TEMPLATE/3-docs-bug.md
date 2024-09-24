@@ -4,16 +4,16 @@ about: "Report an issue in the project's documentation or README.md file."
 title: ""
 labels: "Documentation"
 assignees:
-  - @{{ .User }}
-{{- range .Assignees }}
-  - {{ . }}
-{{- end }}
+  - @{{{ .User }}}
+{{{- range .Assignees }}}
+  - @{{{ . }}}
+{{{- end }}}
 ---
 
 # Documentation Issue Report
 
 Your issue may already be reported!
-Please check out our [active issues](https://github.com/{{ .User }}/{{ .Repo }}/issues) before creating one.
+Please check out our [active issues](https://github.com/{{{ .User }}}/{{{ .Repo }}}/issues) before creating one.
 
 ## Describe the Bug
 
