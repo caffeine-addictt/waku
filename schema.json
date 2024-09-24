@@ -49,9 +49,7 @@
               "$ref": "#/definitions/prompts"
             }
           },
-          "required": [
-            "source"
-          ],
+          "required": ["source"],
           "additionalProperties": false
         }
       }
@@ -60,30 +58,22 @@
   "allOf": [
     {
       "if": {
-        "required": [
-          "styles"
-        ]
+        "required": ["styles"]
       },
       "then": {
         "not": {
-          "required": [
-            "name"
-          ]
+          "required": ["name"]
         }
       }
     },
     {
       "if": {
         "not": {
-          "required": [
-            "styles"
-          ]
+          "required": ["styles"]
         }
       },
       "then": {
-        "required": [
-          "name"
-        ]
+        "required": ["name"]
       }
     }
   ],
@@ -110,9 +100,7 @@
           "description": "Path to the setup script for macOS (Darwin)."
         }
       },
-      "required": [
-        "*"
-      ],
+      "required": ["*"],
       "additionalProperties": false
     },
     "ignore": {
@@ -143,10 +131,7 @@
             "description": "An optional description for the label."
           }
         },
-        "required": [
-          "name",
-          "color"
-        ],
+        "required": ["name", "color"],
         "additionalProperties": false
       },
       "description": "Labels with associated colors for this style."
@@ -187,10 +172,7 @@
             "description": "An optional regex to validate the value."
           }
         },
-        "required": [
-          "key",
-          "type"
-        ]
+        "required": ["key", "type"]
       },
       "additionalProperties": false,
       "description": "An optional array that defines user prompts."
