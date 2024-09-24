@@ -226,7 +226,8 @@ var NewCmd = &cobra.Command{
 		// Handle writing files
 		cmd.Println("writing files...")
 		finalTmpl["Name"] = name
-		finalTmpl["License"] = license.Spdx
+		finalTmpl["License"] = license.Name
+		finalTmpl["Spdx"] = license.Spdx
 		options.Debugf("final template: %v", finalTmpl)
 
 		if err := WriteFiles(rootDir, projectRootDir, ignoredPaths.ToSlice(), licenseText, finalTmpl, licenseTmpl); err != nil {
