@@ -44,11 +44,6 @@ func (t *TemplateJson) Validate(root string) error {
 			return err
 		}
 	}
-	if t.Prompts != nil {
-		if err := t.Prompts.Validate(); err != nil {
-			return err
-		}
-	}
 
 	return nil
 }

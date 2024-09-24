@@ -13,81 +13,65 @@ import (
 func TestParseTemplateFile(t *testing.T) {
 	tests := []struct {
 		name   string
-		tmpl   map[string]string
+		tmpl   map[string]any
 		input  string
 		output string
 	}{
 		{
 			name: "Basic replacement",
-			tmpl: map[string]string{
-				"NAME": "John",
+			tmpl: map[string]any{
+				"Name": "John",
 			},
-			input:  "Hello {{NAME}}, welcome!",
+			input:  "Hello {{{ .Name }}}, welcome!",
 			output: "Hello John, welcome!\n",
 		},
 		{
 			name: "Multiple replacements",
-			tmpl: map[string]string{
-				"NAME":  "John",
-				"PLACE": "office",
+			tmpl: map[string]any{
+				"Name":  "John",
+				"Place": "office",
 			},
-			input:  "Hello {{NAME}}, welcome to the {{PLACE}}.",
+			input:  "Hello {{{ .Name }}}, welcome to the {{{ .Place }}}.",
 			output: "Hello John, welcome to the office.\n",
 		},
 		{
 			name: "No replacement",
-			tmpl: map[string]string{
-				"NAME": "John",
+			tmpl: map[string]any{
+				"Name": "John",
 			},
 			input:  "No template here.",
 			output: "No template here.\n",
 		},
 		{
 			name: "Empty input",
-			tmpl: map[string]string{
-				"NAME": "John",
+			tmpl: map[string]any{
+				"Name": "John",
 			},
 			input:  "",
 			output: "",
 		},
 		{
 			name: "Special characters in template key",
-			tmpl: map[string]string{
-				"URL": "https://example.com",
+			tmpl: map[string]any{
+				"Url": "https://example.com",
 			},
-			input:  "Visit {{{{URL}}}} for more info.",
+			input:  "Visit {{{ \"{{\" }}}{{{ .Url }}}{{{ \"}}\" }}} for more info.",
 			output: "Visit {{https://example.com}} for more info.\n",
 		},
 		{
-			name: "White space between braces",
-			tmpl: map[string]string{
-				"NAME": "John",
-			},
-			input:  "Hello { { NAME } }, welcome!",
-			output: "Hello John, welcome!\n",
-		},
-		{
-			name: "Unclosed brace",
-			tmpl: map[string]string{
-				"NAME": "John",
-			},
-			input:  "Hello {{NAME, welcome!",
-			output: "Hello {{NAME, welcome!\n", // No replacement since it's unclosed.
-		},
-		{
 			name: "Invalid template with no match",
-			tmpl: map[string]string{
-				"NAME": "John",
+			tmpl: map[string]any{
+				"Name": "John",
 			},
-			input:  "Hello {{USERNAME}}, welcome!",
-			output: "Hello {{USERNAME}}, welcome!\n", // No replacement since there's no match.
+			input:  "Hello {{{ .Username }}}, welcome!",
+			output: "Hello , welcome!\n",
 		},
 		{
 			name: "Valid template with multiple lines",
-			tmpl: map[string]string{
-				"NAME": "John",
+			tmpl: map[string]any{
+				"Name": "John",
 			},
-			input:  "Hello {{NAME}}, welcome!\nHello {{NAME}}, welcome!",
+			input:  "Hello {{{ .Name }}}, welcome!\nHello {{{ .Name }}}, welcome!",
 			output: "Hello John, welcome!\nHello John, welcome!\n",
 		},
 	}
@@ -103,43 +87,39 @@ func TestParseTemplateFile(t *testing.T) {
 			assert.NoError(t, err, "failed to parse")
 
 			writer.Flush()
-			assert.Equal(t, output.String(), tt.output, "wrong output")
+			assert.Equal(t, tt.output, output.String(), "wrong output")
 		})
 	}
 }
 
 func BenchmarkParseTemplateFile(b *testing.B) {
-	tmpl := map[string]string{
-		"NAME":    "John",
-		"PLACE":   "office",
-		"URL":     "https://example.com",
-		"PROJECT": "my proj",
+	tmpl := map[string]any{
+		"Name":    "John",
+		"Place":   "office",
+		"Url":     "https://example.com",
+		"Project": "my proj",
 	}
 
 	// Input strings to test different cases
-	input := "Hello {{NAME}}, welcome to the {{PLACE}}. For more details, visit {{URL}}. Your project is {{PROJECT}}."
-
-	inputInvalid := "Hello {{ NAME }}, this is an invalid {{ TEMPLATE."
-
-	inputComplex := "Hello {{{{NAME}}}}. Are you visiting the {{PLACE}}? The details are on {{URL}}. {{PROJECT}} is running well."
+	input := "Hello {{ .Name }}, welcome to the {{{ .Place }}}. For more details, visit {{{ .Url }}}. Your project is {{{ .Project }}}."
+	inputComplex := "Hello {{{{ .Name }}}}. Are you visiting the {{{ .Place }}}? The details are on {{{ .Url }}}. {{{ .Project }}} is running well."
 
 	// Benchmark different input sizes and complexities
-	tests := []struct {
+	tt := []struct {
 		name  string
 		input string
 	}{
-		{"Small input", "Hello {{NAME}}"},
+		{"Small input", "Hello {{{ .Name }}}"},
 		{"Medium input", input},
 		{"Large input", input + input + input},
-		{"Invalid input", inputInvalid},
 		{"Complex input", inputComplex},
 	}
 
 	ctx := context.Background()
-	for _, tt := range tests {
-		b.Run(tt.name, func(b *testing.B) {
+	for _, tc := range tt {
+		b.Run(tc.name, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				reader := bufio.NewScanner(bytes.NewReader([]byte(tt.input)))
+				reader := bufio.NewScanner(bytes.NewReader([]byte(tc.input)))
 				var output bytes.Buffer
 				writer := bufio.NewWriter(&output)
 

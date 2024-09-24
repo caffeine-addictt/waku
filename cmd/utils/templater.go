@@ -3,7 +3,7 @@ package utils
 import (
 	"bufio"
 	"context"
-	"regexp"
+	"html/template"
 	"strings"
 )
 
@@ -15,13 +15,8 @@ import (
 // `find` should be X where the actual template searched for is "{{X}}" {{{x}}}
 //
 // Time complexity through the roof: HAVE TO OPTIMIZE
-func ParseTemplateFile(ctx context.Context, tmpl map[string]string, reader *bufio.Scanner, writer *bufio.Writer) error {
-	// generate the regexp
-	reg := make(map[*regexp.Regexp]string, len(tmpl))
-	for find, replace := range tmpl {
-		reg[regexp.MustCompile(`{\s*{\s*`+CleanStringNoRegex(find)+`\s*}\s*}`)] = replace
-	}
-
+func ParseTemplateFile(ctx context.Context, tmpl map[string]any, reader *bufio.Scanner, writer *bufio.Writer) error {
+	var s strings.Builder
 	for reader.Scan() {
 		select {
 		case <-ctx.Done():
@@ -29,17 +24,20 @@ func ParseTemplateFile(ctx context.Context, tmpl map[string]string, reader *bufi
 		default:
 		}
 
-		line := reader.Text()
-		for find, replace := range reg {
-			line = find.ReplaceAllString(line, replace)
-		}
-
-		if _, err := writer.WriteString(line + "\n"); err != nil {
-			return err
-		}
+		s.Write(reader.Bytes())
+		s.WriteRune('\n')
 	}
 
-	return nil
+	t, err := template.New("file").Delims("{{{", "}}}").Parse(s.String())
+	if err != nil {
+		return err
+	}
+
+	if err := t.Execute(writer, tmpl); err != nil {
+		return err
+	}
+
+	return writer.Flush()
 }
 
 // ParseLicenseText handles templating license text

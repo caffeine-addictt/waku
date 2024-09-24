@@ -51,11 +51,6 @@ func (t *TemplateStyles) Validate(root string) error {
 				return err
 			}
 		}
-		if style.Prompts != nil {
-			if err := style.Prompts.Validate(); err != nil {
-				return err
-			}
-		}
 	}
 
 	return nil
