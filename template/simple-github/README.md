@@ -4,8 +4,8 @@
 
 <!-- Project Banner -->
 
-<a href="https://github.com/{{REPOSITORY}}">
-  <img src="https://github.com/{{REPOSITORY}}/blob/main/assets/logo.svg" width="750" height="300" alt="">
+<a href="https://github.com/{{{ .User }}}/{{{ .Repo }}}">
+  <img src="https://github.com/{{{ .User }}}/{{{ .Repo }}}/blob/main/assets/logo.svg" width="750" height="300" alt="">
 </a>
 
 <br>
@@ -22,9 +22,7 @@
 
 <!-- Description -->
 
-{{PROJECT_LONG_DESCRIPTION}}
-
-{{PROJECT_SHORT_DESCRIPTION}}
+{{{ .Description }}}
 
 <br><br>
 
@@ -33,7 +31,7 @@
 <!-- TOC -->
 
 **[<kbd> <br> Quick Start <br> </kbd>](#quick-start)**
-**[<kbd> <br> Documentation <br> </kbd>]({{DOCS_URL}})**
+{{{ if .Docs }}}**[<kbd> <br> Documentation <br> </kbd>]({{{ .Docs }}})**{{{ end }}}
 **[<kbd> <br> Thanks <br> </kbd>](#special-thanks)**
 **[<kbd> <br> Contribute <br> </kbd>][contribute]**
 
@@ -54,7 +52,7 @@ To get a local copy up and running, follow these simple steps._
 
 ## Installation
 
-_Below is an example of how you can install and use {{PROJECT_NAME}}_
+_Below is an example of how you can install and use {{ .Name }}_
 
 1. Step 1
 2. Step 2
@@ -78,26 +76,26 @@ _Below is an example of how you can install and use {{PROJECT_NAME}}_
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[stars-graph]: https://starchart.cc/{{REPOSITORY}}.svg?variant=adaptive
-[prs]: https://github.com/{{REPOSITORY}}/pulls
-[issues]: https://github.com/{{REPOSITORY}}/issues
-[license]: https://github.com/{{REPOSITORY}}/blob/main/LICENSE
+[stars-graph]: https://starchart.cc/{{{ .User }}}/{{{ .Repo }}}.svg?variant=adaptive
+[prs]: https://github.com/{{{ .User }}}/{{{ .Repo }}}/pulls
+[issues]: https://github.com/{{{ .User }}}/{{{ .Repo }}}/issues
+[license]: https://github.com/{{{ .User }}}/{{{ .Repo }}}/blob/main/LICENSE
 
-<!---------------- {{Links}} ---------------->
+<!---------------- {Links} ---------------->
 
-[contribute]: https://github.com/{{REPOSITORY}}/blob/main/CONTRIBUTING.md
+[contribute]: https://github.com/{{{ .User }}}/{{{ .Repo }}}/blob/main/CONTRIBUTING.md
 
-<!---------------- {{Thanks}} ---------------->
+<!---------------- {Thanks} ---------------->
 
 [template-repo]: https://github.com/caffeine-addictt/waku
 [hyprland]: https://github.com/hyprwm/Hyprland
 [hyprdots]: https://github.com/prasanthrangan/hyprdots
 [img-shields]: https://shields.io
 
-<!---------------- {{Badges}} ---------------->
+<!---------------- {Badges} ---------------->
 
-[badge-workflow]: https://github.com/{{REPOSITORY}}/actions/workflows/test-worker.yml/badge.svg
-[badge-issues]: https://img.shields.io/github/issues/{{REPOSITORY}}
-[badge-pr]: https://img.shields.io/github/issues-pr/{{REPOSITORY}}
-[badge-language]: https://img.shields.io/github/languages/top/{{REPOSITORY}}
-[badge-license]: https://img.shields.io/github/license/{{REPOSITORY}}
+[badge-workflow]: https://github.com/{{{ .User }}}/{{{ .Repo }}}/actions/workflows/test-worker.yml/badge.svg
+[badge-issues]: https://img.shields.io/github/issues/{{{ .User }}}/{{{ .Repo }}}
+[badge-pr]: https://img.shields.io/github/issues-pr/{{{ .User }}}/{{{ .Repo }}}
+[badge-language]: https://img.shields.io/github/languages/top/{{{ .User }}}/{{{ .Repo }}}
+[badge-license]: https://img.shields.io/github/license/{{{ .User }}}/{{{ .Repo }}}

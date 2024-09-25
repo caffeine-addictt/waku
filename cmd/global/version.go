@@ -1,4 +1,4 @@
 package global
 
 // The current app version
-const Version = "0.2.7"
+const Version = "0.3.1"

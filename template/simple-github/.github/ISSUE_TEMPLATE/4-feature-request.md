@@ -3,13 +3,17 @@ name: "Feature Request"
 about: "Suggest an idea or possible new feature for this project."
 title: ""
 labels: "Type: Feature"
-assignees: ["{{ASSIGNEES}}"]
+assignees:
+  - @{{{ .User }}}
+{{{- range .Assignees }}}
+  - @{{{ . }}}
+{{{- end }}}
 ---
 
 # Feature Request
 
 Your issue may already be reported!
-Please check out our [active issues](https://github.com/{{REPOSITORY}}/issues) before creating one.
+Please check out our [active issues](https://github.com/{{{ .User }}}/{{{ .Repo }}}/issues) before creating one.
 
 ## Is Your Feature Request Related to an Issue?
 

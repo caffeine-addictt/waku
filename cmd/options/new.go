@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/caffeine-addictt/waku/cmd/global"
 	"github.com/caffeine-addictt/waku/cmd/utils"
 	"github.com/caffeine-addictt/waku/cmd/utils/types"
 )
@@ -68,6 +69,11 @@ func (o *NewOptions) Validate() error {
 		"git@github.com:caffeine-addictt/waku.git":
 		if err := o.Directory.Set("template"); err != nil {
 			return err
+		}
+		if o.Branch.Value() == "" {
+			if err := o.Branch.Set("v" + global.Version); err != nil {
+				return err
+			}
 		}
 	}
 

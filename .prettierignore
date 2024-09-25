@@ -5,3 +5,6 @@ dist/*
 
 www/
 !www/mkdocs.yml
+template/
+!template/template.json
+dist/

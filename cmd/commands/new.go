@@ -134,37 +134,32 @@ var NewCmd = &cobra.Command{
 			return
 		}
 
-		licenseTmpl := make(map[string]string, len(license.Wants))
-		for _, v := range license.Wants {
-			licenseTmpl[v] = fmt.Sprintf("Value for license %s?", v)
-		}
-
 		// Handle prompts
 		options.Debugln("resolving prompts...")
-		extraPrompts := map[string]string{}
+		extraPrompts := map[string]config.TemplatePrompt{}
 		if tmpl.Prompts != nil {
-			for val, ask := range *tmpl.Prompts {
-				extraPrompts[string(val)] = string(ask)
+			for _, ask := range *tmpl.Prompts {
+				extraPrompts[string(ask.Key)] = ask
 			}
 		}
 		if tmpl.Styles != nil && styleInfo.Prompts != nil {
-			for val, ask := range *styleInfo.Prompts {
-				extraPrompts[string(val)] = string(ask)
+			for _, ask := range *styleInfo.Prompts {
+				extraPrompts[string(ask.Key)] = ask
 			}
+		}
+
+		licenseTmpl := make(map[string]string, len(license.Wants))
+		for _, v := range license.Wants {
+			licenseTmpl[v] = fmt.Sprintf("Value for license %s?", v)
+			delete(extraPrompts, v)
 		}
 		options.Debugf("resolved prompts to: %v\n", extraPrompts)
 
-		prompts := make([]*huh.Group, len(extraPrompts))
-		for n, v := range extraPrompts {
-			prompts = append(prompts, huh.NewGroup(huh.NewText().Title(v).Validate(func(s string) error {
-				s = strings.TrimSpace(s)
-				if s == "" {
-					return fmt.Errorf("cannot be empty")
-				}
+		prompts := make([]*huh.Group, 0, len(extraPrompts))
+		finalTmpl := make(map[string]any, len(extraPrompts)+len(licenseTmpl))
 
-				extraPrompts[n] = s
-				return nil
-			})))
+		for _, v := range extraPrompts {
+			prompts = append(prompts, huh.NewGroup(v.GetPrompt(finalTmpl)))
 		}
 		for n, v := range licenseTmpl {
 			prompts = append(prompts, huh.NewGroup(huh.NewText().Title(v).Validate(func(s string) error {
@@ -173,11 +168,13 @@ var NewCmd = &cobra.Command{
 					return fmt.Errorf("cannot be empty")
 				}
 
-				extraPrompts[n] = s
+				licenseTmpl[n] = s
+				finalTmpl[n] = s
 				return nil
 			})))
 		}
 
+		options.Debugf("resolved prompt groups to: %v\n", prompts)
 		if err := huh.NewForm(prompts...).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
 			cmd.PrintErrln(err)
 			exitCode = 1
@@ -228,9 +225,10 @@ var NewCmd = &cobra.Command{
 
 		// Handle writing files
 		cmd.Println("writing files...")
-		finalTmpl := extraPrompts
-		finalTmpl["NAME"] = name
-		finalTmpl["LICENSE"] = license.Spdx
+		finalTmpl["Name"] = name
+		finalTmpl["License"] = license.Name
+		finalTmpl["Spdx"] = license.Spdx
+		options.Debugf("final template: %v", finalTmpl)
 
 		if err := WriteFiles(rootDir, projectRootDir, ignoredPaths.ToSlice(), licenseText, finalTmpl, licenseTmpl); err != nil {
 			fmt.Printf("failed to write files: %s\n", err)
@@ -268,7 +266,7 @@ func AddNewCmdFlags(cmd *cobra.Command) {
 	cmd.Flags().BoolVarP(&options.NewOpts.NoGit, "no-git", "G", options.NewOpts.NoGit, "whether to not initialize git")
 }
 
-func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string, tmpl, licenseTmpl map[string]string) error {
+func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string, tmpl map[string]any, licenseTmpl map[string]string) error {
 	var wg sync.WaitGroup
 	wg.Add(len(paths) + 1)
 
@@ -296,7 +294,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 
 			tmpFile, err := os.Open(filepath.Clean(tmpPath))
 			if err != nil {
-				errChan <- err
+				errChan <- errors.Join(fmt.Errorf("%s", tmpPath), err)
 				return
 			}
 			defer tmpFile.Close()
@@ -304,7 +302,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 
 			newFile, err := os.OpenFile(filepath.Clean(newPath), os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.FilePerms)
 			if err != nil {
-				errChan <- err
+				errChan <- errors.Join(fmt.Errorf("%s", newPath), err)
 				return
 			}
 			defer newFile.Close()
@@ -313,13 +311,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 			reader := bufio.NewScanner(tmpFile)
 			writer := bufio.NewWriter(newFile)
 			if err := utils.ParseTemplateFile(ctx, tmpl, reader, writer); err != nil {
-				errChan <- err
-				return
-			}
-
-			options.Debugf("flushing buffer for %s", newPath)
-			if err := writer.Flush(); err != nil {
-				errChan <- err
+				errChan <- errors.Join(fmt.Errorf("failed to parse template from %s to %s", tmpPath, newPath), err)
 				return
 			}
 
@@ -344,13 +336,12 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 		options.Debugf("opened file for writing: %s\n", newPath)
 
 		if _, err := newFile.WriteString(newLicenseText); err != nil {
-			errChan <- err
+			errChan <- fmt.Errorf("failed to write license text to %s", newPath)
 			return
 		}
 
-		options.Debugf("flushing buffer for %s", newPath)
 		if err := newFile.Sync(); err != nil {
-			errChan <- err
+			errChan <- fmt.Errorf("failed to flush buffer for %s", newPath)
 			return
 		}
 

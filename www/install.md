@@ -136,10 +136,10 @@ We sign our checksums with [Cosign](https://github.com/sigstore/cosign)
 
 ```sh
 cosign verify-blob \
-  --certificate-identity 'https://github.com/caffeine-addictt/waku/.github/workflows/release.yml@refs/tags/v0.2.7' \
+  --certificate-identity 'https://github.com/caffeine-addictt/waku/.github/workflows/release.yml@refs/tags/v0.3.1' \
   --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' \
-  --cert 'https://github.com/caffeine-addictt/waku/releases/download/v0.2.7/checksums.txt.pem' \
-  --signature 'https://github.com/caffeine-addictt/waku/releases/download/v0.2.7/checksums.txt.sig' \
+  --cert 'https://github.com/caffeine-addictt/waku/releases/download/v0.3.1/checksums.txt.pem' \
+  --signature 'https://github.com/caffeine-addictt/waku/releases/download/v0.3.1/checksums.txt.sig' \
   ./checksums.txt
 ```
 
