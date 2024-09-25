@@ -128,3 +128,5 @@ nav:
   - Getting Started:
       - Introduction: introduction.md
       - Install: install.md
+  - Configuration:
+      - Templating: configuration/wip.md
