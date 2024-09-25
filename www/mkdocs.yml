@@ -130,3 +130,5 @@ nav:
       - Install: install.md
   - Configuration:
       - Templating: configuration/wip.md
+  - Blog:
+      - blog/index.md
