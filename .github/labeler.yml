@@ -7,7 +7,7 @@ Documentation:
 
 "Type: Test":
   - changed-files:
-      - any-glob-to-any-file: [tests/**, ./*test*]
+      - any-glob-to-any-file: [tests/**, "*_test*"]
 
 "Type: CI":
   - changed-files:
