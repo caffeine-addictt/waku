@@ -127,3 +127,4 @@ nav:
   - Home: index.md
   - Getting Started:
       - Introduction: introduction.md
+      - Install: install.md
