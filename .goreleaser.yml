@@ -127,7 +127,7 @@ dockers:
     build_flag_templates:
       - "--pull"
       - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/caffeine-addictt/waku/main/README.md"
-      - "--label=io.artifacthub.package.logo-url=https://raw.githubusercontent.com/caffeine-addictt/waku/main/assets/logo.png"
+      - "--label=io.artifacthub.package.logo-url=https://waku.ngjx.org/static/logo.png"
       - '--label=io.artifacthub.package.maintainers=[{"name":"Jun Xiang","email":"contact@ngjx.org"}]'
       - "--label=io.artifacthub.package.license=AGPL-3.0"
       - "--label=org.opencontainers.image.description=A simple template repository generator. Lets make starting new proejcts feel like a breeze again!"
@@ -148,7 +148,7 @@ dockers:
     build_flag_templates:
       - "--pull"
       - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/caffeine-addictt/waku/main/README.md"
-      - "--label=io.artifacthub.package.logo-url=https://raw.githubusercontent.com/caffeine-addictt/waku/main/assets/logo.png"
+      - "--label=io.artifacthub.package.logo-url=https://waku.ngjx.org/static/logo.png"
       - '--label=io.artifacthub.package.maintainers=[{"name":"Jun Xiang","email":"contact@ngjx.org"}]'
       - "--label=io.artifacthub.package.license=AGPL-3.0"
       - "--label=org.opencontainers.image.description=A simple template repository generator. Lets make starting new proejcts feel like a breeze again!"
@@ -228,11 +228,11 @@ brews:
 #     project_url: https://github.com/caffeine-addictt/waku
 #     package_source_url: https://github.com/caffeine-addictt/waku
 #     url_template: "https://github.com/caffeine-addictt/waku/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
-#     icon_url: "https://raw.githubusercontent.com/caffeine-addictt/waku/main/assets/logo.png"
+#     icon_url: "https://waku.ngjx.org/static/logo.png"
 #     copyright: 2024 Jun Xiang
 #     license_url: https://github.com/caffeine-addictt/waku/blob/main/LICENSE
 #     require_license_acceptance: false
-#     docs_url: https://github.com/caffeine-addictt/waku/blob/main/README.md
+#     docs_url: https://waku.ngjx.org
 #     bug_tracker_url: https://github.com/caffeine-addictt/waku/issues
 #     tags: "repository git generator simple quick quickstart template project project-generator cli command-line go"
 #     summary: "A simple template repository generator."
