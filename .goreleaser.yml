@@ -85,7 +85,7 @@ archives:
 aurs:
   - name: waku-bin
     homepage: https://github.com/caffeine-addictt/waku
-    description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
+    description: A simple template repository generator. Lets make starting new projects feel like a breeze again!
     maintainers:
       - Jun Xiang <contact@ngjx.org>
     private_key: "{{ .Env.AUR_PRIVATE_KEY }}"
@@ -130,7 +130,7 @@ dockers:
       - "--label=io.artifacthub.package.logo-url=https://waku.ngjx.org/static/logo.png"
       - '--label=io.artifacthub.package.maintainers=[{"name":"Jun Xiang","email":"contact@ngjx.org"}]'
       - "--label=io.artifacthub.package.license=AGPL-3.0"
-      - "--label=org.opencontainers.image.description=A simple template repository generator. Lets make starting new proejcts feel like a breeze again!"
+      - "--label=org.opencontainers.image.description=A simple template repository generator. Lets make starting new projects feel like a breeze again!"
       - "--label=org.opencontainers.image.created={{.Date}}"
       - "--label=org.opencontainers.image.name={{.ProjectName}}"
       - "--label=org.opencontainers.image.revision={{.FullCommit}}"
@@ -151,7 +151,7 @@ dockers:
       - "--label=io.artifacthub.package.logo-url=https://waku.ngjx.org/static/logo.png"
       - '--label=io.artifacthub.package.maintainers=[{"name":"Jun Xiang","email":"contact@ngjx.org"}]'
       - "--label=io.artifacthub.package.license=AGPL-3.0"
-      - "--label=org.opencontainers.image.description=A simple template repository generator. Lets make starting new proejcts feel like a breeze again!"
+      - "--label=org.opencontainers.image.description=A simple template repository generator. Lets make starting new projects feel like a breeze again!"
       - "--label=org.opencontainers.image.created={{.Date}}"
       - "--label=org.opencontainers.image.name={{.ProjectName}}"
       - "--label=org.opencontainers.image.revision={{.FullCommit}}"
@@ -189,7 +189,7 @@ docker_manifests:
 
 nfpms:
   - maintainer: Jun Xiang <contact@ngjx.org>
-    description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
+    description: A simple template repository generator. Lets make starting new projects feel like a breeze again!
     homepage: "https://github.com/caffeine-addictt/waku"
     license: AGPL-3.0
     formats: [rpm, apk, termux.deb, deb, archlinux]
@@ -209,7 +209,7 @@ brews:
       name: goreleaserbot
       email: bot@goreleaser.com
     commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
-    description: "A simple template repository generator. Lets make starting new proejcts feel like a breeze again!"
+    description: "A simple template repository generator. Lets make starting new projects feel like a breeze again!"
     dependencies:
       - git
     test: |
@@ -236,7 +236,7 @@ brews:
 #     bug_tracker_url: https://github.com/caffeine-addictt/waku/issues
 #     tags: "repository git generator simple quick quickstart template project project-generator cli command-line go"
 #     summary: "A simple template repository generator."
-#     description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
+#     description: A simple template repository generator. Lets make starting new projects feel like a breeze again!
 #     release_notes: "https://github.com/caffeine-addictt/waku/releases/tag/{{ .Tag }}"
 #     dependencies:
 #       - id: git
@@ -249,7 +249,7 @@ brews:
 #     summary: Let's make starting new projects feel like a breeze again.
 #     description: |
 #       A simple template repository generator.
-#       Lets make starting new proejcts feel like a breeze again!
+#       Lets make starting new projects feel like a breeze again!
 #     license: AGPL-3.0
 #     grade: stable
 #     confinement: classic
@@ -267,7 +267,7 @@ scoops:
     commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
     directory: bucket
     homepage: https://github.com/caffeine-addictt/waku
-    description: A simple template repository generator. Lets make starting new proejcts feel like a breeze again!
+    description: A simple template repository generator. Lets make starting new projects feel like a breeze again!
     license: AGPL-3.0
 
 signs:
