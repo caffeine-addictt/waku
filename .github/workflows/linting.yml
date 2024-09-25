@@ -45,7 +45,7 @@ jobs:
               - template/**
               - '*.md'
               - '*.yml'
-              - docs/**
+              - www/**
               - .github/**
               - package.json
               - package-lock.json

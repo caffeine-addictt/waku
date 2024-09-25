@@ -2,7 +2,7 @@
 
 VERSION=$1
 VERSION_FILES="README.md cmd/global/version.go"
-VERSION_DIRS="docs scripts"
+VERSION_DIRS="www/docs scripts"
 CURRENT_VERSION=$(grep -oP 'const Version = "\K[\d\.]+' 'cmd/global/version.go' | head -n 1)
 SEMVER_REGEX=$(grep -oP "MustCompile\(\`\K.+(?=\`\))" "cmd/global/version_test.go" | head -n 1)
 
