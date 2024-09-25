@@ -5,7 +5,7 @@
 <!-- Project Banner -->
 
 <a href="https://github.com/caffeine-addictt/waku">
-    <img src="https://github.com/caffeine-addictt/waku/blob/main/assets/logo-full-transparent.png" style="max-width:1125px;" alt="">
+    <img src="https://waku.ngjx.org/static/logo-full-transparent.png" style="max-width:1125px;" alt="">
 </a>
 
 <br>
@@ -111,8 +111,8 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 
 <!---------------- {{Links}} ---------------->
 
-[install-url]: https://github.com/caffeine-addictt/waku/blob/main/docs/install.md
-[docs-url]: https://github.com/caffeine-addictt/waku/blob/main/docs/README.md
+[install-url]: https://waku.ngjx.org/install
+[docs-url]: https://waku.ngjx.org
 [goreport-url]: https://goreportcard.com/report/github.com/caffeine-addictt/waku
 [contribute]: https://github.com/caffeine-addictt/waku/blob/main/CONTRIBUTING.md
 

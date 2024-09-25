@@ -3,11 +3,11 @@
 
 Documentation:
   - changed-files:
-      - any-glob-to-any-file: [docs/**, "./*.{md,mdx}"]
+      - any-glob-to-any-file: [www/**, "./*.{md,mdx}"]
 
 "Type: Test":
   - changed-files:
-      - any-glob-to-any-file: [tests/**, ./*test*]
+      - any-glob-to-any-file: [tests/**, "*_test*"]
 
 "Type: CI":
   - changed-files:
