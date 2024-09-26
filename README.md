@@ -5,7 +5,7 @@
 <!-- Project Banner -->
 
 <a href="https://github.com/caffeine-addictt/template">
-  <img src="https://github.com/caffeine-addictt/template/blob/main/assets/transparent-logo.svg" width="750" height="300" alt="">
+  <img src="https://github.com/caffeine-addictt/template/blob/node-legacy/assets/transparent-logo.svg" width="750" height="300" alt="">
 </a>
 
 <br>
