@@ -66,10 +66,12 @@ Let's make starting new projects feel like a **_breeze_** again.
 
 ### 1. Creating a repository
 
-Click the green "Use this template" button in the top right corner of the page
-or the button below to create your new repository.
-
-[![Use Template][badge-use]][use-url]
+```sh
+git clone https://github.com/caffeine-addictt/waku --branch node-legacy <your-repo-name>
+cd <your-repo-name>
+rm -rf .git
+git init
+```
 
 ### 2. Run the setup script
 
@@ -101,6 +103,15 @@ Just a few more steps and you're ready to go!
 >
 > If you have any feedback, please feel free to create an issue or a pull request.
 
+### 4. Publish your project
+
+```sh
+git remote add origin <your-repo-url>
+git branch -M master
+git add .
+git push -u origin master
+```
+
 Want to support this project? **✨ Star it on GitHub** and help us spread the word!
 
 <div align="right">
@@ -128,7 +139,6 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 
 <!---------------- {{Links}} ---------------->
 
-[use-url]: https://github.com/new?template_name=template&template_owner=caffeine-addictt
 [contribute]: https://github.com/caffeine-addictt/template/blob/main/CONTRIBUTING.md
 
 <!---------------- {{Thanks}} ---------------->
@@ -144,4 +154,3 @@ Want to support this project? **✨ Star it on GitHub** and help us spread the w
 [badge-pr]: https://img.shields.io/github/issues-pr/caffeine-addictt/template
 [badge-language]: https://img.shields.io/github/languages/top/caffeine-addictt/template
 [badge-license]: https://img.shields.io/github/license/caffeine-addictt/template
-[badge-use]: https://img.shields.io/badge/Use%20template-FFFFFF?style=for-the-badge
