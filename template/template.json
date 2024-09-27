@@ -21,6 +21,11 @@
           "ask": "Your GitHub repository name"
         },
         {
+          "key": "Description",
+          "type": "str",
+          "ask": "A brief description of your project"
+        },
+        {
           "key": "Docs",
           "type": "str",
           "ask": "The documentation URL of your project (leave empty if none)",
