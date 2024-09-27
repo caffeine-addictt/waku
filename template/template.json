@@ -30,7 +30,8 @@
           "key": "Assignees",
           "type": "arr",
           "ask": "Additional issue assignees by GitHub username",
-          "capture": "^\\s*@?(.*?)\\s*$"
+          "capture": "^\\s*@?(.*?)\\s*$",
+          "validate": ".*"
         }
       ]
     }
