@@ -128,6 +128,7 @@ nav:
   - Getting Started:
       - Introduction: introduction.md
       - Install: install.md
+      - Quick Start: quick-start.md
   - Configuration:
       - Introduction: configuration/introduction.md
       - Quick Start: configuration/quick-start.md
