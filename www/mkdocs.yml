@@ -129,6 +129,7 @@ nav:
       - Introduction: introduction.md
       - Install: install.md
   - Configuration:
+      - Introduction: configuration/introduction.md
       - Templating: configuration/wip.md
   - Blog:
       - blog/index.md
