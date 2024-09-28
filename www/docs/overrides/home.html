@@ -67,6 +67,10 @@
       text-align: left;
     }
 
+    .feature:nth-child(odd) {
+      width: 25%;
+    }
+
     .feature-header {
       display: flex;
       flex-direction: row;
@@ -133,6 +137,12 @@
       .feature {
         width: 100%;
         padding: 0 1rem;
+      }
+    }
+
+    @media (min-width: 639px) {
+      .feature:nth-child(odd) {
+        width: 35%;
       }
     }
   </style>
