@@ -138,5 +138,7 @@ nav:
           - Labels: configuration/fields/labels.md
           - Prompts: configuration/fields/prompts.md
           - Styles: configuration/fields/styles.md
+  - Resources:
+      - Sponsors: sponsors.md
   - Blog:
       - blog/index.md
