@@ -131,6 +131,8 @@ nav:
   - Configuration:
       - Introduction: configuration/introduction.md
       - Quick Start: configuration/quick-start.md
+      - Fields:
+          - Setup: configuration/fields/setup.md
       - Templating: configuration/wip.md
   - Blog:
       - blog/index.md
