@@ -141,6 +141,7 @@ nav:
   - Resources:
       - Sponsors: sponsors.md
       - Deprecation notices: deprecations.md
+      - Community Templates: community-templates.md
       - Links: links.md
   - Blog:
       - blog/index.md
