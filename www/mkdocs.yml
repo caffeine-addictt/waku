@@ -136,6 +136,7 @@ nav:
           - Ignore: configuration/fields/ignore.md
           - Labels: configuration/fields/labels.md
           - Prompts: configuration/fields/prompts.md
+          - Styles: configuration/fields/styles.md
       - Templating: configuration/wip.md
   - Blog:
       - blog/index.md
