@@ -1,5 +1,5 @@
 {
-  "$schema": "../schema.json",
+  "$schema": "../www/docs/static/schema.json",
   "styles": {
     "simple github": {
       "source": "simple-github",
