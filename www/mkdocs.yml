@@ -133,6 +133,7 @@ nav:
       - Quick Start: configuration/quick-start.md
       - Fields:
           - Setup: configuration/fields/setup.md
+          - Ignore: configuration/fields/ignore.md
       - Templating: configuration/wip.md
   - Blog:
       - blog/index.md
