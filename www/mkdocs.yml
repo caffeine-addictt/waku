@@ -25,6 +25,7 @@ theme:
     - content.code.annotate
     - content.code.copy
     - content.tooltips
+    - content.tabs.link
     - navigation.footer
     - navigation.indexes
     - navigation.sections
@@ -142,6 +143,7 @@ nav:
       - Sponsors: sponsors.md
       - Deprecation notices: deprecations.md
       - Community Templates: community-templates.md
+      - Contributing: contributing.md
       - Links: links.md
   - Blog:
       - blog/index.md
