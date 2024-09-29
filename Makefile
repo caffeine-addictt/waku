@@ -40,16 +40,7 @@ help:
 
 ## install: Install dependencies
 .PHONY: install
-install: install/go install/npm
-
-### install/npm: Install npm dependencies
-.PHONY: install/npm
-install/npm:
-	npm i
-
-### install/go: Install go dependencies
-.PHONY: install/go
-install/go:
+install:
 	go get ./...
 
 # =================================== DEVELOPMENT =================================== #
@@ -122,7 +113,7 @@ lint/go:
 ### lint/npm: Lint NPM code
 .PHONY: lint/npm
 lint/npm:
-	npm run lint
+	prettier --cache --check .
 
 
 
@@ -141,7 +132,7 @@ format/go:
 ### format/npm: Format NPM code
 .PHONY: format/npm
 format/npm:
-	npm run lint:fix
+	prettier --cache --write .
 
 
 
