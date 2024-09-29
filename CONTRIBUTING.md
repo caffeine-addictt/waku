@@ -1,111 +1,107 @@
 # **Contributing**
 
-When contributing to this repository,
-please first discuss the change you wish to make via issue, email, or any other method
-with the owners of this repository before making a change.
+By contributing to Waku, you agree to abide by our
+[code of conduct](https://github.com/caffeine-addictt/waku?tab=coc-ov-file#readme).
 
-Please note we have a [code of conduct](./.github/CODE_OF_CONDUCT.md);
-please follow it in all your interactions with the project.
+## Prerequisites
 
-## Table of Contents
+- [Go 1.23+][Go install]
+- [GNU/Make][]
+- [Prettier][]
+- [Python 3.11+][Python] (docs)
 
-<!-- prettier-ignore-start -->
-<!--toc:start-->
+## Building
 
-1. [Getting started](#getting-started)
-2. [Pull Request Process](#pull-request-process)
-3. [Issue Report Process](#issue-report-process)
-4. [Commit Message Guidelines](#commit-message-guidelines)
-5. [Code Quality](#code-quality)
-    - [Testing](#testing)
-    - [Linting](#linting)
+You can build Waku with [GNU/Make][],
+simply run the following commands:
 
-<!--toc:end-->
-<!-- prettier-ignore-end -->
-
-## Getting started
-
-Contributions are what make the open source community
-such an amazing place to learn, inspire, and create.
-Any contributions you make are **greatly appreciated**. ( ˶ˆᗜˆ˵ )
-
-If you have a suggestion that would make this better,
-please fork the repo and create a pull request.
-You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## Pull Request Process
-
-1. Ensure any install or build dependencies are removed.
-2. Ensure that tests and linting pass.
-3. Increase the version numbers in any examples files and the README.md
-   that this Pull Request would represent. The versioning scheme we use is [SemVer](http://semver.org/).
-4. You may merge the Pull Request once you have the sign-off of two other developers,
-   or if you do not have permission to do that, you may request the second reviewer
-   to merge it for you.
-
-## Issue Report Process
-
-1. Go to the project's issues.
-2. Select the template that better fits your issue.
-3. Read the instructions carefully and write within the template guidelines.
-4. Submit it and wait for support.
-
-## Commit Message Guidelines
-
-When committing, commit messages are prefixed with one of the
-following depending on the type of change made.
-
-- `feat:` when a new feature is introduced with the changes.
-- `fix:` when a bug fix has occurred.
-- `chore:` for changes that do not relate to a fix or feature and do not modify
-  _source_ or _tests_. (like updating dependencies)
-- `refactor:` for refactoring code that neither fixes a bug nor adds a feature.
-- `docs:` when changes are made to documentation.
-- `style:` when changes that do not affect the code, but modify formatting.
-- `test:` when changes to tests are made.
-- `perf:` for changes that improve performance.
-- `ci:` for changes that affect CI.
-- `build:` for changes that affect the build system or external dependencies.
-- `revert:` when reverting changes.
-
-Commit messages are also to begin with an uppercase character.
-Below list some example commit messages.
+### Go
 
 ```sh
-git commit -m "docs: Added README.md"
-git commit -m "revert: Removed README.md"
-git commit -m "docs: Moved README.md"
+make build
 ```
 
-## Code Quality
-
-### Testing
-
-We use `gotest` to test our code.
-Please ensure that tests are updated and pass before merging a Pull Request.
+### Docker
 
 ```sh
-# To test your code, run:
+make build/docker
+```
+
+### Docs
+
+```sh
+make build/docs
+```
+
+## Testing
+
+Running the following will run all tests
+as well as check for vulnerabilities.
+
+```sh
 make test
 ```
 
-### Linting
+During development, you can also run the following:
 
-We use `gofmt`
-to ensure that code is consistent and follows our [code style](./.github/CODESTYLE.md).
-Please ensure that your code passes linting before merging a Pull Request.
+### Go
+
+This will run the Waku CLI.
 
 ```sh
-# To lint your code, run:
-make lint
-
-# To format your code, run:
-make format
+go run .
 ```
+
+### Docs
+
+This will start a development server for documentation
+on [`http://localhost:8000`](http://localhost:8000).
+
+```sh
+make docs
+```
+
+## Creating commits
+
+Commit messages should conform to [Conventional commits][].
+
+We also ask that your code is formatted before committing
+by running:
+
+```sh
+make lint
+make fmt
+```
+
+## Submitting a Pull Request
+
+Push your changes to your `waku` fork and create a Pull Request
+against the main branch. Please include a clear and concise description
+of your changes and why they are necessary. Also ensure that your Pull Request
+title conforms to [Conventional commits][] and that you have incremented version
+numbers according to [SemVer][] by running:
+
+```sh
+make bump version=x.x.x
+```
+
+## Creating an issue
+
+Please ensure that there is no similar issue already open before
+creating a new one.
+
+If not, you can choose a relevant issue template from the [list](https://github.com/caffeine-addictt/waku/issues/new/choose).
+Providing as much information as possible will make it easier for us to help
+resolve your issue.
+
+## Financial contributions
+
+You can consider sponsoring Waku.
+See [this page](https://waku.ngjx.org/sponsors) for more details.
+
+[Go install]: https://go.dev/doc/install
+[GNU/Make]: https://www.gnu.org/software/make/#download
+[Prettier]: https://prettier.io/
+[Python]: https://www.python.org
+[Conventional commits]: https://www.conventionalcommits.org
+[SemVer]: https://semver.org
