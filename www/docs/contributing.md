@@ -1,4 +1,4 @@
-# **Contributing**
+# Contributing
 
 By contributing to Waku, you agree to abide by our
 [code of conduct](https://github.com/caffeine-addictt/waku?tab=coc-ov-file#readme).
@@ -15,23 +15,23 @@ By contributing to Waku, you agree to abide by our
 You can build Waku with [GNU/Make][],
 simply run the following commands:
 
-### Go
+=== "Go"
 
-```sh
-make build
-```
+    ```sh
+    make build
+    ```
 
-### Docker
+=== "Docker"
 
-```sh
-make build/docker
-```
+    ```sh
+    make build/docker
+    ```
 
-### Docs
+=== "Docs"
 
-```sh
-make build/docs
-```
+    ```sh
+    make build/docs
+    ```
 
 ## Testing
 
@@ -44,22 +44,22 @@ make test
 
 During development, you can also run the following:
 
-### Go
+=== "Go"
 
-This will run the Waku CLI.
+    This will run the Waku CLI.
 
-```sh
-go run .
-```
+    ```sh
+    go run .
+    ```
 
-### Docs
+=== "Docs"
 
-This will start a development server for documentation
-on [`http://localhost:8000`](http://localhost:8000).
+    This will start a development server for documentation
+    on [`http://localhost:8000`](http://localhost:8000).
 
-```sh
-make docs
-```
+    ```sh
+    make docs
+    ```
 
 ## Creating commits
 
@@ -97,7 +97,7 @@ resolve your issue.
 ## Financial contributions
 
 You can consider sponsoring Waku.
-See [this page](https://waku.ngjx.org/sponsors) for more details.
+See [this page](./sponsors.md) for more details.
 
 [Go install]: https://go.dev/doc/install
 [GNU/Make]: https://www.gnu.org/software/make/#download

@@ -6,6 +6,3 @@ dist/
 venv*/
 *.py[cod]
 *$py.class
-
-template/
-!template/template.json

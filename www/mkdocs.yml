@@ -25,6 +25,7 @@ theme:
     - content.code.annotate
     - content.code.copy
     - content.tooltips
+    - content.tabs.link
     - navigation.footer
     - navigation.indexes
     - navigation.sections
@@ -128,7 +129,21 @@ nav:
   - Getting Started:
       - Introduction: introduction.md
       - Install: install.md
+      - Quick Start: quick-start.md
   - Configuration:
-      - Templating: configuration/wip.md
+      - Introduction: configuration/introduction.md
+      - Quick Start: configuration/quick-start.md
+      - Fields:
+          - Setup: configuration/fields/setup.md
+          - Ignore: configuration/fields/ignore.md
+          - Labels: configuration/fields/labels.md
+          - Prompts: configuration/fields/prompts.md
+          - Styles: configuration/fields/styles.md
+  - Resources:
+      - Sponsors: sponsors.md
+      - Deprecation notices: deprecations.md
+      - Community Templates: community-templates.md
+      - Contributing: contributing.md
+      - Links: links.md
   - Blog:
       - blog/index.md
