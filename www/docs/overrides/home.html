@@ -76,12 +76,14 @@
       flex-direction: row;
       gap: 0.5rem;
       align-items: center;
+      width: max-content;
     }
 
     .feature h3 {
       font-size: 0.9rem;
       font-weight: 700;
       color: #000;
+      width: max-content;
     }
 
     [data-md-color-scheme="slate"] .feature h3 {
@@ -138,11 +140,16 @@
         width: 100%;
         padding: 0 1rem;
       }
+
+      .feature:nth-child(odd) {
+        width: 100%;
+      }
     }
 
     @media (min-width: 639px) {
       .feature:nth-child(odd) {
         width: 35%;
+        padding-left: 2.5rem;
       }
     }
   </style>
