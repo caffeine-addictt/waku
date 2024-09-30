@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"log"
-
 	"github.com/caffeine-addictt/waku/cmd/commands"
 	"github.com/caffeine-addictt/waku/cmd/options"
 	"github.com/caffeine-addictt/waku/cmd/utils"
@@ -32,7 +30,5 @@ func init() {
 
 // The main entry point for the command line tool
 func Execute() {
-	if err := RootCmd.Execute(); err != nil {
-		log.Fatal(err)
-	}
+	_ = RootCmd.Execute()
 }
