@@ -6,8 +6,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/caffeine-addictt/waku/cmd/config"
 	"github.com/caffeine-addictt/waku/cmd/options"
+	"github.com/caffeine-addictt/waku/pkg/config"
 )
 
 func ParseConfig(filePath string) (*config.TemplateJson, error) {
