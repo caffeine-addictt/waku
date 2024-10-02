@@ -18,6 +18,10 @@ var RootCmd = &cobra.Command{
 		"Let's make starting new projects feel like a breeze again.",
 	),
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		if options.GlobalOpts.Quiet {
+			return log.SetLevel(log.QUIET)
+		}
+
 		if options.GlobalOpts.Verbosity > 3 || options.GlobalOpts.Verbosity < 0 {
 			return fmt.Errorf("verbosity level must be between 0 and 3")
 		}
@@ -28,8 +32,11 @@ var RootCmd = &cobra.Command{
 
 // Setting up configuration
 func init() {
+	RootCmd.PersistentFlags().BoolVarP(&options.GlobalOpts.Quiet, "quiet", "q", false, "quiet mode")
 	RootCmd.PersistentFlags().BoolVarP(&options.GlobalOpts.Accessible, "accessible", "A", false, "accessible mode")
 	RootCmd.PersistentFlags().CountVarP(&options.GlobalOpts.Verbosity, "verbose", "v", "verobisty level (1: info, 2: debug, 3: trace)")
+
+	RootCmd.MarkFlagsMutuallyExclusive("quiet", "verbose")
 
 	commands.InitCommands(RootCmd)
 }
