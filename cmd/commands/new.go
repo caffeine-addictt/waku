@@ -13,21 +13,24 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/caffeine-addictt/waku/cmd/config"
-	"github.com/caffeine-addictt/waku/cmd/license"
 	"github.com/caffeine-addictt/waku/cmd/options"
-	"github.com/caffeine-addictt/waku/cmd/template"
-	"github.com/caffeine-addictt/waku/cmd/utils"
-	"github.com/caffeine-addictt/waku/cmd/utils/types"
+	"github.com/caffeine-addictt/waku/internal/license"
+	"github.com/caffeine-addictt/waku/internal/log"
+	"github.com/caffeine-addictt/waku/internal/template"
+	"github.com/caffeine-addictt/waku/internal/types"
+	"github.com/caffeine-addictt/waku/internal/utils"
+	"github.com/caffeine-addictt/waku/pkg/config"
 	"github.com/charmbracelet/huh"
 	"github.com/spf13/cobra"
 )
 
 var NewCmd = &cobra.Command{
-	Use:     "new",
-	Aliases: []string{"init"},
-	Short:   "create a new project",
-	Long:    "Create a new project from a template",
+	Use:           "new",
+	Aliases:       []string{"init"},
+	Short:         "create a new project",
+	Long:          "Create a new project from a template",
+	SilenceErrors: true,
+	SilenceUsage:  true,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		return options.NewOpts.Validate()
 	},
@@ -54,7 +57,7 @@ var NewCmd = &cobra.Command{
 			return
 		}
 
-		options.Infof("creating project in '%s'...\n", projectRootDir)
+		log.Infof("creating project in '%s'...\n", projectRootDir)
 		if err := os.Mkdir(projectRootDir, utils.DirPerms); err != nil {
 			cmd.PrintErrln(err)
 			exitCode = 1
@@ -78,7 +81,7 @@ var NewCmd = &cobra.Command{
 		rootDir := tmpDir
 		if options.NewOpts.Directory.Value() != "" {
 			rootDir = filepath.Join(tmpDir, options.NewOpts.Directory.Value())
-			options.Debugf("resolved directory to: %s\n", rootDir)
+			log.Debugf("resolved directory to: %s\n", rootDir)
 
 			ok, err := utils.IsDir(rootDir)
 			if err != nil {
@@ -94,7 +97,7 @@ var NewCmd = &cobra.Command{
 		}
 
 		// Parse template.json
-		options.Infoln("Parsing template.json...")
+		log.Infoln("Parsing template.json...")
 		tmpl, err := template.ParseConfig(filepath.Join(rootDir, "template.json"))
 		if err != nil {
 			cmd.PrintErrln(err)
@@ -124,7 +127,7 @@ var NewCmd = &cobra.Command{
 
 			rootDir = filepath.Join(rootDir, styleInfo.Source.String())
 		}
-		options.Debugf("resolved style to: %s\n", rootDir)
+		log.Debugf("resolved style to: %s\n", rootDir)
 
 		// Handle license stuff
 		licenseText, err := license.GetLicenseText()
@@ -135,7 +138,7 @@ var NewCmd = &cobra.Command{
 		}
 
 		// Handle prompts
-		options.Debugln("resolving prompts...")
+		log.Debugln("resolving prompts...")
 		extraPrompts := map[string]config.TemplatePrompt{}
 		if tmpl.Prompts != nil {
 			for _, ask := range *tmpl.Prompts {
@@ -153,7 +156,7 @@ var NewCmd = &cobra.Command{
 			licenseTmpl[v] = fmt.Sprintf("Value for license %s?", v)
 			delete(extraPrompts, v)
 		}
-		options.Debugf("resolved prompts to: %v\n", extraPrompts)
+		log.Debugf("resolved prompts to: %v\n", extraPrompts)
 
 		prompts := make([]*huh.Group, 0, len(extraPrompts))
 		finalTmpl := make(map[string]any, len(extraPrompts)+len(licenseTmpl))
@@ -174,7 +177,7 @@ var NewCmd = &cobra.Command{
 			})))
 		}
 
-		options.Debugf("resolved prompt groups to: %v\n", prompts)
+		log.Debugf("resolved prompt groups to: %v\n", prompts)
 		if err := huh.NewForm(prompts...).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
 			cmd.PrintErrln(err)
 			exitCode = 1
@@ -182,7 +185,7 @@ var NewCmd = &cobra.Command{
 		}
 
 		// Get file paths
-		options.Infoln("Getting file paths...")
+		log.Infoln("Getting file paths...")
 		paths, err := utils.WalkDirRecursive(rootDir)
 		if err != nil {
 			cmd.PrintErrln(err)
@@ -191,7 +194,7 @@ var NewCmd = &cobra.Command{
 		}
 
 		// Handle ignores
-		options.Infoln("Applying ignores...")
+		log.Infoln("Applying ignores...")
 		ignoreRules := types.NewSet(
 			".git/",
 			"LICENSE*",
@@ -221,14 +224,14 @@ var NewCmd = &cobra.Command{
 		ignoreRules = template.ResolveIncludes(ignoreRules, types.NewSet(".git/", "LICENSE"))
 		ignoredPaths := template.ResolveIncludes(types.NewSet(paths...), ignoreRules)
 
-		options.Debugf("resolved files to write: %v", ignoredPaths)
+		log.Debugf("resolved files to write: %v", ignoredPaths)
 
 		// Handle writing files
 		cmd.Println("writing files...")
 		finalTmpl["Name"] = name
 		finalTmpl["License"] = license.Name
 		finalTmpl["Spdx"] = license.Spdx
-		options.Debugf("final template: %v", finalTmpl)
+		log.Debugf("final template: %v", finalTmpl)
 
 		if err := WriteFiles(rootDir, projectRootDir, ignoredPaths.ToSlice(), licenseText, finalTmpl, licenseTmpl); err != nil {
 			fmt.Printf("failed to write files: %s\n", err)
@@ -237,7 +240,7 @@ var NewCmd = &cobra.Command{
 		}
 
 		if options.NewOpts.NoGit {
-			options.Infoln("skipping git initialization")
+			log.Infoln("skipping git initialization")
 		} else {
 			cmd.Println("initializing git...")
 			initGit := exec.Command("git", "init")
@@ -278,7 +281,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 	for _, path := range paths {
 		tmpPath := filepath.Join(tmpRoot, path)
 		newPath := filepath.Join(projectRoot, path)
-		options.Infof("resolved %s -> %s\n", tmpPath, newPath)
+		log.Infof("resolved %s -> %s\n", tmpPath, newPath)
 
 		// write dirs
 		dir := filepath.Dir(newPath)
@@ -298,7 +301,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 				return
 			}
 			defer tmpFile.Close()
-			options.Debugf("opened file for reading: %s\n", tmpPath)
+			log.Debugf("opened file for reading: %s\n", tmpPath)
 
 			newFile, err := os.OpenFile(filepath.Clean(newPath), os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.FilePerms)
 			if err != nil {
@@ -306,7 +309,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 				return
 			}
 			defer newFile.Close()
-			options.Debugf("opened file for writing: %s", newPath)
+			log.Debugf("opened file for writing: %s", newPath)
 
 			reader := bufio.NewScanner(tmpFile)
 			writer := bufio.NewWriter(newFile)
@@ -315,7 +318,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 				return
 			}
 
-			options.Debugf("wrote file: %s\n", newPath)
+			log.Debugf("wrote file: %s\n", newPath)
 		}()
 	}
 
@@ -325,7 +328,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 		newLicenseText := utils.ParseLicenseText(licenseTmpl, licenseText)
 
 		newPath := filepath.Join(projectRoot, "LICENSE")
-		options.Infof("writing to %s\n", newPath)
+		log.Infof("writing to %s\n", newPath)
 
 		newFile, err := os.OpenFile(filepath.Clean(newPath), os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.FilePerms)
 		if err != nil {
@@ -333,7 +336,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 			return
 		}
 		defer newFile.Close()
-		options.Debugf("opened file for writing: %s\n", newPath)
+		log.Debugf("opened file for writing: %s\n", newPath)
 
 		if _, err := newFile.WriteString(newLicenseText); err != nil {
 			errChan <- fmt.Errorf("failed to write license text to %s", newPath)
@@ -345,13 +348,13 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 			return
 		}
 
-		options.Debugf("wrote file: %s\n", newPath)
+		log.Debugf("wrote file: %s\n", newPath)
 	}()
 
 	// handle canceling if anything goes wrong
 	var exitErr error
 	go func() {
-		options.Infoln("watching for errors")
+		log.Infoln("watching for errors")
 		if err := <-errChan; err != nil {
 			cancel()
 			exitErr = err

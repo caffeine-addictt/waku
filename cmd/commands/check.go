@@ -5,17 +5,19 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/caffeine-addictt/waku/cmd/template"
-	"github.com/caffeine-addictt/waku/cmd/utils"
+	"github.com/caffeine-addictt/waku/internal/template"
+	"github.com/caffeine-addictt/waku/internal/utils"
 	"github.com/spf13/cobra"
 )
 
 var CheckCmd = &cobra.Command{
-	Use:     "check <path>",
-	Aliases: []string{"ch", "c", "verify"},
-	Short:   "check if template.json is valid",
-	Long:    "Check if your current template.json is valid",
-	Args:    cobra.MaximumNArgs(1),
+	Use:           "check <path>",
+	Aliases:       []string{"ch", "c", "verify"},
+	Short:         "check if template.json is valid",
+	Long:          "Check if your current template.json is valid",
+	Args:          cobra.MaximumNArgs(1),
+	SilenceErrors: true,
+	SilenceUsage:  true,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Check for naming
 		if len(args) == 1 && !strings.HasSuffix(args[0], "template.json") {
