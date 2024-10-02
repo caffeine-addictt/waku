@@ -17,13 +17,19 @@ var RootCmd = &cobra.Command{
 		"Waku helps you kickstart new projects from templates.",
 		"Let's make starting new projects feel like a breeze again.",
 	),
+	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		if options.GlobalOpts.Verbosity > 3 || options.GlobalOpts.Verbosity < 0 {
+			return fmt.Errorf("verbosity level must be between 0 and 3")
+		}
+
+		return log.SetLevel(log.WARNING - log.Level(options.GlobalOpts.Verbosity))
+	},
 }
 
 // Setting up configuration
 func init() {
-	RootCmd.PersistentFlags().BoolVarP(&options.GlobalOpts.Debug, "debug", "d", false, "debug mode")
-	RootCmd.PersistentFlags().BoolVarP(&options.GlobalOpts.Verbose, "verbose", "v", false, "verbose mode")
 	RootCmd.PersistentFlags().BoolVarP(&options.GlobalOpts.Accessible, "accessible", "A", false, "accessible mode")
+	RootCmd.PersistentFlags().CountVarP(&options.GlobalOpts.Verbosity, "verbose", "v", "verobisty level (1: info, 2: debug, 3: trace)")
 
 	commands.InitCommands(RootCmd)
 }
