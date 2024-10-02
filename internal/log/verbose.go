@@ -10,12 +10,14 @@ func Infof(format string, a ...any) {
 
 func Infoln(a ...any) {
 	if logLevel <= INFO {
-		fmt.Println(append([]any{infoPrefix}, a...)...)
+		fmt.Print(infoPrefix)
+		fmt.Println(a...)
 	}
 }
 
 func Info(v ...any) {
 	if logLevel <= INFO {
-		fmt.Print(append([]any{infoPrefix}, v...)...)
+		fmt.Print(infoPrefix)
+		fmt.Print(v...)
 	}
 }

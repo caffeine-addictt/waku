@@ -10,12 +10,14 @@ func Debugf(format string, a ...any) {
 
 func Debugln(a ...any) {
 	if logLevel <= DEBUG {
-		fmt.Println(append([]any{debugPrefix}, a...)...)
+		fmt.Print(debugPrefix)
+		fmt.Println(a...)
 	}
 }
 
 func Debug(v ...any) {
 	if logLevel <= DEBUG {
-		fmt.Print(append([]any{debugPrefix}, v...)...)
+		fmt.Print(debugPrefix)
+		fmt.Print(v...)
 	}
 }
