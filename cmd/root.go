@@ -43,5 +43,7 @@ func init() {
 
 // The main entry point for the command line tool
 func Execute() {
-	_ = RootCmd.Execute()
+	if err := RootCmd.Execute(); err != nil {
+		os.Exit(1)
+	}
 }
