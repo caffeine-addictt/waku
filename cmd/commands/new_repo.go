@@ -3,12 +3,14 @@ package commands
 import "github.com/spf13/cobra"
 
 var NewRepoCmd = &cobra.Command{
-	Use:     "repo",
-	Aliases: []string{"repository", "project"},
-	Short:   NewCmd.Short,
-	Long:    NewCmd.Long,
-	PreRunE: NewCmd.PreRunE,
-	Run:     NewCmd.Run,
+	Use:           "repo",
+	Aliases:       []string{"repository", "project"},
+	SilenceErrors: true,
+	SilenceUsage:  true,
+	Short:         NewCmd.Short,
+	Long:          NewCmd.Long,
+	PreRunE:       NewCmd.PreRunE,
+	Run:           NewCmd.Run,
 }
 
 func init() {

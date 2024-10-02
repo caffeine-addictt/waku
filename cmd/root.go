@@ -1,16 +1,24 @@
 package cmd
 
 import (
+	"fmt"
+	"os"
+	"runtime/debug"
+
 	"github.com/caffeine-addictt/waku/cmd/commands"
 	"github.com/caffeine-addictt/waku/cmd/options"
 	"github.com/caffeine-addictt/waku/cmd/utils"
+	"github.com/caffeine-addictt/waku/internal/errors"
+	"github.com/caffeine-addictt/waku/internal/log"
 	"github.com/spf13/cobra"
 )
 
 // The Root command
 var RootCmd = &cobra.Command{
-	Use:   "waku",
-	Short: "let's make starting new projects feel like a breeze again",
+	Use:           "waku",
+	Short:         "let's make starting new projects feel like a breeze again",
+	SilenceErrors: true,
+	SilenceUsage:  true,
 	Long: utils.MultilineString(
 		"Waku (waku!) 枠組み",
 		"",
@@ -44,6 +52,21 @@ func init() {
 // The main entry point for the command line tool
 func Execute() {
 	if err := RootCmd.Execute(); err != nil {
+		log.Errorf("%v\n", err)
+
+		if _, ok := err.(errors.WakuError); !ok {
+			cmd, _, err := RootCmd.Find(os.Args[1:])
+			if err != nil {
+				log.Errorf("failed to find subcommand's usage: %v\n", err)
+			} else {
+				fmt.Fprintln(os.Stderr, cmd.UsageString())
+			}
+		}
+
+		if log.GetLevel() == log.TRACE {
+			debug.PrintStack()
+		}
+
 		os.Exit(1)
 	}
 }

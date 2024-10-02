@@ -25,10 +25,12 @@ import (
 )
 
 var NewCmd = &cobra.Command{
-	Use:     "new",
-	Aliases: []string{"init"},
-	Short:   "create a new project",
-	Long:    "Create a new project from a template",
+	Use:           "new",
+	Aliases:       []string{"init"},
+	Short:         "create a new project",
+	Long:          "Create a new project from a template",
+	SilenceErrors: true,
+	SilenceUsage:  true,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		return options.NewOpts.Validate()
 	},
