@@ -7,7 +7,7 @@ import (
 
 	"github.com/caffeine-addictt/waku/cmd/commands"
 	"github.com/caffeine-addictt/waku/cmd/options"
-	"github.com/caffeine-addictt/waku/cmd/utils"
+	"github.com/caffeine-addictt/waku/internal/utils"
 	"github.com/caffeine-addictt/waku/internal/errors"
 	"github.com/caffeine-addictt/waku/internal/log"
 	"github.com/spf13/cobra"

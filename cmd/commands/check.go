@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/caffeine-addictt/waku/cmd/template"
-	"github.com/caffeine-addictt/waku/cmd/utils"
+	"github.com/caffeine-addictt/waku/internal/utils"
 	"github.com/spf13/cobra"
 )
 

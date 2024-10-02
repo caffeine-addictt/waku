@@ -6,7 +6,7 @@ import (
 	"os/exec"
 
 	"github.com/caffeine-addictt/waku/cmd/global"
-	"github.com/caffeine-addictt/waku/cmd/utils"
+	"github.com/caffeine-addictt/waku/internal/utils"
 	"github.com/caffeine-addictt/waku/internal/log"
 	"github.com/caffeine-addictt/waku/internal/types"
 )

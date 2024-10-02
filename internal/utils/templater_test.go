@@ -6,7 +6,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/caffeine-addictt/waku/cmd/utils"
+	"github.com/caffeine-addictt/waku/internal/utils"
 	"github.com/stretchr/testify/assert"
 )
 

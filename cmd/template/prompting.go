@@ -7,7 +7,7 @@ import (
 
 	"github.com/caffeine-addictt/waku/cmd/license"
 	"github.com/caffeine-addictt/waku/cmd/options"
-	"github.com/caffeine-addictt/waku/cmd/utils"
+	"github.com/caffeine-addictt/waku/internal/utils"
 	"github.com/caffeine-addictt/waku/internal/searching"
 	"github.com/caffeine-addictt/waku/internal/sorting"
 	"github.com/caffeine-addictt/waku/internal/types"
