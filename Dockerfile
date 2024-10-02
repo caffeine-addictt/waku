@@ -12,7 +12,7 @@ RUN go mod download
 
 # Copy the source code.
 COPY *.go ./
-COPY cmd/ pkg/ ./
+COPY cmd/ pkg/ internal/ ./
 
 # Build
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o waku
