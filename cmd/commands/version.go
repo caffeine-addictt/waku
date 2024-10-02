@@ -1,7 +1,7 @@
 package commands
 
 import (
-	"github.com/caffeine-addictt/waku/cmd/global"
+	"github.com/caffeine-addictt/waku/pkg/version"
 	"github.com/spf13/cobra"
 )
 
@@ -13,6 +13,6 @@ var VersionCmd = &cobra.Command{
 	SilenceErrors: true,
 	SilenceUsage:  true,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.Println(global.Version)
+		cmd.Println(version.Version)
 	},
 }

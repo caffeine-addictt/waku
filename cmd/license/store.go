@@ -4,13 +4,13 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/caffeine-addictt/waku/cmd/global"
+	"github.com/caffeine-addictt/waku/pkg/version"
 	"github.com/goccy/go-json"
 )
 
 const (
 	LICENSE_LIST = "license.json"
-	BASE_URL     = "https://raw.githubusercontent.com/caffeine-addictt/waku/v" + global.Version + "/licenses/"
+	BASE_URL     = "https://raw.githubusercontent.com/caffeine-addictt/waku/v" + version.Version + "/licenses/"
 )
 
 // The global "cache" per say so we only

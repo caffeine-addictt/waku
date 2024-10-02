@@ -5,10 +5,10 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/caffeine-addictt/waku/cmd/global"
-	"github.com/caffeine-addictt/waku/internal/utils"
 	"github.com/caffeine-addictt/waku/internal/log"
 	"github.com/caffeine-addictt/waku/internal/types"
+	"github.com/caffeine-addictt/waku/internal/utils"
+	"github.com/caffeine-addictt/waku/pkg/version"
 )
 
 const defaultRepo = "https://github.com/caffeine-addictt/waku.git"
@@ -72,7 +72,7 @@ func (o *NewOptions) Validate() error {
 			return err
 		}
 		if o.Branch.Value() == "" {
-			if err := o.Branch.Set("v" + global.Version); err != nil {
+			if err := o.Branch.Set("v" + version.Version); err != nil {
 				return err
 			}
 		}
