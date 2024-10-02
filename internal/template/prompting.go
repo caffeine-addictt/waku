@@ -5,12 +5,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/caffeine-addictt/waku/cmd/license"
 	"github.com/caffeine-addictt/waku/cmd/options"
-	"github.com/caffeine-addictt/waku/internal/utils"
+	"github.com/caffeine-addictt/waku/internal/license"
 	"github.com/caffeine-addictt/waku/internal/searching"
 	"github.com/caffeine-addictt/waku/internal/sorting"
 	"github.com/caffeine-addictt/waku/internal/types"
+	"github.com/caffeine-addictt/waku/internal/utils"
 	"github.com/caffeine-addictt/waku/pkg/config"
 	"github.com/charmbracelet/huh"
 )

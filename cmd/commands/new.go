@@ -13,8 +13,8 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/caffeine-addictt/waku/cmd/license"
 	"github.com/caffeine-addictt/waku/cmd/options"
+	"github.com/caffeine-addictt/waku/internal/license"
 	"github.com/caffeine-addictt/waku/internal/log"
 	"github.com/caffeine-addictt/waku/internal/template"
 	"github.com/caffeine-addictt/waku/internal/types"

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/caffeine-addictt/waku/cmd/license"
+	"github.com/caffeine-addictt/waku/internal/license"
 	"github.com/caffeine-addictt/waku/internal/utils"
 	"github.com/goccy/go-json"
 	"github.com/stretchr/testify/assert"
