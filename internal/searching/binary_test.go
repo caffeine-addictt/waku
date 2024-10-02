@@ -3,7 +3,7 @@ package searching_test
 import (
 	"testing"
 
-	"github.com/caffeine-addictt/waku/cmd/utils/searching"
+	"github.com/caffeine-addictt/waku/internal/searching"
 	"github.com/stretchr/testify/assert"
 )
 
