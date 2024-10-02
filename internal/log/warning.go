@@ -1,23 +1,26 @@
 package log
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 func Warnf(format string, a ...any) {
 	if logLevel <= WARNING {
-		fmt.Printf(warnPrefix+format, a...)
+		fmt.Fprintf(os.Stderr, warnPrefix+format, a...)
 	}
 }
 
 func Warnln(a ...any) {
 	if logLevel <= WARNING {
-		fmt.Print(warnPrefix)
-		fmt.Println(a...)
+		fmt.Fprint(os.Stderr, warnPrefix)
+		fmt.Fprintln(os.Stderr, a...)
 	}
 }
 
 func Warn(v ...any) {
 	if logLevel <= WARNING {
-		fmt.Print(warnPrefix)
-		fmt.Print(v...)
+		fmt.Fprint(os.Stderr, warnPrefix)
+		fmt.Fprint(os.Stderr, v...)
 	}
 }
