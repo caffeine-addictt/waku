@@ -13,12 +13,14 @@ func Errorf(format string, a ...any) {
 
 func Errorln(a ...any) {
 	if logLevel <= ERROR {
-		fmt.Fprintln(os.Stderr, append([]any{errorPrefix}, a...)...)
+		fmt.Fprint(os.Stderr, errorPrefix)
+		fmt.Fprintln(os.Stderr, a...)
 	}
 }
 
 func Error(v ...any) {
 	if logLevel <= ERROR {
-		fmt.Fprint(os.Stderr, append([]any{errorPrefix}, v...)...)
+		fmt.Fprint(os.Stderr, errorPrefix)
+		fmt.Fprint(os.Stderr, v...)
 	}
 }

@@ -10,12 +10,14 @@ func Warnf(format string, a ...any) {
 
 func Warnln(a ...any) {
 	if logLevel <= WARNING {
-		fmt.Println(append([]any{warnPrefix}, a...)...)
+		fmt.Print(warnPrefix)
+		fmt.Println(a...)
 	}
 }
 
 func Warn(v ...any) {
 	if logLevel <= WARNING {
-		fmt.Print(append([]any{warnPrefix}, v...)...)
+		fmt.Print(warnPrefix)
+		fmt.Print(v...)
 	}
 }
