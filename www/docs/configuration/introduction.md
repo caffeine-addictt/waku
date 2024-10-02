@@ -20,10 +20,10 @@ for better editor support.
 https://waku.ngjx.org/static/schema.json
 ```
 
-Or you can pin a specific version like `v0.3.3`:
+Or you can pin a specific version like `v0.4.0`:
 
 ```text
-https://raw.githubusercontent.com/caffeine-addictt/waku/v0.3.3/www/docs/static/schema.json
+https://raw.githubusercontent.com/caffeine-addictt/waku/v0.4.0/www/docs/static/schema.json
 ```
 
 Simply add the `$schema` property to your `template.json` file:
