@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/caffeine-addictt/waku/cmd/utils/types"
+	"github.com/caffeine-addictt/waku/internal/types"
 	"github.com/charmbracelet/huh"
 	"github.com/goccy/go-json"
 )

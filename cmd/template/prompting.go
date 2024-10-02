@@ -8,9 +8,9 @@ import (
 	"github.com/caffeine-addictt/waku/cmd/license"
 	"github.com/caffeine-addictt/waku/cmd/options"
 	"github.com/caffeine-addictt/waku/cmd/utils"
-	"github.com/caffeine-addictt/waku/cmd/utils/types"
 	"github.com/caffeine-addictt/waku/internal/searching"
 	"github.com/caffeine-addictt/waku/internal/sorting"
+	"github.com/caffeine-addictt/waku/internal/types"
 	"github.com/caffeine-addictt/waku/pkg/config"
 	"github.com/charmbracelet/huh"
 )

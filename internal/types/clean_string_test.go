@@ -3,7 +3,7 @@ package types_test
 import (
 	"testing"
 
-	"github.com/caffeine-addictt/waku/cmd/utils/types"
+	"github.com/caffeine-addictt/waku/internal/types"
 	"github.com/stretchr/testify/assert"
 )
 
