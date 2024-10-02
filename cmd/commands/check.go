@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/caffeine-addictt/waku/cmd/template"
+	"github.com/caffeine-addictt/waku/internal/template"
 	"github.com/caffeine-addictt/waku/internal/utils"
 	"github.com/spf13/cobra"
 )

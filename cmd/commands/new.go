@@ -15,10 +15,10 @@ import (
 
 	"github.com/caffeine-addictt/waku/cmd/license"
 	"github.com/caffeine-addictt/waku/cmd/options"
-	"github.com/caffeine-addictt/waku/cmd/template"
-	"github.com/caffeine-addictt/waku/internal/utils"
 	"github.com/caffeine-addictt/waku/internal/log"
+	"github.com/caffeine-addictt/waku/internal/template"
 	"github.com/caffeine-addictt/waku/internal/types"
+	"github.com/caffeine-addictt/waku/internal/utils"
 	"github.com/caffeine-addictt/waku/pkg/config"
 	"github.com/charmbracelet/huh"
 	"github.com/spf13/cobra"
