@@ -30,8 +30,9 @@ var logLevel Level = WARNING
 
 func SetLevel(l Level) error {
 	switch l {
-	case DEBUG, INFO, WARNING, ERROR, QUIET:
+	case TRACE, DEBUG, INFO, WARNING, ERROR, QUIET:
 		logLevel = l
+		Debugf("set log level to %d\n", l)
 		return nil
 	}
 	return fmt.Errorf("invalid log level: %d", l)
