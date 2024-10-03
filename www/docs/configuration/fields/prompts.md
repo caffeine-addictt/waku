@@ -4,11 +4,8 @@ Prompts are additionally `asks` for templating.
 
 !!! TIP
 
-    Waku uses Go's [`text/template`](https://pkg.go.dev/text/template)
-    library for templating, with 3 brackets `{{{ }}}` instead of 2.
-
-    See the [documentation](https://pkg.go.dev/text/template#hdr-Text_and_spaces)
-    for how you can leverage Go's strong templating engine.
+    Waku provides some default template values for you.
+    See the docs [here](../templates.md).
 
 ## template.json
 
