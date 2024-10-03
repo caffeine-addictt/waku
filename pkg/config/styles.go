@@ -5,8 +5,8 @@ import (
 	"path"
 	"path/filepath"
 
-	"github.com/caffeine-addictt/waku/internal/utils"
 	"github.com/caffeine-addictt/waku/internal/types"
+	"github.com/caffeine-addictt/waku/internal/utils"
 )
 
 type TemplateStyles map[types.CleanString]TemplateStyle

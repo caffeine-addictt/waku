@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"os/exec"
 	"os/signal"
 	"path/filepath"
 	"strings"
@@ -14,6 +13,7 @@ import (
 	"syscall"
 
 	"github.com/caffeine-addictt/waku/cmd/options"
+	"github.com/caffeine-addictt/waku/internal/git"
 	"github.com/caffeine-addictt/waku/internal/license"
 	"github.com/caffeine-addictt/waku/internal/log"
 	"github.com/caffeine-addictt/waku/internal/template"
@@ -231,7 +231,7 @@ var NewCmd = &cobra.Command{
 		finalTmpl["Name"] = name
 		finalTmpl["License"] = license.Name
 		finalTmpl["Spdx"] = license.Spdx
-		log.Debugf("final template: %v", finalTmpl)
+		log.Debugf("final template: %v\n", finalTmpl)
 
 		if err := WriteFiles(rootDir, projectRootDir, ignoredPaths.ToSlice(), licenseText, finalTmpl, licenseTmpl); err != nil {
 			fmt.Printf("failed to write files: %s\n", err)
@@ -242,11 +242,7 @@ var NewCmd = &cobra.Command{
 		if options.NewOpts.NoGit {
 			log.Infoln("skipping git initialization")
 		} else {
-			cmd.Println("initializing git...")
-			initGit := exec.Command("git", "init")
-			initGit.Dir = projectRootDir
-
-			if err := initGit.Run(); err != nil {
+			if err := git.Init(projectRootDir); err != nil {
 				fmt.Printf("failed to initialize git: %s\n", err)
 				exitCode = 1
 				return
@@ -309,7 +305,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 				return
 			}
 			defer newFile.Close()
-			log.Debugf("opened file for writing: %s", newPath)
+			log.Debugf("opened file for writing: %s\n", newPath)
 
 			reader := bufio.NewScanner(tmpFile)
 			writer := bufio.NewWriter(newFile)

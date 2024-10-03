@@ -3,8 +3,8 @@ package options
 import (
 	"errors"
 	"os"
-	"os/exec"
 
+	"github.com/caffeine-addictt/waku/internal/git"
 	"github.com/caffeine-addictt/waku/internal/log"
 	"github.com/caffeine-addictt/waku/internal/types"
 	"github.com/caffeine-addictt/waku/internal/utils"
@@ -83,32 +83,23 @@ func (o *NewOptions) Validate() error {
 
 // To clone the repository
 func (o *NewOptions) CloneRepo() (string, error) {
-	log.Debugln("Creating tmp dir")
+	log.Debugln("creating tmp dir")
 
 	tmpDirPath, err := os.MkdirTemp("", "template-*")
 	if err != nil {
 		return "", err
 	}
 
-	log.Infoln("Create tmp dir at", tmpDirPath)
+	log.Infoln("create tmp dir at", tmpDirPath)
 
-	args := []string{"clone", "--depth", "1"}
-	if o.Branch.Value() != "" {
-		args = append(args, "--branch", utils.EscapeTermString(o.Branch.Value()))
-	}
-	args = append(args, utils.EscapeTermString(o.Repo.Value()), utils.EscapeTermString(tmpDirPath))
-
-	log.Debugln("git args:", args, len(args))
-
-	c := exec.Command("git", args...)
-	c.Stdin = os.Stdin
-
-	if log.GetLevel() <= log.INFO {
-		c.Stdout = os.Stdout
-		c.Stderr = os.Stderr
+	opts := git.CloneOptions{
+		Depth:     1,
+		Branch:    o.Branch.Value(),
+		Url:       utils.EscapeTermString(o.Repo.Value()),
+		ClonePath: utils.EscapeTermString(tmpDirPath),
 	}
 
-	if err := c.Run(); err != nil {
+	if err := git.Clone(opts); err != nil {
 		if errCleanup := os.RemoveAll(tmpDirPath); errCleanup != nil {
 			return "", errors.Join(errCleanup, err)
 		}
