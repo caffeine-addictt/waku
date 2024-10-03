@@ -15,7 +15,7 @@ var HealthcheckCmd = &cobra.Command{
 	SilenceErrors: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if err := exec.Command("git", "--version").Run(); err != nil {
-			return e.NewWakuErrorf(err.Error())
+			return e.NewWakuErrorf("%v", err)
 		}
 
 		return nil
