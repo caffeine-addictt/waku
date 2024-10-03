@@ -31,6 +31,15 @@ jobs:
         with:
           go-version: stable
 
+      - name: Restore cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            /go/pkg/mod
+          key: go-${{ runner.os }}-${{ hashFiles('go.sum') }}
+          restore-keys: go-${{ runner.os }}
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
