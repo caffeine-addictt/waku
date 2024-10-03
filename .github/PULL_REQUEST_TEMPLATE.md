@@ -20,4 +20,4 @@
 
 - [ ] I have read and understood the [Contributing Guide](https://github.com/caffeine-addictt/waku/blob/main/CONTRIBUTING.md).
 - [ ] I have tested the code and it is working as expected.
-- [ ] I have incremented version number in `cmd/global/version.go` according to [SemVer](https://semver.org).
+- [ ] I have incremented the version number with `make bump version=vX.X.X` according to [SemVer](https://semver.org).
