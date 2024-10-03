@@ -252,7 +252,7 @@ snapcrafts:
       Lets make starting new projects feel like a breeze again!
     license: AGPL-3.0
     grade: stable
-    confinement: classic
+    confinement: strict
     publish: true
 
 scoops:
