@@ -7,9 +7,9 @@ import (
 
 	"github.com/caffeine-addictt/waku/cmd/commands"
 	"github.com/caffeine-addictt/waku/cmd/options"
-	"github.com/caffeine-addictt/waku/internal/utils"
 	"github.com/caffeine-addictt/waku/internal/errors"
 	"github.com/caffeine-addictt/waku/internal/log"
+	"github.com/caffeine-addictt/waku/internal/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -42,7 +42,7 @@ var RootCmd = &cobra.Command{
 func init() {
 	RootCmd.PersistentFlags().BoolVarP(&options.GlobalOpts.Quiet, "quiet", "q", false, "quiet mode")
 	RootCmd.PersistentFlags().BoolVarP(&options.GlobalOpts.Accessible, "accessible", "A", false, "accessible mode")
-	RootCmd.PersistentFlags().CountVarP(&options.GlobalOpts.Verbosity, "verbose", "v", "verobisty level (1: info, 2: debug, 3: trace)")
+	RootCmd.PersistentFlags().CountVarP(&options.GlobalOpts.Verbosity, "verbose", "v", "verobisty level (v: info, vv: debug, vvv: trace)")
 
 	RootCmd.MarkFlagsMutuallyExclusive("quiet", "verbose")
 
