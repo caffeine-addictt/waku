@@ -244,16 +244,16 @@ brews:
 #     source_repo: "https://push.chocolatey.org/"
 #     skip_publish: false
 
-# snapcrafts:
-#   - name_template: "{{ .ProjectName }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
-#     summary: Let's make starting new projects feel like a breeze again.
-#     description: |
-#       A simple template repository generator.
-#       Lets make starting new projects feel like a breeze again!
-#     license: AGPL-3.0
-#     grade: stable
-#     confinement: classic
-#     publish: true
+snapcrafts:
+  - name_template: "{{ .ProjectName }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+    summary: Let's make starting new projects feel like a breeze again.
+    description: |
+      A simple template repository generator.
+      Lets make starting new projects feel like a breeze again!
+    license: AGPL-3.0
+    grade: stable
+    confinement: classic
+    publish: true
 
 scoops:
   - repository:

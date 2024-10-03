@@ -36,12 +36,6 @@ brew install caffeine-addictt/tap/waku
 sudo snap install waku
 ```
 
-!!! WARNING
-
-    Snapcraft releases will only contain Waku up to `v0.2.2`.
-    See [issue #122](https://github.com/caffeine-addictt/waku/issues/122)
-    for more details.
-
 ## Chocolately
 
 ```sh
