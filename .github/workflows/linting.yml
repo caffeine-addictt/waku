@@ -65,6 +65,16 @@ jobs:
         with:
           go-version: stable
 
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/.cache/golangci-lint
+            /go/pkg/mod
+          key: golint-${{ hashFiles('go.sum') }}
+          restore-keys: golint
+
       - name: Lint
         run: |
           set -xe
