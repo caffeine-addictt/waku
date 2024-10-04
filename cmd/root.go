@@ -54,7 +54,7 @@ func Execute() {
 	if err := RootCmd.Execute(); err != nil {
 		log.Errorf("%v\n", err)
 
-		if _, ok := err.(errors.WakuError); !ok {
+		if _, ok := errors.IsWakuError(err); !ok {
 			cmd, _, err := RootCmd.Find(os.Args[1:])
 			if err != nil {
 				log.Errorf("failed to find subcommand's usage: %v\n", err)
