@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/caffeine-addictt/waku/internal/errors"
+	"github.com/caffeine-addictt/waku/internal/log"
 	"github.com/caffeine-addictt/waku/internal/template"
 	"github.com/caffeine-addictt/waku/internal/utils"
 	"github.com/spf13/cobra"
@@ -33,6 +34,7 @@ var CheckCmd = &cobra.Command{
 		}
 		filePath = filepath.Clean(filePath)
 
+		log.Debugf("checking if %s is a file\n", filePath)
 		ok, err := utils.IsFile(filePath)
 		if err != nil {
 			return errors.NewWakuErrorf("failed to check if %s is a file: %v", filePath, err)
@@ -41,11 +43,12 @@ var CheckCmd = &cobra.Command{
 			return errors.NewWakuErrorf("%s does not exist or is not a file", filePath)
 		}
 
+		log.Debugf("checking if %s is a valid template\n", filePath)
 		if _, err := template.ParseConfig(filePath); err != nil {
 			return errors.ToWakuError(err)
 		}
 
-		cmd.Println("Seems ok!")
+		log.Println("Seems ok!")
 		return nil
 	},
 }
