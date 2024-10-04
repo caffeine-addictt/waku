@@ -5,6 +5,7 @@ import (
 	"os"
 	"runtime/debug"
 
+	"github.com/caffeine-addictt/waku/cmd/cleanup"
 	"github.com/caffeine-addictt/waku/cmd/commands"
 	"github.com/caffeine-addictt/waku/cmd/options"
 	"github.com/caffeine-addictt/waku/internal/errors"
@@ -51,10 +52,16 @@ func init() {
 
 // The main entry point for the command line tool
 func Execute() {
-	if err := RootCmd.Execute(); err != nil {
+	cleanup.On()
+
+	err := RootCmd.Execute()
+	cleanup.Cleanup()
+
+	if err != nil {
+		cleanup.CleanupError()
 		log.Errorf("%v\n", err)
 
-		if _, ok := err.(errors.WakuError); !ok {
+		if _, ok := errors.IsWakuError(err); !ok {
 			cmd, _, err := RootCmd.Find(os.Args[1:])
 			if err != nil {
 				log.Errorf("failed to find subcommand's usage: %v\n", err)

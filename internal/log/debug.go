@@ -4,20 +4,20 @@ import "fmt"
 
 func Debugf(format string, a ...any) {
 	if logLevel <= DEBUG {
-		fmt.Printf(debugPrefix+format, a...)
+		fmt.Fprintf(Stdout, debugPrefix+format, a...)
 	}
 }
 
 func Debugln(a ...any) {
 	if logLevel <= DEBUG {
-		fmt.Print(debugPrefix)
-		fmt.Println(a...)
+		fmt.Fprint(Stdout, debugPrefix)
+		fmt.Fprintln(Stdout, a...)
 	}
 }
 
 func Debug(v ...any) {
 	if logLevel <= DEBUG {
-		fmt.Print(debugPrefix)
-		fmt.Print(v...)
+		fmt.Fprint(Stdout, debugPrefix)
+		fmt.Fprint(Stdout, v...)
 	}
 }

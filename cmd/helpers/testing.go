@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"strings"
 
+	"github.com/caffeine-addictt/waku/internal/log"
 	"github.com/spf13/cobra"
 )
 
@@ -17,6 +18,8 @@ func ExecuteCommand(cmd *cobra.Command, stdin []string, args ...string) (stdout,
 	cmd.SetOut(&out)
 	cmd.SetErr(&errout)
 	cmd.SetIn(strings.NewReader(strings.Join(stdin, "\n")))
+	log.Stdout = &out
+	log.Stderr = &errout
 
 	err := cmd.Execute()
 	if err != nil {

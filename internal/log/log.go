@@ -3,6 +3,8 @@ package log
 
 import (
 	"fmt"
+	"io"
+	"os"
 )
 
 // Log Level
@@ -41,3 +43,9 @@ func SetLevel(l Level) error {
 func GetLevel() Level {
 	return logLevel
 }
+
+// Waku log's stdOut
+var Stdout io.Writer = os.Stdout
+
+// Waku log's stdErr
+var Stderr io.Writer = os.Stderr
