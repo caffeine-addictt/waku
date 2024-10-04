@@ -5,12 +5,11 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"os/signal"
 	"path/filepath"
 	"strings"
 	"sync"
-	"syscall"
 
+	"github.com/caffeine-addictt/waku/cmd/cleanup"
 	"github.com/caffeine-addictt/waku/cmd/options"
 	"github.com/caffeine-addictt/waku/internal/errors"
 	"github.com/caffeine-addictt/waku/internal/git"
@@ -55,17 +54,26 @@ var NewCmd = &cobra.Command{
 		if err := os.Mkdir(projectRootDir, utils.DirPerms); err != nil {
 			return errors.ToWakuError(err)
 		}
+		cleanup.ScheduleError(func() error {
+			log.Debugf("removing project dir: %s\n", projectRootDir)
+			if err := os.RemoveAll(projectRootDir); err != nil {
+				return errors.NewWakuErrorf("failed to cleanup project dir: %v", err)
+			}
+			return nil
+		})
 
 		// Clone repo
 		tmpDir, err := options.NewOpts.CloneRepo()
 		if err != nil {
 			return errors.NewWakuErrorf("could not clone git repo: %s", err)
 		}
-		gracefullyCleanupDir(tmpDir)
-		defer func() {
-			cleanupDir(tmpDir)
-			os.Exit(exitCode)
-		}()
+		cleanup.Schedule(func() error {
+			log.Debugf("removing tmp dir: %s\n", tmpDir)
+			if err := os.RemoveAll(tmpDir); err != nil {
+				return errors.NewWakuErrorf("failed to cleanup tmp dir: %v", err)
+			}
+			return nil
+		})
 
 		// Resolve dir
 		rootDir := tmpDir
@@ -338,24 +346,4 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 
 	log.Infoln("all files written")
 	return exitErr
-}
-
-// To catch interrupts and gracefully cleanup
-func gracefullyCleanupDir(dir string) {
-	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
-
-	go func() {
-		sig := <-sigs
-		fmt.Printf("%v received, cleaning up...\n", sig)
-		cleanupDir(dir)
-	}()
-}
-
-func cleanupDir(dir string) {
-	if err := os.RemoveAll(dir); err != nil {
-		fmt.Printf("Failed to clean up %s: %s\n", dir, err)
-		os.Exit(1)
-		return
-	}
 }
