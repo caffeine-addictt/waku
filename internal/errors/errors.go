@@ -9,8 +9,8 @@ type WakuError struct {
 }
 
 // NewWakuError creates a new WakuError
-func NewWakuErrorf(format string, v ...any) WakuError {
-	return WakuError{msg: fmt.Sprintf(format, v...)}
+func NewWakuErrorf(format string, v ...any) *WakuError {
+	return &WakuError{msg: fmt.Sprintf(format, v...)}
 }
 
 func (e WakuError) Error() string {
