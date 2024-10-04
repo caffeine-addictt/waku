@@ -248,11 +248,12 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 	defer cancel()
 
 	errChan := make(chan error, 1)
+	log.Infof("waiting for %d files to write\n", len(paths))
 
 	for _, path := range paths {
 		tmpPath := filepath.Join(tmpRoot, path)
 		newPath := filepath.Join(projectRoot, path)
-		log.Infof("resolved %s -> %s\n", tmpPath, newPath)
+		log.Debugf("resolved %s -> %s\n", tmpPath, newPath)
 
 		// write dirs
 		dir := filepath.Dir(newPath)
@@ -332,11 +333,10 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 		}
 	}()
 
-	fmt.Printf("waiting for %d files to write\n", len(paths))
 	wg.Wait()
 	close(errChan)
 
-	fmt.Println("all files written")
+	log.Infoln("all files written")
 	return exitErr
 }
 
