@@ -3,7 +3,6 @@ package commands
 import (
 	"bufio"
 	"context"
-	"errors"
 	"fmt"
 	"os"
 	"os/signal"
@@ -13,6 +12,7 @@ import (
 	"syscall"
 
 	"github.com/caffeine-addictt/waku/cmd/options"
+	"github.com/caffeine-addictt/waku/internal/errors"
 	"github.com/caffeine-addictt/waku/internal/git"
 	"github.com/caffeine-addictt/waku/internal/license"
 	"github.com/caffeine-addictt/waku/internal/log"
@@ -34,42 +34,32 @@ var NewCmd = &cobra.Command{
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		return options.NewOpts.Validate()
 	},
-	Run: func(cmd *cobra.Command, args []string) {
-		exitCode := 0
-
+	RunE: func(cmd *cobra.Command, args []string) error {
 		var name string
 		var projectRootDir string
 		var license license.License
 
 		licenseSelect, err := template.PromptForLicense(&license)
 		if err != nil {
-			cmd.PrintErrln(err)
-			exitCode = 1
-			return
+			return errors.ToWakuError(err)
 		}
 
 		if err := huh.NewForm(
 			huh.NewGroup(template.PromptForProjectName(&name, &projectRootDir)),
 			huh.NewGroup(licenseSelect),
 		).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
-			cmd.PrintErrln(err)
-			exitCode = 1
-			return
+			return errors.ToWakuError(err)
 		}
 
 		log.Infof("creating project in '%s'...\n", projectRootDir)
 		if err := os.Mkdir(projectRootDir, utils.DirPerms); err != nil {
-			cmd.PrintErrln(err)
-			exitCode = 1
-			return
+			return errors.ToWakuError(err)
 		}
 
 		// Clone repo
 		tmpDir, err := options.NewOpts.CloneRepo()
 		if err != nil {
-			cmd.PrintErrf("could not clone git repo: %s", err)
-			exitCode = 1
-			return
+			return errors.NewWakuErrorf("could not clone git repo: %s", err)
 		}
 		gracefullyCleanupDir(tmpDir)
 		defer func() {
@@ -85,14 +75,10 @@ var NewCmd = &cobra.Command{
 
 			ok, err := utils.IsDir(rootDir)
 			if err != nil {
-				cmd.PrintErrln(err)
-				exitCode = 1
-				return
+				return errors.ToWakuError(err)
 			}
 			if !ok {
-				cmd.PrintErrf("directory '%s' does not exist\n", options.NewOpts.Directory.Value())
-				exitCode = 1
-				return
+				return errors.NewWakuErrorf("directory '%s' does not exist", options.NewOpts.Directory.Value())
 			}
 		}
 
@@ -100,9 +86,7 @@ var NewCmd = &cobra.Command{
 		log.Infoln("Parsing template.json...")
 		tmpl, err := template.ParseConfig(filepath.Join(rootDir, "template.json"))
 		if err != nil {
-			cmd.PrintErrln(err)
-			exitCode = 1
-			return
+			return errors.ToWakuError(err)
 		}
 
 		// Resolve style to use
@@ -120,9 +104,7 @@ var NewCmd = &cobra.Command{
 			if err := huh.NewForm(huh.NewGroup(
 				template.PromptForStyle(*tmpl.Styles, &style, &styleInfo),
 			)).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
-				cmd.PrintErrln(err)
-				exitCode = 1
-				return
+				return errors.ToWakuError(err)
 			}
 
 			rootDir = filepath.Join(rootDir, styleInfo.Source.String())
@@ -132,9 +114,7 @@ var NewCmd = &cobra.Command{
 		// Handle license stuff
 		licenseText, err := license.GetLicenseText()
 		if err != nil {
-			cmd.PrintErrf("failed to get license text: %s\n", err)
-			exitCode = 1
-			return
+			return errors.NewWakuErrorf("failed to get license text: %v\n", err)
 		}
 
 		// Handle prompts
@@ -179,18 +159,14 @@ var NewCmd = &cobra.Command{
 
 		log.Debugf("resolved prompt groups to: %v\n", prompts)
 		if err := huh.NewForm(prompts...).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
-			cmd.PrintErrln(err)
-			exitCode = 1
-			return
+			return errors.ToWakuError(err)
 		}
 
 		// Get file paths
 		log.Infoln("Getting file paths...")
 		paths, err := utils.WalkDirRecursive(rootDir)
 		if err != nil {
-			cmd.PrintErrln(err)
-			exitCode = 1
-			return
+			return errors.ToWakuError(err)
 		}
 
 		// Handle ignores
@@ -234,9 +210,7 @@ var NewCmd = &cobra.Command{
 		log.Debugf("final template: %v\n", finalTmpl)
 
 		if err := WriteFiles(rootDir, projectRootDir, ignoredPaths.ToSlice(), licenseText, finalTmpl, licenseTmpl); err != nil {
-			fmt.Printf("failed to write files: %s\n", err)
-			exitCode = 1
-			return
+			return errors.NewWakuErrorf("failed to write files: %s\n", err)
 		}
 
 		if options.NewOpts.NoGit {
@@ -244,10 +218,11 @@ var NewCmd = &cobra.Command{
 		} else {
 			if err := git.Init(projectRootDir); err != nil {
 				fmt.Printf("failed to initialize git: %s\n", err)
-				exitCode = 1
-				return
+				return errors.NewWakuErrorf("failed to initialize git: %s\n", err)
 			}
 		}
+
+		return nil
 	},
 }
 
@@ -283,7 +258,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 		dir := filepath.Dir(newPath)
 		if dir != "." {
 			if err := os.MkdirAll(dir, utils.DirPerms); err != nil {
-				return errors.Join(fmt.Errorf("failed to create directory at %s", dir), err)
+				return errors.NewWakuErrorf("failed to create directory at %s: %s", dir, err)
 			}
 		}
 
@@ -293,7 +268,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 
 			tmpFile, err := os.Open(filepath.Clean(tmpPath))
 			if err != nil {
-				errChan <- errors.Join(fmt.Errorf("%s", tmpPath), err)
+				errChan <- errors.NewWakuErrorf("failed to open file for reading at %s: %v", tmpPath, err)
 				return
 			}
 			defer tmpFile.Close()
@@ -301,7 +276,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 
 			newFile, err := os.OpenFile(filepath.Clean(newPath), os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.FilePerms)
 			if err != nil {
-				errChan <- errors.Join(fmt.Errorf("%s", newPath), err)
+				errChan <- errors.NewWakuErrorf("failed to open file for writing at %s: %v", newPath, err)
 				return
 			}
 			defer newFile.Close()
@@ -310,7 +285,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 			reader := bufio.NewScanner(tmpFile)
 			writer := bufio.NewWriter(newFile)
 			if err := utils.ParseTemplateFile(ctx, tmpl, reader, writer); err != nil {
-				errChan <- errors.Join(fmt.Errorf("failed to parse template from %s to %s", tmpPath, newPath), err)
+				errChan <- errors.NewWakuErrorf("failed to parse template from %s to %s: %v", tmpPath, newPath, err)
 				return
 			}
 
@@ -328,19 +303,19 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 
 		newFile, err := os.OpenFile(filepath.Clean(newPath), os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.FilePerms)
 		if err != nil {
-			errChan <- err
+			errChan <- errors.ToWakuError(err)
 			return
 		}
 		defer newFile.Close()
 		log.Debugf("opened file for writing: %s\n", newPath)
 
 		if _, err := newFile.WriteString(newLicenseText); err != nil {
-			errChan <- fmt.Errorf("failed to write license text to %s", newPath)
+			errChan <- errors.NewWakuErrorf("failed to write license text at %s", newPath)
 			return
 		}
 
 		if err := newFile.Sync(); err != nil {
-			errChan <- fmt.Errorf("failed to flush buffer for %s", newPath)
+			errChan <- errors.NewWakuErrorf("failed to flush buffer for %s", newPath)
 			return
 		}
 

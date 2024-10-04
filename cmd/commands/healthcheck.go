@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"github.com/caffeine-addictt/waku/internal/errors"
 	"github.com/caffeine-addictt/waku/internal/git"
 	"github.com/caffeine-addictt/waku/internal/log"
 	"github.com/spf13/cobra"
@@ -15,7 +16,7 @@ var HealthcheckCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ok, err := git.HasGit()
 		if err != nil {
-			return err
+			return errors.ToWakuError(err)
 		}
 
 		if !ok {
