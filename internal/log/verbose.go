@@ -4,20 +4,20 @@ import "fmt"
 
 func Infof(format string, a ...any) {
 	if logLevel <= INFO {
-		fmt.Printf(infoPrefix+format, a...)
+		fmt.Fprintf(Stdout, infoPrefix+format, a...)
 	}
 }
 
 func Infoln(a ...any) {
 	if logLevel <= INFO {
-		fmt.Print(infoPrefix)
-		fmt.Println(a...)
+		fmt.Fprint(Stdout, infoPrefix)
+		fmt.Fprintln(Stdout, a...)
 	}
 }
 
 func Info(v ...any) {
 	if logLevel <= INFO {
-		fmt.Print(infoPrefix)
-		fmt.Print(v...)
+		fmt.Fprint(Stdout, infoPrefix)
+		fmt.Fprint(Stdout, v...)
 	}
 }

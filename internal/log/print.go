@@ -4,18 +4,18 @@ import "fmt"
 
 func Printf(format string, a ...any) {
 	if logLevel != QUIET {
-		fmt.Printf(format, a...)
+		fmt.Fprintf(Stdout, format, a...)
 	}
 }
 
 func Println(a ...any) {
 	if logLevel != QUIET {
-		fmt.Println(a...)
+		fmt.Fprintln(Stdout, a...)
 	}
 }
 
 func Print(v ...any) {
 	if logLevel != QUIET {
-		fmt.Print(v...)
+		fmt.Fprint(Stdout, v...)
 	}
 }
