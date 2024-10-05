@@ -15,6 +15,7 @@ func ParseConfig(filePath string) (*config.TemplateJson, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer file.Close()
 
 	var template config.TemplateJson
 	var jsonData string
