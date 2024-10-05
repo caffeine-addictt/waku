@@ -91,8 +91,8 @@ var NewCmd = &cobra.Command{
 		}
 
 		// Parse template.json
-		log.Infoln("Parsing template.json...")
-		tmpl, err := template.ParseConfig(filepath.Join(rootDir, "template.json"))
+		log.Infoln("Parsing config...")
+		configFilePath, tmpl, err := template.ParseConfig(rootDir)
 		if err != nil {
 			return errors.ToWakuError(err)
 		}
@@ -182,7 +182,7 @@ var NewCmd = &cobra.Command{
 		ignoreRules := types.NewSet(
 			".git/",
 			"LICENSE*",
-			"template.json",
+			configFilePath,
 		)
 		if tmpl.Ignore != nil {
 			ignoreRules.Union(types.Set[string](*tmpl.Ignore))

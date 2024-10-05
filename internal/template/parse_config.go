@@ -2,7 +2,6 @@ package template
 
 import (
 	"encoding/json"
-	"os"
 	"io"
 	"path/filepath"
 	"strings"
@@ -12,10 +11,10 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func ParseConfig(filePath string) (*config.TemplateJson, error) {
-	file, err := os.Open(filepath.Clean(filePath))
+func ParseConfig(filePath string) (string, *config.TemplateJson, error) {
+	path, file, err := GetWakuConfig(filePath)
 	if err != nil {
-		return nil, err
+		return "", nil, err
 	}
 	defer file.Close()
 
@@ -39,11 +38,11 @@ func ParseConfig(filePath string) (*config.TemplateJson, error) {
 		}
 	}
 
-	log.Debugf("Unmarshalled JSON data: %+v\n", template)
-	log.Infoln("Validating JSON data from " + filePath)
-	if err := template.Validate(filepath.Dir(filePath)); err != nil {
-		return nil, err
+	log.Debugf("unmarshalled data: %+v\n", template)
+	log.Infoln("validating data from " + path)
+	if err := template.Validate(filepath.Dir(path)); err != nil {
+		return "", nil, err
 	}
 
-	return &template, nil
+	return path, &template, nil
 }
