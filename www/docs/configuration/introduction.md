@@ -1,11 +1,11 @@
 # Introduction
 
-Styles are defined through a `template.json` file
+Styles are defined through a `configuration` file
 usually found in the `root` of the project.
 
 ## Validation
 
-You can validate your `template.json` file by running:
+You can validate your `waku.yml` file by running:
 
 ```sh
 waku check
@@ -26,10 +26,37 @@ Or you can pin a specific version like `v0.5.1`:
 https://raw.githubusercontent.com/caffeine-addictt/waku/v0.5.1/www/docs/static/schema.json
 ```
 
-Simply add the `$schema` property to your `template.json` file:
+Simply add the `$schema` property to your `configuration` file:
 
-```json
-{
-  "$schema": "https://waku.ngjx.org/static/schema.json"
-}
-```
+=== "Yaml"
+
+    Add the following to your `waku.yml` file as a comment
+
+    ```yaml
+    # yaml-language-server: $schema=https://waku.ngjx.org/static/schema.json
+    ```
+
+=== "Json"
+
+    ```json
+    {
+      "$schema": "https://waku.ngjx.org/static/schema.json"
+    }
+    ```
+
+## Filenames
+
+Here are the default filenames we look for:
+
+- `waku.yml`
+- `waku.yaml`
+- `waku.json`
+- `template.yml`
+- `template.yaml`
+- `template.json`
+- `.waku.yml`
+- `.waku.yaml`
+- `.waku.json`
+- `.template.yml`
+- `.template.yaml`
+- `.template.json`
