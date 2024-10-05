@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/goccy/go-json"
+	"gopkg.in/yaml.v3"
 )
 
 // A value guard to validate values being set
@@ -84,12 +85,22 @@ func (v *ValueGuard[T]) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	if err := v.Set(tmp); err != nil {
-		return err
-	}
-	return nil
+	return v.Set(tmp)
 }
 
 func (v ValueGuard[T]) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
+}
+
+func (v *ValueGuard[T]) UnmarshalYAML(node *yaml.Node) error {
+	var tmp T
+	if err := node.Decode(&tmp); err != nil {
+		return err
+	}
+
+	return v.Set(tmp)
+}
+
+func (v ValueGuard[T]) MarshalYAML() (interface{}, error) {
+	return v.value, nil
 }

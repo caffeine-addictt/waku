@@ -19,10 +19,10 @@ const (
 
 // Paths to executable files for post-setup
 type TemplateSetup struct {
-	Linux   string `json:"linux,omitempty"`
-	Darwin  string `json:"darwin,omitempty"`
-	Windows string `json:"windows,omitempty"`
-	Any     string `json:"*,omitempty"`
+	Linux   string `json:"linux,omitempty" yaml:"linux,omitempty"`
+	Darwin  string `json:"darwin,omitempty" yaml:"darwin,omitempty"`
+	Windows string `json:"windows,omitempty" yaml:"windows,omitempty"`
+	Any     string `json:"*,omitempty" yaml:"*,omitempty"`
 }
 
 func (t *TemplateSetup) Validate(root string) error {
