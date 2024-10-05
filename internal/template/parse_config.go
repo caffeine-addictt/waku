@@ -1,13 +1,15 @@
 package template
 
 import (
-	"bufio"
 	"encoding/json"
 	"os"
+	"io"
 	"path/filepath"
+	"strings"
 
 	"github.com/caffeine-addictt/waku/internal/log"
 	"github.com/caffeine-addictt/waku/pkg/config"
+	"gopkg.in/yaml.v3"
 )
 
 func ParseConfig(filePath string) (*config.TemplateJson, error) {
@@ -17,23 +19,24 @@ func ParseConfig(filePath string) (*config.TemplateJson, error) {
 	}
 	defer file.Close()
 
-	var template config.TemplateJson
-	var jsonData string
-
-	// Read the entire file content
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		jsonData += scanner.Text()
-	}
-
-	if err := scanner.Err(); err != nil {
-		return nil, err
+	log.Debugf("reading config file at %v\n", filePath)
+	data, err := io.ReadAll(file)
+	if err != nil {
+		return "", nil, err
 	}
 
 	// Unmarshal JSON data
-	log.Debugln("Unmarshalling JSON data from " + filePath)
-	if err := json.Unmarshal([]byte(jsonData), &template); err != nil {
-		return nil, err
+	var template config.TemplateJson
+	if strings.HasSuffix(path, "json") {
+		log.Debugln("unmarshalling JSON data from " + path)
+		if err := json.Unmarshal(data, &template); err != nil {
+			return "", nil, err
+		}
+	} else {
+		log.Debugln("unmarshalling YAML data from " + path)
+		if err := yaml.Unmarshal(data, &template); err != nil {
+			return "", nil, err
+		}
 	}
 
 	log.Debugf("Unmarshalled JSON data: %+v\n", template)
