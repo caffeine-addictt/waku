@@ -141,7 +141,7 @@ func (t *TemplatePrompt) formatValue(val string) (string, error) {
 	return l, nil
 }
 
-func unmarshalTemplatePrompt(t TemplatePrompt) error {
+func unmarshalTemplatePrompt(t *TemplatePrompt) error {
 	// type
 	t.Type = TemplatePromptType(strings.ToLower(string(t.Type)))
 	switch t.Type {
@@ -188,7 +188,7 @@ func (t *TemplatePrompt) UnmarshalYAML(node *yaml.Node) error {
 	}
 
 	ss := TemplatePrompt(s)
-	if err := unmarshalTemplatePrompt(ss); err != nil {
+	if err := unmarshalTemplatePrompt(&ss); err != nil {
 		return err
 	}
 
@@ -203,7 +203,7 @@ func (t *TemplatePrompt) UnmarshalJSON(data []byte) error {
 	}
 
 	ss := TemplatePrompt(s)
-	if err := unmarshalTemplatePrompt(ss); err != nil {
+	if err := unmarshalTemplatePrompt(&ss); err != nil {
 		return err
 	}
 
