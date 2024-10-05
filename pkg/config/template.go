@@ -6,7 +6,7 @@ import (
 	"github.com/caffeine-addictt/waku/internal/types"
 )
 
-// The template.json file
+// The config file
 type TemplateJson struct {
 	Setup   *TemplateSetup    `json:"setup,omitempty" yaml:"setup,omitempty"`     // Paths to executable files for post-setup
 	Ignore  *TemplateIgnore   `json:"ignore,omitempty" yaml:"ignore,omitempty"`   // The files that should be ignored when copying
