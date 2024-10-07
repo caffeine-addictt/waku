@@ -1,16 +1,18 @@
 package license
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 
-	"github.com/caffeine-addictt/waku/pkg/version"
+	"github.com/caffeine-addictt/waku/cmd/options"
+	"github.com/caffeine-addictt/waku/internal/log"
 	"github.com/goccy/go-json"
 )
 
 const (
 	LICENSE_LIST = "license.json"
-	BASE_URL     = "https://raw.githubusercontent.com/caffeine-addictt/waku/v" + version.Version + "/licenses/"
+	BASE_URL     = "https://raw.githubusercontent.com/caffeine-addictt/waku/%s/licenses/"
 )
 
 // The global "cache" per say so we only
@@ -24,7 +26,9 @@ func GetLicenses() (*[]License, error) {
 		return Licenses, nil
 	}
 
-	req, err := http.NewRequest(http.MethodGet, BASE_URL+LICENSE_LIST, http.NoBody)
+	url := fmt.Sprintf(BASE_URL, options.NewOpts.Branch.Value()) + LICENSE_LIST
+	log.Infof("Fetching licenses from %s...\n", url)
+	req, err := http.NewRequest(http.MethodGet, url, http.NoBody)
 	if err != nil {
 		return nil, err
 	}
