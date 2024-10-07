@@ -39,15 +39,22 @@ var NewCmd = &cobra.Command{
 		var license license.License
 
 		log.Debugln("Creating name and license prompts...")
+		namePrompt := template.PromptForProjectName(&name, &projectRootDir)
 		licenseSelect, err := template.PromptForLicense(&license)
 		if err != nil {
 			return errors.ToWakuError(err)
 		}
 
-		if err := huh.NewForm(
-			huh.NewGroup(template.PromptForProjectName(&name, &projectRootDir)),
-			huh.NewGroup(licenseSelect),
-		).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
+		initialPrompts := make([]*huh.Group, 0, 2)
+		if namePrompt != nil {
+			initialPrompts = append(initialPrompts, huh.NewGroup(namePrompt))
+		}
+		if licenseSelect != nil {
+			initialPrompts = append(initialPrompts, huh.NewGroup(licenseSelect))
+		}
+
+		log.Debugln("running prompts...")
+		if err := huh.NewForm(initialPrompts...).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
 			return errors.ToWakuError(err)
 		}
 
