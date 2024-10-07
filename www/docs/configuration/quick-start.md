@@ -18,30 +18,54 @@ let's create a new template containing 1 style called `My Style`.
     The files you create in this directory
     will be copied and formatted over when `waku new` is ran.
 
-1. Create a `template.json` file
+1. Create a waku `config` file
 
-    Create a `template.json` file in the root or subdirectory
-    of your project containing the following:
+    === "Yaml"
 
-    !!! WARNING
+        Create a `waku.yml` file in the root or subdirectory
+        of your project containing the following:
 
-        If you use a subdirectory,
-        do not forget to pass the `-d|--directory <path>`
-        option when using `waku new`.
+        !!! WARNING
 
-    ```json
-    {
-      "$schema": "https://waku.ngjx.org/static/schema.json",
-      "styles": {
-        "My Style": {
-          "source": "style-a",
-          "prompts": [
-            {
-              "key": "Description",
-              "ask": "A brief description of your project"
+            If you use a subdirectory,
+            do not forget to pass the `-d|--directory <path>`
+            option when using `waku new`.
+
+        ```yaml
+        # yaml-language-server: $schema=https://waku.ngjx.org/static/schema.json
+
+        styles:
+          My Style:
+            source: style-a
+            prompts:
+              - key: Description
+                ask: A brief description of your project
+        ```
+
+    === "Json"
+
+        Create a `waku.json` file in the root or subdirectory
+        of your project containing the following:
+
+        !!! WARNING
+
+            If you use a subdirectory,
+            do not forget to pass the `-d|--directory <path>`
+            option when using `waku new`.
+
+        ```json
+        {
+          "$schema": "https://waku.ngjx.org/static/schema.json",
+          "styles": {
+            "My Style": {
+              "source": "style-a",
+              "prompts": [
+                {
+                  "key": "Description",
+                  "ask": "A brief description of your project"
+                }
+              ]
             }
-          ]
+          }
         }
-      }
-    }
-    ```
+        ```
