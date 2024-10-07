@@ -38,6 +38,7 @@ var NewCmd = &cobra.Command{
 		var projectRootDir string
 		var license license.License
 
+		log.Debugln("Creating name and license prompts...")
 		licenseSelect, err := template.PromptForLicense(&license)
 		if err != nil {
 			return errors.ToWakuError(err)

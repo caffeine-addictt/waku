@@ -7,6 +7,7 @@ import (
 
 	"github.com/caffeine-addictt/waku/cmd/options"
 	"github.com/caffeine-addictt/waku/internal/license"
+	"github.com/caffeine-addictt/waku/internal/log"
 	"github.com/caffeine-addictt/waku/internal/searching"
 	"github.com/caffeine-addictt/waku/internal/sorting"
 	"github.com/caffeine-addictt/waku/internal/types"
@@ -100,6 +101,7 @@ func validateLicense(ll *[]license.License, optsL []string, val string, setV *li
 func PromptForProjectName(name, projectRootDir *string) *huh.Input {
 	if options.NewOpts.Name.Value() != "" {
 		if err := validateProjectName(options.NewOpts.Name.Value(), name, projectRootDir); err == nil {
+			log.Debugf("name prefilled and is valid: %s\n", options.NewOpts.Name.Value())
 			return nil
 		}
 	}

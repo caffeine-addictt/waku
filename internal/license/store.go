@@ -37,6 +37,7 @@ func GetLicenses() (*[]License, error) {
 	}
 	defer res.Body.Close()
 
+	log.Debugln("Reading http stream")
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
@@ -45,6 +46,8 @@ func GetLicenses() (*[]License, error) {
 	var l struct {
 		Licenses []License `json:"licenses"`
 	}
+
+	log.Debugln("Unmarshalling license json")
 	if err := json.Unmarshal(body, &l); err != nil {
 		return nil, err
 	}
