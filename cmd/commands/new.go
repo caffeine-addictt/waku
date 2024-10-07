@@ -38,15 +38,23 @@ var NewCmd = &cobra.Command{
 		var projectRootDir string
 		var license license.License
 
+		log.Debugln("Creating name and license prompts...")
+		namePrompt := template.PromptForProjectName(&name, &projectRootDir)
 		licenseSelect, err := template.PromptForLicense(&license)
 		if err != nil {
 			return errors.ToWakuError(err)
 		}
 
-		if err := huh.NewForm(
-			huh.NewGroup(template.PromptForProjectName(&name, &projectRootDir)),
-			huh.NewGroup(licenseSelect),
-		).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
+		initialPrompts := make([]*huh.Group, 0, 2)
+		if namePrompt != nil {
+			initialPrompts = append(initialPrompts, huh.NewGroup(namePrompt))
+		}
+		if licenseSelect != nil {
+			initialPrompts = append(initialPrompts, huh.NewGroup(licenseSelect))
+		}
+
+		log.Debugln("running prompts...")
+		if err := huh.NewForm(initialPrompts...).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
 			return errors.ToWakuError(err)
 		}
 
@@ -91,8 +99,8 @@ var NewCmd = &cobra.Command{
 		}
 
 		// Parse template.json
-		log.Infoln("Parsing template.json...")
-		tmpl, err := template.ParseConfig(filepath.Join(rootDir, "template.json"))
+		log.Infoln("Parsing config...")
+		configFilePath, tmpl, err := template.ParseConfig(rootDir)
 		if err != nil {
 			return errors.ToWakuError(err)
 		}
@@ -182,7 +190,7 @@ var NewCmd = &cobra.Command{
 		ignoreRules := types.NewSet(
 			".git/",
 			"LICENSE*",
-			"template.json",
+			configFilePath,
 		)
 		if tmpl.Ignore != nil {
 			ignoreRules.Union(types.Set[string](*tmpl.Ignore))
@@ -241,7 +249,7 @@ func init() {
 func AddNewCmdFlags(cmd *cobra.Command) {
 	cmd.Flags().VarP(&options.NewOpts.Repo, "repo", "r", "source repository to template from")
 	cmd.Flags().VarP(&options.NewOpts.Branch, "branch", "b", "branch to clone from")
-	cmd.Flags().VarP(&options.NewOpts.Directory, "directory", "D", "directory where 'template.json' is located")
+	cmd.Flags().VarP(&options.NewOpts.Directory, "directory", "D", "directory where config is located")
 	cmd.Flags().VarP(&options.NewOpts.Name, "name", "n", "name of the project")
 	cmd.Flags().VarP(&options.NewOpts.License, "license", "l", "license to use for the project")
 	cmd.Flags().VarP(&options.NewOpts.Style, "style", "S", "which style to use")

@@ -7,6 +7,7 @@ import (
 	"github.com/caffeine-addictt/waku/internal/types"
 	"github.com/goccy/go-json"
 	"github.com/stretchr/testify/assert"
+	"gopkg.in/yaml.v3"
 )
 
 func TestNoParsing(t *testing.T) {
@@ -49,6 +50,20 @@ func TestParsingJsonMarshal(t *testing.T) {
 	data, err := json.Marshal(tmp)
 	assert.NoError(t, err, "failed to marshal")
 	assert.Equal(t, `"hi"`, string(data), "value should match")
+}
+
+func TestParsingYamlUnMarshal(t *testing.T) {
+	var tmp types.ValueGuard[string]
+	err := yaml.Unmarshal([]byte(`"test"`), &tmp)
+	assert.NoError(t, err, "failed to unmarshal")
+	checkValues(t, "test", "", &tmp)
+}
+
+func TestParsingYamlMarshal(t *testing.T) {
+	tmp := types.NewValueGuardNoParsing("hi", "ok")
+	data, err := yaml.Marshal(tmp)
+	assert.NoError(t, err, "failed to marshal")
+	assert.Equal(t, "hi\n", string(data), "value should match")
 }
 
 func TestParsingFailEarly(t *testing.T) {

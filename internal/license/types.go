@@ -23,7 +23,7 @@ type License struct {
 	// The filename in 'licenses/'
 	Filename string `json:"filename"`
 
-	// That values the licens wants
+	// That values the license wants
 	Wants LicenseWants `json:"wants"`
 }
 

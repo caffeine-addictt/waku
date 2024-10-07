@@ -72,7 +72,9 @@ func (o *NewOptions) Validate() error {
 			return err
 		}
 		if o.Branch.Value() == "" {
-			if err := o.Branch.Set("v" + version.Version); err != nil {
+			newBranch := "v" + version.Version
+			log.Debugf("Setting branch to %s\n", newBranch)
+			if err := o.Branch.Set(newBranch); err != nil {
 				return err
 			}
 		}

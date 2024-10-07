@@ -1,6 +1,9 @@
 package types
 
-import "github.com/goccy/go-json"
+import (
+	"github.com/goccy/go-json"
+	"gopkg.in/yaml.v3"
+)
 
 // A set implementation using map under the hood.
 type Set[T comparable] map[T]struct{}
@@ -109,4 +112,19 @@ func (s *Set[T]) UnmarshalJSON(data []byte) error {
 // MarshalJSON marshals a set into a JSON array
 func (s Set[T]) MarshalJSON() ([]byte, error) {
 	return json.Marshal(s.ToSlice())
+}
+
+// UnmarshalYAML unmarshals a YAML string into a set
+func (s *Set[T]) UnmarshalYAML(node *yaml.Node) error {
+	var items []T
+	if err := node.Decode(&items); err != nil {
+		return err
+	}
+	*s = NewSet(items...)
+	return nil
+}
+
+// MarshalYAML marshals a set into a YAML string
+func (s Set[T]) MarshalYAML() (interface{}, error) {
+	return s.ToSlice(), nil
 }

@@ -60,14 +60,14 @@ func handleMatching(paths *types.Set[string], pattern string) []string {
 
 	// convert pattern parts to regex-able
 	nonRecursePartsCount := 0
-	isRecusive := false
+	isRecursive := false
 	newPattern := "^"
 
 a:
 	for nonRecursePartsCount < len(patternParts) {
 		switch patternParts[nonRecursePartsCount] {
 		case "**", "":
-			isRecusive = true
+			isRecursive = true
 			break a
 		default:
 			s := patternParts[nonRecursePartsCount]
@@ -97,7 +97,7 @@ a:
 			continue
 		}
 
-		if !isRecusive || (isRecusive && len(pParts) > nonRecursePartsCount) {
+		if !isRecursive || (isRecursive && len(pParts) > nonRecursePartsCount) {
 			matching = append(matching, p)
 		}
 	}

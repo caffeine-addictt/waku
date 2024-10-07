@@ -11,25 +11,47 @@ post-setup for supported [Git](https://git-scm.com/) hosting providers:
 - **:fontawesome-brands-github: [GitHub](https://github.com)**
 - **:fontawesome-brands-gitlab: [GitLab](https://gitlab.com)**
 
-## template.json
+## waku config
 
-```json
-{
-  "labels": [
+=== "Yaml"
+
+    ```yaml
+    styles:
+      my-style:
+        labels:
+          # The name of the label
+          # (required)
+          - name: ""
+
+          # The color of the label.
+          # Only HEX is allowed; #fff, #ffffff
+          # (required)
+            color: ""
+
+          # The description of the label
+          # (optional)
+            description: ""
+    ```
+
+=== "Json"
+
+    ```json
     {
-      // The name of the label
-      // (required)
-      "name": "",
+      "labels": [
+        {
+          // The name of the label
+          // (required)
+          "name": "",
 
-      // The color of the label.
-      // Only HEX is allowed; #fff, #ffffff
-      // (required)
-      "color": "",
+          // The color of the label.
+          // Only HEX is allowed; #fff, #ffffff
+          // (required)
+          "color": "",
 
-      // The description of the label
-      // (optional)
-      "description": ""
+          // The description of the label
+          // (optional)
+          "description": ""
+        }
+      ]
     }
-  ]
-}
-```
+    ```

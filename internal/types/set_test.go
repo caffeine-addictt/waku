@@ -7,6 +7,7 @@ import (
 	"github.com/caffeine-addictt/waku/internal/types"
 	"github.com/goccy/go-json"
 	"github.com/stretchr/testify/assert"
+	"gopkg.in/yaml.v3"
 )
 
 func TestSetNewSet(t *testing.T) {
@@ -77,6 +78,25 @@ func TestSetUnmarshalJSON(t *testing.T) {
 	var newSet types.Set[int]
 	data := []byte(`[1,2,3]`)
 	err := json.Unmarshal(data, &newSet)
+	assert.NoError(t, err, "unexpected error during Unmarshal")
+	assert.Equal(t, 3, newSet.Len(), "expected length 3 after unmarshal")
+	assert.True(t, newSet.Contains(1), "expected set to contain 1 after unmarshal")
+	assert.True(t, newSet.Contains(2), "expected set to contain 2 after unmarshal")
+	assert.True(t, newSet.Contains(3), "expected set to contain 3 after unmarshal")
+}
+
+func TestSetMarshalYAML(t *testing.T) {
+	set := types.NewSet(1, 2, 3)
+	data, err := yaml.Marshal(set)
+	assert.NoError(t, err, "unexpected error during Marshal")
+
+	assert.ElementsMatch(t, []string{"1", "2", "3", ""}, strings.Split(strings.ReplaceAll(string(data), "- ", ""), "\n"), "expected YAML output to match")
+}
+
+func TestSetUnmarshalYAML(t *testing.T) {
+	var newSet types.Set[int]
+	data := []byte(`[1,2,3]`)
+	err := yaml.Unmarshal(data, &newSet)
 	assert.NoError(t, err, "unexpected error during Unmarshal")
 	assert.Equal(t, 3, newSet.Len(), "expected length 3 after unmarshal")
 	assert.True(t, newSet.Contains(1), "expected set to contain 1 after unmarshal")

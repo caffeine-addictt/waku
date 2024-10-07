@@ -12,11 +12,11 @@ import (
 type TemplateStyles map[types.CleanString]TemplateStyle
 
 type TemplateStyle struct {
-	Setup   *TemplateSetup    `json:"setup,omitempty"`   // Paths to executable files for post-setup
-	Ignore  *TemplateIgnore   `json:"ignore,omitempty"`  // The files that should be ignored when copying
-	Labels  *TemplateLabel    `json:"labels,omitempty"`  // The repository labels
-	Prompts *TemplatePrompts  `json:"prompts,omitempty"` // The additional prompts to use
-	Source  types.CleanString `json:"source"`            // The source template path
+	Setup   *TemplateSetup    `json:"setup,omitempty" yaml:"setup,omitempty"`     // Paths to executable files for post-setup
+	Ignore  *TemplateIgnore   `json:"ignore,omitempty" yaml:"ignore,omitempty"`   // The files that should be ignored when copying
+	Labels  *TemplateLabel    `json:"labels,omitempty" yaml:"labels,omitempty"`   // The repository labels
+	Prompts *TemplatePrompts  `json:"prompts,omitempty" yaml:"prompts,omitempty"` // The additional prompts to use
+	Source  types.CleanString `json:"source" yaml:"source"`                       // The source template path
 }
 
 func (t *TemplateStyles) Validate(root string) error {
