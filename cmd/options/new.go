@@ -4,6 +4,8 @@ import (
 	"errors"
 	"os"
 
+	"github.com/caffeine-addictt/waku/cmd/cleanup"
+	e "github.com/caffeine-addictt/waku/internal/errors"
 	"github.com/caffeine-addictt/waku/internal/git"
 	"github.com/caffeine-addictt/waku/internal/log"
 	"github.com/caffeine-addictt/waku/internal/types"
@@ -91,6 +93,35 @@ func (o *NewOptions) Validate() error {
 	}
 
 	return nil
+}
+
+// GetSource returns the source directory path
+// that is either cloned with Git or is local.
+//
+// If it is a Git cloned path, it will be cleaned
+func (o *NewOptions) GetSource() (string, error) {
+	switch git.CheckUrl(o.Source.Value()) {
+	case git.GitUrlType:
+		s, err := o.CloneRepo()
+		if err != nil {
+			return s, e.NewWakuErrorf("could not clone repo: %v", err)
+		}
+
+		cleanup.Schedule(func() error {
+			log.Debugf("removing tmp dir: %s\n", s)
+			if err := os.RemoveAll(s); err != nil {
+				return e.NewWakuErrorf("failed to cleanup tmp dir: %v", err)
+			}
+			return nil
+		})
+
+		return s, err
+
+	case git.PathUrlType:
+		return o.Source.Value(), nil
+	}
+
+	return "", e.NewWakuErrorf("invalid source URL or path: %s", o.Source.Value())
 }
 
 // To clone the repository

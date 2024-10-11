@@ -71,17 +71,10 @@ var NewCmd = &cobra.Command{
 		})
 
 		// Clone repo
-		tmpDir, err := options.NewOpts.CloneRepo()
+		tmpDir, err := options.NewOpts.GetSource()
 		if err != nil {
-			return errors.NewWakuErrorf("could not clone git repo: %s", err)
+			return errors.ToWakuError(err)
 		}
-		cleanup.Schedule(func() error {
-			log.Debugf("removing tmp dir: %s\n", tmpDir)
-			if err := os.RemoveAll(tmpDir); err != nil {
-				return errors.NewWakuErrorf("failed to cleanup tmp dir: %v", err)
-			}
-			return nil
-		})
 
 		// Resolve dir
 		rootDir := tmpDir
