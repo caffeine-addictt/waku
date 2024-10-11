@@ -7,6 +7,7 @@ import (
 
 	"github.com/caffeine-addictt/waku/cmd/options"
 	"github.com/caffeine-addictt/waku/internal/log"
+	"github.com/caffeine-addictt/waku/pkg/version"
 	"github.com/goccy/go-json"
 )
 
@@ -19,6 +20,17 @@ const (
 // need to hit the endpoint once per session.
 var Licenses *[]License
 
+func GetLicenseFetchUrl() string {
+	var url string
+	if options.NewOpts.Branch.Value() != "" {
+		url = fmt.Sprintf(BASE_URL, options.NewOpts.Branch.Value())
+	} else {
+		url = fmt.Sprintf(BASE_URL, "v"+version.Version)
+	}
+	url += LICENSE_LIST
+	return url
+}
+
 // GetLicenses returns the list of licenses from the GitHub API
 // or returns the cached list if it exists.
 func GetLicenses() (*[]License, error) {
@@ -26,7 +38,7 @@ func GetLicenses() (*[]License, error) {
 		return Licenses, nil
 	}
 
-	url := fmt.Sprintf(BASE_URL, options.NewOpts.Branch.Value()) + LICENSE_LIST
+	url := GetLicenseFetchUrl()
 	log.Infof("Fetching licenses from %s...\n", url)
 	req, err := http.NewRequest(http.MethodGet, url, http.NoBody)
 	if err != nil {

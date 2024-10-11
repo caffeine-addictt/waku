@@ -28,7 +28,7 @@ type License struct {
 }
 
 func (license *License) GetLicenseText() (string, error) {
-	req, err := http.NewRequest(http.MethodGet, BASE_URL+license.Filename, http.NoBody)
+	req, err := http.NewRequest(http.MethodGet, GetLicenseFetchUrl()+license.Filename, http.NoBody)
 	if err != nil {
 		return "", err
 	}

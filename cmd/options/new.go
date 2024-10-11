@@ -4,6 +4,8 @@ import (
 	"errors"
 	"os"
 
+	"github.com/caffeine-addictt/waku/cmd/cleanup"
+	e "github.com/caffeine-addictt/waku/internal/errors"
 	"github.com/caffeine-addictt/waku/internal/git"
 	"github.com/caffeine-addictt/waku/internal/log"
 	"github.com/caffeine-addictt/waku/internal/types"
@@ -16,6 +18,7 @@ const defaultRepo = "https://github.com/caffeine-addictt/waku.git"
 // The options for the new command
 var NewOpts = NewOptions{
 	Repo:      *types.NewValueGuard("", cmdOpt, types.REPO),
+	Source:    *types.NewValueGuard("", cmdOpt, types.REPO),
 	Branch:    *types.NewValueGuard("", cmdOpt, types.BRANCH),
 	Directory: *types.NewValueGuard("", cmdOpt, types.PATH),
 	Name:      *types.NewValueGuard("", cmdOpt, types.STRING),
@@ -28,6 +31,10 @@ type NewOptions struct {
 	// The repository Url to use
 	// Should be this repository by default
 	Repo types.ValueGuard[string]
+
+	// The repository Url or local path to use
+	// Should be this repository by default
+	Source types.ValueGuard[string]
 
 	// The branch to use
 	Branch types.ValueGuard[string]
@@ -54,9 +61,14 @@ func cmdOpt(v string) (string, error) {
 
 // TO be invoked before a command is ran
 func (o *NewOptions) Validate() error {
-	switch o.Repo.Value() {
+	// Since both flags are mutually exclusive
+	if err := o.Source.Set(o.Source.Value() + o.Repo.Value()); err != nil {
+		return err
+	}
+
+	switch o.Source.Value() {
 	case "":
-		if err := o.Repo.Set(defaultRepo); err != nil {
+		if err := o.Source.Set(defaultRepo); err != nil {
 			return err
 		}
 		if err := o.Directory.Set("template"); err != nil {
@@ -83,6 +95,35 @@ func (o *NewOptions) Validate() error {
 	return nil
 }
 
+// GetSource returns the source directory path
+// that is either cloned with Git or is local.
+//
+// If it is a Git cloned path, it will be cleaned
+func (o *NewOptions) GetSource() (string, error) {
+	switch git.CheckUrl(o.Source.Value()) {
+	case git.GitUrlType:
+		s, err := o.CloneRepo()
+		if err != nil {
+			return s, e.NewWakuErrorf("could not clone repo: %v", err)
+		}
+
+		cleanup.Schedule(func() error {
+			log.Debugf("removing tmp dir: %s\n", s)
+			if err := os.RemoveAll(s); err != nil {
+				return e.NewWakuErrorf("failed to cleanup tmp dir: %v", err)
+			}
+			return nil
+		})
+
+		return s, err
+
+	case git.PathUrlType:
+		return o.Source.Value(), nil
+	}
+
+	return "", e.NewWakuErrorf("invalid source URL or path: %s", o.Source.Value())
+}
+
 // To clone the repository
 func (o *NewOptions) CloneRepo() (string, error) {
 	log.Debugln("creating tmp dir")
@@ -97,7 +138,7 @@ func (o *NewOptions) CloneRepo() (string, error) {
 	opts := git.CloneOptions{
 		Depth:     1,
 		Branch:    o.Branch.Value(),
-		Url:       utils.EscapeTermString(o.Repo.Value()),
+		Url:       utils.EscapeTermString(o.Source.Value()),
 		ClonePath: utils.EscapeTermString(tmpDirPath),
 	}
 
