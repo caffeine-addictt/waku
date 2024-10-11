@@ -16,6 +16,7 @@ const defaultRepo = "https://github.com/caffeine-addictt/waku.git"
 // The options for the new command
 var NewOpts = NewOptions{
 	Repo:      *types.NewValueGuard("", cmdOpt, types.REPO),
+	Source:    *types.NewValueGuard("", cmdOpt, types.REPO),
 	Branch:    *types.NewValueGuard("", cmdOpt, types.BRANCH),
 	Directory: *types.NewValueGuard("", cmdOpt, types.PATH),
 	Name:      *types.NewValueGuard("", cmdOpt, types.STRING),
@@ -28,6 +29,10 @@ type NewOptions struct {
 	// The repository Url to use
 	// Should be this repository by default
 	Repo types.ValueGuard[string]
+
+	// The repository Url or local path to use
+	// Should be this repository by default
+	Source types.ValueGuard[string]
 
 	// The branch to use
 	Branch types.ValueGuard[string]
@@ -54,9 +59,14 @@ func cmdOpt(v string) (string, error) {
 
 // TO be invoked before a command is ran
 func (o *NewOptions) Validate() error {
-	switch o.Repo.Value() {
+	// Since both flags are mutually exclusive
+	if err := o.Source.Set(o.Source.Value() + o.Repo.Value()); err != nil {
+		return err
+	}
+
+	switch o.Source.Value() {
 	case "":
-		if err := o.Repo.Set(defaultRepo); err != nil {
+		if err := o.Source.Set(defaultRepo); err != nil {
 			return err
 		}
 		if err := o.Directory.Set("template"); err != nil {
@@ -97,7 +107,7 @@ func (o *NewOptions) CloneRepo() (string, error) {
 	opts := git.CloneOptions{
 		Depth:     1,
 		Branch:    o.Branch.Value(),
-		Url:       utils.EscapeTermString(o.Repo.Value()),
+		Url:       utils.EscapeTermString(o.Source.Value()),
 		ClonePath: utils.EscapeTermString(tmpDirPath),
 	}
 

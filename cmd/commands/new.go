@@ -248,12 +248,16 @@ func init() {
 
 func AddNewCmdFlags(cmd *cobra.Command) {
 	cmd.Flags().VarP(&options.NewOpts.Repo, "repo", "r", "source repository to template from")
+	cmd.Flags().VarP(&options.NewOpts.Source, "source", "s", "source repository to template from")
 	cmd.Flags().VarP(&options.NewOpts.Branch, "branch", "b", "branch to clone from")
 	cmd.Flags().VarP(&options.NewOpts.Directory, "directory", "D", "directory where config is located")
 	cmd.Flags().VarP(&options.NewOpts.Name, "name", "n", "name of the project")
 	cmd.Flags().VarP(&options.NewOpts.License, "license", "l", "license to use for the project")
 	cmd.Flags().VarP(&options.NewOpts.Style, "style", "S", "which style to use")
 	cmd.Flags().BoolVarP(&options.NewOpts.NoGit, "no-git", "G", options.NewOpts.NoGit, "whether to not initialize git")
+
+	cmd.Flags().MarkDeprecated("repo", "Please use --source instead.")
+	cmd.MarkFlagsMutuallyExclusive("source", "repo")
 }
 
 func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string, tmpl map[string]any, licenseTmpl map[string]string) error {
