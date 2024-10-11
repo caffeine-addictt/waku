@@ -130,12 +130,12 @@ var NewCmd = &cobra.Command{
 		log.Debugln("resolving prompts...")
 		extraPrompts := map[string]config.TemplatePrompt{}
 		if tmpl.Prompts != nil {
-			for _, ask := range *tmpl.Prompts {
+			for _, ask := range tmpl.Prompts {
 				extraPrompts[string(ask.Key)] = ask
 			}
 		}
 		if tmpl.Styles != nil && styleInfo.Prompts != nil {
-			for _, ask := range *styleInfo.Prompts {
+			for _, ask := range styleInfo.Prompts {
 				extraPrompts[string(ask.Key)] = ask
 			}
 		}

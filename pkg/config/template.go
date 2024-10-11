@@ -6,11 +6,11 @@ import (
 
 // The config file
 type TemplateJson struct {
-	Setup   *TemplateSetup   `json:"setup,omitempty" yaml:"setup,omitempty"`     // Paths to executable files for post-setup
-	Ignore  *TemplateIgnore  `json:"ignore,omitempty" yaml:"ignore,omitempty"`   // The files that should be ignored when copying
-	Labels  *TemplateLabel   `json:"labels,omitempty" yaml:"labels,omitempty"`   // The repository labels
-	Prompts *TemplatePrompts `json:"prompts,omitempty" yaml:"prompts,omitempty"` // The additional prompts to use
-	Styles  TemplateStyles   `json:"styles" yaml:"styles"`                       // The name of the style mapped to the path to the directory
+	Setup   *TemplateSetup  `json:"setup,omitempty" yaml:"setup,omitempty"`     // Paths to executable files for post-setup
+	Ignore  *TemplateIgnore `json:"ignore,omitempty" yaml:"ignore,omitempty"`   // The files that should be ignored when copying
+	Labels  TemplateLabel   `json:"labels,omitempty" yaml:"labels,omitempty"`   // The repository labels
+	Styles  TemplateStyles  `json:"styles" yaml:"styles"`                       // The name of the style mapped to the path to the directory
+	Prompts TemplatePrompts `json:"prompts,omitempty" yaml:"prompts,omitempty"` // The additional prompts to use
 }
 
 func (t *TemplateJson) Validate(root string) error {
