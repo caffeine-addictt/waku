@@ -102,16 +102,16 @@ var NewCmd = &cobra.Command{
 		var style types.CleanString
 		var styleInfo config.TemplateStyle
 
-		if tmpl.Styles != nil && len(*tmpl.Styles) == 1 {
-			for s, v := range *tmpl.Styles {
+		if len(tmpl.Styles) == 1 {
+			for s, v := range tmpl.Styles {
 				style = s
 				styleInfo = v
 				rootDir = filepath.Join(rootDir, v.Source.String())
 				break
 			}
-		} else if tmpl.Styles != nil {
+		} else {
 			if err := huh.NewForm(huh.NewGroup(
-				template.PromptForStyle(*tmpl.Styles, &style, &styleInfo),
+				template.PromptForStyle(tmpl.Styles, &style, &styleInfo),
 			)).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
 				return errors.ToWakuError(err)
 			}

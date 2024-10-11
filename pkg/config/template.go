@@ -2,31 +2,20 @@ package config
 
 import (
 	"fmt"
-
-	"github.com/caffeine-addictt/waku/internal/types"
 )
 
 // The config file
 type TemplateJson struct {
-	Setup   *TemplateSetup    `json:"setup,omitempty" yaml:"setup,omitempty"`     // Paths to executable files for post-setup
-	Ignore  *TemplateIgnore   `json:"ignore,omitempty" yaml:"ignore,omitempty"`   // The files that should be ignored when copying
-	Labels  *TemplateLabel    `json:"labels,omitempty" yaml:"labels,omitempty"`   // The repository labels
-	Styles  *TemplateStyles   `json:"styles,omitempty" yaml:"styles,omitempty"`   // The name of the style mapped to the path to the directory
-	Prompts *TemplatePrompts  `json:"prompts,omitempty" yaml:"prompts,omitempty"` // The additional prompts to use
-	Name    types.CleanString `json:"name,omitempty" yaml:"name,omitempty"`       // The name of the template
+	Setup   *TemplateSetup   `json:"setup,omitempty" yaml:"setup,omitempty"`     // Paths to executable files for post-setup
+	Ignore  *TemplateIgnore  `json:"ignore,omitempty" yaml:"ignore,omitempty"`   // The files that should be ignored when copying
+	Labels  *TemplateLabel   `json:"labels,omitempty" yaml:"labels,omitempty"`   // The repository labels
+	Prompts *TemplatePrompts `json:"prompts,omitempty" yaml:"prompts,omitempty"` // The additional prompts to use
+	Styles  TemplateStyles   `json:"styles" yaml:"styles"`                       // The name of the style mapped to the path to the directory
 }
 
 func (t *TemplateJson) Validate(root string) error {
-	// Ensure that `Name` is required if `Styles` is not present or empty
-	// If `Styles` is present, `Name` must not be present
-	if t.Styles == nil || len(*t.Styles) == 0 {
-		if t.Name == "" {
-			return fmt.Errorf("'name' is required when 'styles' is not present or empty")
-		}
-	} else {
-		if t.Name != "" {
-			return fmt.Errorf("'name' must not be present when 'styles' is provided")
-		}
+	if len(t.Styles) == 0 {
+		return fmt.Errorf("'styles' cannot be empty")
 	}
 
 	if t.Setup != nil {
