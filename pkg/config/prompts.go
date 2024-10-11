@@ -37,7 +37,7 @@ type TemplatePrompts []TemplatePrompt
 // They prompt keys are case sensitive
 // and Pacal case is recommended.
 type TemplatePrompt struct {
-	Value     any
+	value     any
 	Format    *string            `json:"fmt,omitempty" yaml:"fmt,omitempty"`
 	Separator *string            `json:"sep,omitempty" yaml:"sep,omitempty"`
 	Capture   *types.RegexString `json:"capture,omitempty" yaml:"capture,omitempty"`
@@ -72,7 +72,7 @@ func (t *TemplatePrompt) GetPrompt(f map[string]any) *huh.Text {
 			return err
 		}
 
-		f[t.Key.String()] = t.Value
+		f[t.Key.String()] = t.value
 		return nil
 	})
 }
@@ -86,7 +86,7 @@ func (t *TemplatePrompt) Set(s string) error {
 			return err
 		}
 
-		t.Value = val
+		t.value = val
 
 	case TemplatePromptTypeArray:
 		vals := strings.Split(s, *t.Separator)
@@ -99,7 +99,7 @@ func (t *TemplatePrompt) Set(s string) error {
 			vals[i] = val
 		}
 
-		t.Value = vals
+		t.value = vals
 
 	default:
 		panic(fmt.Sprintf("unexpected prompt type while setting value: %s", t.Type))
@@ -192,6 +192,7 @@ func (t *TemplatePrompt) UnmarshalYAML(node *yaml.Node) error {
 		return err
 	}
 
+	*t = ss
 	return nil
 }
 

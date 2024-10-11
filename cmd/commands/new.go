@@ -102,16 +102,16 @@ var NewCmd = &cobra.Command{
 		var style types.CleanString
 		var styleInfo config.TemplateStyle
 
-		if tmpl.Styles != nil && len(*tmpl.Styles) == 1 {
-			for s, v := range *tmpl.Styles {
+		if len(tmpl.Styles) == 1 {
+			for s, v := range tmpl.Styles {
 				style = s
 				styleInfo = v
 				rootDir = filepath.Join(rootDir, v.Source.String())
 				break
 			}
-		} else if tmpl.Styles != nil {
+		} else {
 			if err := huh.NewForm(huh.NewGroup(
-				template.PromptForStyle(*tmpl.Styles, &style, &styleInfo),
+				template.PromptForStyle(tmpl.Styles, &style, &styleInfo),
 			)).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
 				return errors.ToWakuError(err)
 			}
@@ -130,12 +130,12 @@ var NewCmd = &cobra.Command{
 		log.Debugln("resolving prompts...")
 		extraPrompts := map[string]config.TemplatePrompt{}
 		if tmpl.Prompts != nil {
-			for _, ask := range *tmpl.Prompts {
+			for _, ask := range tmpl.Prompts {
 				extraPrompts[string(ask.Key)] = ask
 			}
 		}
 		if tmpl.Styles != nil && styleInfo.Prompts != nil {
-			for _, ask := range *styleInfo.Prompts {
+			for _, ask := range styleInfo.Prompts {
 				extraPrompts[string(ask.Key)] = ask
 			}
 		}

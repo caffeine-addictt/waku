@@ -7,11 +7,6 @@
       "description": "Allows a reference to a schema, typically a relative or absolute URI.",
       "format": "uri-reference"
     },
-    "name": {
-      "type": "string",
-      "description": "The name of the template. Required if 'styles' is empty.",
-      "minLength": 1
-    },
     "setup": {
       "$ref": "#/definitions/setup"
     },
@@ -55,28 +50,7 @@
       }
     }
   },
-  "allOf": [
-    {
-      "if": {
-        "required": ["styles"]
-      },
-      "then": {
-        "not": {
-          "required": ["name"]
-        }
-      }
-    },
-    {
-      "if": {
-        "not": {
-          "required": ["styles"]
-        }
-      },
-      "then": {
-        "required": ["name"]
-      }
-    }
-  ],
+  "required": ["styles"],
   "additionalProperties": false,
   "definitions": {
     "setup": {
