@@ -1,6 +1,6 @@
 package types
 
-// The <typeStirng> for CLI options
+// The <typeString> for CLI options
 const (
 	PATH   string = "<path>"
 	REPO   string = "<repo>"
