@@ -5,7 +5,7 @@ dist/*
 
 www/
 !www/mkdocs.yml
-!www/static/schema.json
+!www/docs/static/schema.json
 
 template/
 !template/template.json
