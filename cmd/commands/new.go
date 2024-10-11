@@ -249,7 +249,9 @@ func AddNewCmdFlags(cmd *cobra.Command) {
 	cmd.Flags().VarP(&options.NewOpts.Style, "style", "S", "which style to use")
 	cmd.Flags().BoolVarP(&options.NewOpts.NoGit, "no-git", "G", options.NewOpts.NoGit, "whether to not initialize git")
 
-	cmd.Flags().MarkDeprecated("repo", "Please use --source instead.")
+	if err := cmd.Flags().MarkDeprecated("repo", "Please use --source instead."); err != nil {
+		panic(err)
+	}
 	cmd.MarkFlagsMutuallyExclusive("source", "repo")
 }
 
