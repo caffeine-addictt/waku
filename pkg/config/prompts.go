@@ -192,6 +192,7 @@ func (t *TemplatePrompt) UnmarshalYAML(node *yaml.Node) error {
 		return err
 	}
 
+	*t = ss
 	return nil
 }
 
