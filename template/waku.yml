@@ -3,6 +3,8 @@
 styles:
   simple github:
     source: simple-github
+  waku github:
+    source: waku-github
     prompts:
       - key: User
         type: str
