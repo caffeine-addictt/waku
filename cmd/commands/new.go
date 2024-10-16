@@ -179,12 +179,19 @@ var NewCmd = &cobra.Command{
 		}
 		log.Debugf("resolved file paths to: %v\n", paths)
 
+		// get config rel path
+		configRelPath, err := filepath.Rel(tmpDir, configFilePath)
+		if err != nil {
+			return errors.ToWakuError(err)
+		}
+		log.Debugf("resolved config rel path to: %s\n", configRelPath)
+
 		// Handle ignores
 		log.Infoln("applying ignore rules...")
 		ignoreRules := types.NewSet(
 			".git/",
 			"LICENSE*",
-			configFilePath,
+			configRelPath,
 		)
 		if tmpl.Ignore != nil {
 			ignoreRules.Union(types.Set[string](*tmpl.Ignore))
