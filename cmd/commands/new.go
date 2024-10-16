@@ -177,6 +177,7 @@ var NewCmd = &cobra.Command{
 		if err != nil {
 			return errors.ToWakuError(err)
 		}
+		log.Debugf("resolved file paths to: %v\n", paths)
 
 		// Handle ignores
 		log.Infoln("applying ignore rules...")
@@ -207,6 +208,7 @@ var NewCmd = &cobra.Command{
 
 		// account for template.json having a '!.git/'
 		ignoreRules = template.ResolveIncludes(ignoreRules, types.NewSet(".git/", "LICENSE"))
+		log.Debugf("ignore rules applied: %v\n", ignoreRules)
 		ignoredPaths := template.ResolveIncludes(types.NewSet(paths...), ignoreRules)
 
 		log.Debugf("resolved files to write: %v\n", ignoredPaths)
