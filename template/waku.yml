@@ -1,8 +1,9 @@
 # yaml-language-server: $schema=../www/docs/static/schema.json
 
 styles:
-  simple github:
-    source: simple-github
+  simple:
+    source: simple
+
   waku github:
     source: waku-github
     prompts:
