@@ -212,7 +212,7 @@ var NewCmd = &cobra.Command{
 		log.Debugf("resolved files to write: %v\n", ignoredPaths)
 
 		// Handle writing files
-		cmd.Println("writing files...")
+		log.Infoln("writing files...")
 		finalTmpl["Name"] = name
 		finalTmpl["License"] = license.Name
 		finalTmpl["Spdx"] = license.Spdx
