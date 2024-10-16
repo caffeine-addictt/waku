@@ -209,10 +209,10 @@ var NewCmd = &cobra.Command{
 		ignoreRules = template.ResolveIncludes(ignoreRules, types.NewSet(".git/", "LICENSE"))
 		ignoredPaths := template.ResolveIncludes(types.NewSet(paths...), ignoreRules)
 
-		log.Debugf("resolved files to write: %v", ignoredPaths)
+		log.Debugf("resolved files to write: %v\n", ignoredPaths)
 
 		// Handle writing files
-		cmd.Println("writing files...")
+		log.Infoln("writing files...")
 		finalTmpl["Name"] = name
 		finalTmpl["License"] = license.Name
 		finalTmpl["Spdx"] = license.Spdx
