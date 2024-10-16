@@ -27,7 +27,6 @@ func GetLicenseFetchUrl() string {
 	} else {
 		url = fmt.Sprintf(BASE_URL, "v"+version.Version)
 	}
-	url += LICENSE_LIST
 	return url
 }
 
@@ -38,7 +37,7 @@ func GetLicenses() (*[]License, error) {
 		return Licenses, nil
 	}
 
-	url := GetLicenseFetchUrl()
+	url := GetLicenseFetchUrl() + LICENSE_LIST
 	log.Infof("fetching licenses from %s...\n", url)
 	req, err := http.NewRequest(http.MethodGet, url, http.NoBody)
 	if err != nil {
