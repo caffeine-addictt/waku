@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/caffeine-addictt/waku/internal/log"
 	"github.com/goccy/go-json"
 )
 
@@ -28,7 +29,10 @@ type License struct {
 }
 
 func (license *License) GetLicenseText() (string, error) {
-	req, err := http.NewRequest(http.MethodGet, GetLicenseFetchUrl()+license.Filename, http.NoBody)
+	url := GetLicenseFetchUrl() + license.Filename
+	log.Infof("fetching license text from %s...\n", url)
+
+	req, err := http.NewRequest(http.MethodGet, url, http.NoBody)
 	if err != nil {
 		return "", err
 	}
@@ -45,12 +49,14 @@ func (license *License) GetLicenseText() (string, error) {
 		return "", fmt.Errorf("unexpected status code: %d", res.StatusCode)
 	}
 
+	log.Debugln("reading http stream")
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "", err
 	}
 
 	txt := string(body)
+	log.Debugln("replacing [year] with current year")
 	for i := range license.Wants {
 		if license.Wants[i] == "year" {
 			txt = strings.ReplaceAll(txt, "[year]", fmt.Sprintf("%d", time.Now().UTC().Year()))

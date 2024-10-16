@@ -39,7 +39,7 @@ func GetLicenses() (*[]License, error) {
 	}
 
 	url := GetLicenseFetchUrl()
-	log.Infof("Fetching licenses from %s...\n", url)
+	log.Infof("fetching licenses from %s...\n", url)
 	req, err := http.NewRequest(http.MethodGet, url, http.NoBody)
 	if err != nil {
 		return nil, err
@@ -57,7 +57,7 @@ func GetLicenses() (*[]License, error) {
 		return nil, fmt.Errorf("unexpected status code: %d", res.StatusCode)
 	}
 
-	log.Debugln("Reading http stream")
+	log.Debugln("reading http stream")
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
@@ -67,7 +67,7 @@ func GetLicenses() (*[]License, error) {
 		Licenses []License `json:"licenses"`
 	}
 
-	log.Debugln("Unmarshalling license json")
+	log.Debugln("unmarshalling license json")
 	if err := json.Unmarshal(body, &l); err != nil {
 		return nil, err
 	}
