@@ -172,14 +172,14 @@ var NewCmd = &cobra.Command{
 		}
 
 		// Get file paths
-		log.Infoln("Getting file paths...")
+		log.Infoln("getting file paths...")
 		paths, err := utils.WalkDirRecursive(rootDir)
 		if err != nil {
 			return errors.ToWakuError(err)
 		}
 
 		// Handle ignores
-		log.Infoln("Applying ignores...")
+		log.Infoln("applying ignore rules...")
 		ignoreRules := types.NewSet(
 			".git/",
 			"LICENSE*",
