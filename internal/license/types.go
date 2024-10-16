@@ -41,6 +41,10 @@ func (license *License) GetLicenseText() (string, error) {
 	}
 	defer res.Body.Close()
 
+	if res.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("unexpected status code: %d", res.StatusCode)
+	}
+
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "", err
