@@ -51,8 +51,7 @@ jobs:
 
       - name: setup-snapcraft
         run: |
-          sudo apt-get update
-          sudo apt-get -yq --no-install-suggests --no-install-recommends install snapcraft
+          sudo snap install snapcraft --classic
 
       - name: Set up Chocolately
         run: |
