@@ -214,9 +214,9 @@ var NewCmd = &cobra.Command{
 		}
 
 		// account for template.json having a '!.git/'
-		ignoreRules = template.ResolveIncludes(ignoreRules, types.NewSet(".git/", "LICENSE"))
+		ignoreRules = template.ResolveGlobs(ignoreRules, types.NewSet(".git/", "LICENSE"))
 		log.Debugf("ignore rules applied: %v\n", ignoreRules)
-		ignoredPaths := template.ResolveIncludes(types.NewSet(paths...), ignoreRules)
+		ignoredPaths := template.ResolveGlobs(types.NewSet(paths...), ignoreRules)
 
 		log.Debugf("resolved files to write: %v\n", ignoredPaths)
 

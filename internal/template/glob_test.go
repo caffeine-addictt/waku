@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestResolveIncludes(t *testing.T) {
+func TestResolveGlobs(t *testing.T) {
 	tests := []struct {
 		paths    types.Set[string]
 		ignores  types.Set[string]
@@ -80,7 +80,7 @@ func TestResolveIncludes(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			result := template.ResolveIncludes(tc.paths, tc.ignores)
+			result := template.ResolveGlobs(tc.paths, tc.ignores)
 			assert.ElementsMatch(t, tc.expected.ToSlice(), result.ToSlice())
 		})
 	}
@@ -125,7 +125,7 @@ func BenchmarkResolveIncludes(b *testing.B) {
 	} {
 		b.Run(tc.name, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				template.ResolveIncludes(tc.paths, tc.ignores)
+				template.ResolveGlobs(tc.paths, tc.ignores)
 			}
 		})
 	}
