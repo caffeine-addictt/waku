@@ -24,7 +24,7 @@ var (
 //	"path/to/dir/*" is a single dir level glob
 //	"path/to/dir/**" == path/to/dir/ is a recursive dir level glob
 //	"!path/to/file" is a negated ignore
-func ResolveIncludes(paths, ignores types.Set[string]) types.Set[string] {
+func ResolveGlobs(paths, ignores types.Set[string]) types.Set[string] {
 	negation := types.NewSet[string]()
 
 	// handle explicit includes
