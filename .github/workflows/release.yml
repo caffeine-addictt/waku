@@ -10,9 +10,6 @@ permissions:
   packages: write
   contents: write
 
-env:
-  CHOCOLATEY_VERSION: 2.2.2 # https://github.com/chocolatey/choco/releases
-
 jobs:
   build:
     name: Building project
@@ -70,16 +67,6 @@ jobs:
         run: |
           sudo snap install snapcraft --classic
 
-      - name: Set up Chocolately
-        run: |
-          set -xe
-          sudo apt-get --quiet update
-          mkdir -p /opt/chocolatey
-          wget -q -O - "https://github.com/chocolatey/choco/releases/download/${CHOCOLATEY_VERSION}/chocolatey.v${CHOCOLATEY_VERSION}.tar.gz" | tar -xz -C "/opt/chocolatey"
-          echo '#!/bin/bash' >> /usr/local/bin/choco
-          echo 'mono /opt/chocolatey/choco.exe $@' >> /usr/local/bin/choco
-          chmod +x /usr/local/bin/choco
-
       - name: Login to docker
         uses: docker/login-action@v3
         with:
@@ -103,6 +90,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_PAT: ${{ secrets.GH_PAT }}
           AUR_PRIVATE_KEY: ${{ secrets.AUR_KEY }}
-          CHOCOLATEY_API_KEY: ${{ secrets.CHOCOLATEY_API_KEY }}
           SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_LOGIN }}
           COSIGN_PASSWORD: ${{ secrets.COSIGN_PWD }}
