@@ -12,13 +12,13 @@ Here is a quick overview of how to get started with Waku templates.
 For demonstration purposes,
 let's create a new template containing 1 style called `My Style`.
 
-1. Create the style directory
+1.  Create the style directory
 
     Create a new subdirectory called `my-style`.
     The files you create in this directory
     will be copied and formatted over when `waku new` is ran.
 
-1. Create a waku `config` file
+1.  Create a waku `config` file
 
     === "Yaml"
 

@@ -1,228 +1,235 @@
-{% extends 'main.html' %}
+{% extends 'main.html' %} {% block tabs %} {{ super() }}
 
-{% block tabs %}
-  {{ super() }}
+<style>
+  :root {
+    --waku-primary-color: #7cc89f;
+  }
 
-  <style>
-    :root {
-      --waku-primary-color: #7cc89f;
-    }
+  .lcp-img {
+    height: 20rem;
+  }
 
-    .lcp-img {
-      height: 20rem;
-    }
+  .my-2 {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
 
-    .my-2 {
-      margin-top: 0.5rem;
-      margin-bottom: 0.5rem;
-    }
+  .mb-16 {
+    margin-bottom: 4rem;
+  }
 
-    .mb-16 {
-      margin-bottom: 4rem;
-    }
+  .text-center {
+    text-align: center;
+  }
 
-    .text-center {
-      text-align: center;
-    }
+  .btn-primary {
+    display: inline-block;
+    padding: 12px 36px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    background-color: var(--waku-primary-color);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0px 8px 20px rgba(0, 123, 40, 0.3);
+  }
 
-    .btn-primary {
-      display: inline-block;
-      padding: 12px 36px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #fff;
-      background-color: var(--waku-primary-color);
-      border: 2px solid transparent;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      box-shadow: 0px 8px 20px rgba(0, 123, 40, 0.3);
-    }
+  .btn-primary:hover {
+    background-color: var(--waku-primary-color);
+    border-color: var(--waku-primary-color);
+    box-shadow: 0px 12px 25px rgba(0, 123, 40, 0.4);
+    transform: translateY(-3px);
+  }
 
-    .btn-primary:hover {
-      background-color: var(--waku-primary-color);
-      border-color: var(--waku-primary-color);
-      box-shadow: 0px 12px 25px rgba(0, 123, 40, 0.4);
-      transform: translateY(-3px);
-    }
+  .btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0px 5px 15px rgba(0, 123, 40, 0.2);
+  }
 
-    .btn-primary:active {
-      transform: translateY(0);
-      box-shadow: 0px 5px 15px rgba(0, 123, 40, 0.2);
-    }
+  .features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    width: 90%;
+    margin: 2rem auto 0 auto;
+  }
 
-    .features {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      justify-content: center;
-      width: 90%;
-      margin: 2rem auto 0 auto;
+  .feature {
+    display: flex;
+    flex-direction: column;
+    width: 35%;
+    text-align: left;
+  }
+
+  .feature:nth-child(odd) {
+    width: 25%;
+  }
+
+  .feature-header {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+    width: max-content;
+  }
+
+  .feature h3 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #000;
+    width: max-content;
+  }
+
+  [data-md-color-scheme="slate"] .feature h3 {
+    color: #fff;
+  }
+
+  .feature p {
+    text-wrap: balance;
+  }
+
+  .feature-icon {
+    font-size: 2rem;
+    width: 2rem;
+    height: 2rem;
+    fill: #000;
+  }
+
+  [data-md-color-scheme="slate"] .feature-icon {
+    fill: #fff;
+  }
+
+  section {
+    margin-bottom: 4rem;
+    text-align: center;
+  }
+
+  p {
+    font-size: 0.75rem;
+    font-weight: 400;
+  }
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #000;
+  }
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #000;
+  }
+
+  [data-md-color-scheme="slate"] h1,
+  h2 {
+    color: #fff;
+  }
+
+  @media (max-width: 639px) {
+    h1 {
+      font-size: 1.5rem;
     }
 
     .feature {
-      display: flex;
-      flex-direction: column;
-      width: 35%;
-      text-align: left;
+      width: 100%;
+      padding: 0 1rem;
     }
 
     .feature:nth-child(odd) {
-      width: 25%;
+      width: 100%;
     }
+  }
 
-    .feature-header {
-      display: flex;
-      flex-direction: row;
-      gap: 0.5rem;
-      align-items: center;
-      width: max-content;
+  @media (min-width: 639px) {
+    .feature:nth-child(odd) {
+      width: 35%;
+      padding-left: 2.5rem;
     }
+  }
+</style>
 
-    .feature h3 {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: #000;
-      width: max-content;
-    }
+<section>
+  <img
+    src="/static/logo-full-transparent-1x1.png"
+    alt="Waku logo"
+    class="lcp-img my-2"
+    loading="eager"
+  />
 
-    [data-md-color-scheme="slate"] .feature h3 {
-      color: #fff;
-    }
+  <h2 class="mb-16">
+    Let's make starting new projects feel like a
+    <strong><i>breeze</i></strong> again.
+  </h2>
 
-    .feature p {
-      text-wrap: balance;
-    }
+  <a href="/introduction" class="btn-primary">Get Started</a>
+</section>
 
-    .feature-icon {
-      font-size: 2rem;
-      width: 2rem;
-      height: 2rem;
-      fill: #000;
-    }
+<section>
+  <h1>Focus on what matters most</h1>
+  <p>
+    Waku is an open-source CLI tool that empowers developers to quickly bring
+    their ideas from <i>conception to production</i>.
+  </p>
 
-    [data-md-color-scheme="slate"] .feature-icon {
-      fill: #fff;
-    }
-
-    section {
-      margin-bottom: 4rem;
-      text-align: center;
-    }
-
-    p {
-      font-size: 0.75rem;
-      font-weight: 400;
-    }
-
-    h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #000;
-    }
-
-    h2 {
-      font-size: 1rem;
-      font-weight: 500;
-      color: #000;
-    }
-
-    [data-md-color-scheme="slate"] h1, h2 {
-      color: #fff;
-    }
-
-    @media (max-width: 639px) {
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      .feature {
-        width: 100%;
-        padding: 0 1rem;
-      }
-
-      .feature:nth-child(odd) {
-        width: 100%;
-      }
-    }
-
-    @media (min-width: 639px) {
-      .feature:nth-child(odd) {
-        width: 35%;
-        padding-left: 2.5rem;
-      }
-    }
-  </style>
-
-  <section>
-    <img src="/static/logo-full-transparent-1x1.png" alt="Waku logo" class="lcp-img my-2" loading="eager">
-
-    <h2 class="mb-16">
-      Let's make starting new projects feel like a <strong><i>breeze</i></strong> again.
-    </h2>
-
-    <a href="/introduction" class="btn-primary">Get Started</a>
-  </section>
-
-  <section>
-    <h1>Focus on what matters most</h1>
-    <p>
-      Waku is an open-source CLI tool that empowers developers
-      to quickly bring their ideas from <i>conception to production</i>.
-    </p>
-
-    <div class="features">
-      <div class="feature">
-        <div class="feature-header">
-          <div class="feature-icon">
-            {% include ".icons/material/devices.svg" %}
-          </div>
-          <h3>Cross-Platform</h3>
+  <div class="features">
+    <div class="feature">
+      <div class="feature-header">
+        <div class="feature-icon">
+          {% include ".icons/material/devices.svg" %}
         </div>
-
-        <p>Waku works on Linux, Windows, and macOS.</p>
+        <h3>Cross-Platform</h3>
       </div>
 
-      <div class="feature">
-        <div class="feature-header">
-          <div class="feature-icon">
-            {% include ".icons/material/devices.svg" %}
-          </div>
-          <h3>Minimal Setup</h3>
-        </div>
-
-        <p>Waku makes the setup process quick and effortless, allowing you to dive right into coding without unnecessary delays.</p>
-      </div>
-
-      <div class="feature">
-        <div class="feature-header">
-          <div class="feature-icon">
-            {% include ".icons/simple/buildkite.svg" %}
-          </div>
-          <h3>Easily Extensible</h3>
-        </div>
-
-        <p>Waku supports community styles that are easy to create and use.</p>
-      </div>
-
-      <div class="feature">
-        <div class="feature-header">
-          <div class="feature-icon">
-            {% include ".icons/octicons/repo-template-24.svg" %}
-          </div>
-          <h3>Strong Templating Capabilities</h3>
-        </div>
-
-        <p>Waku leverages Go's powerful <code>text/template</code> library for templating.</p>
-      </div>
+      <p>Waku works on Linux, Windows, and macOS.</p>
     </div>
-  </section>
 
-  <section>
-    <h1>Ready to get started?</h2>
-    <img src="/static/wakuwaku.gif" alt="waku waku!" loading="lazy">
-  </section>
-{% endblock %}
+    <div class="feature">
+      <div class="feature-header">
+        <div class="feature-icon">
+          {% include ".icons/material/devices.svg" %}
+        </div>
+        <h3>Minimal Setup</h3>
+      </div>
 
-{% block content %}
-{% endblock %}
+      <p>
+        Waku makes the setup process quick and effortless, allowing you to dive
+        right into coding without unnecessary delays.
+      </p>
+    </div>
+
+    <div class="feature">
+      <div class="feature-header">
+        <div class="feature-icon">
+          {% include ".icons/simple/buildkite.svg" %}
+        </div>
+        <h3>Easily Extensible</h3>
+      </div>
+
+      <p>Waku supports community styles that are easy to create and use.</p>
+    </div>
+
+    <div class="feature">
+      <div class="feature-header">
+        <div class="feature-icon">
+          {% include ".icons/octicons/repo-template-24.svg" %}
+        </div>
+        <h3>Strong Templating Capabilities</h3>
+      </div>
+
+      <p>
+        Waku leverages Go's powerful <code>text/template</code> library for
+        templating.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h1>Ready to get started?</h1>
+  <img src="/static/wakuwaku.gif" alt="waku waku!" loading="lazy" />
+</section>
+{% endblock %} {% block content %} {% endblock %}
