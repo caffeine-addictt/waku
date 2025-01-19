@@ -3,8 +3,8 @@ package utils
 import (
 	"bufio"
 	"context"
-	"html/template"
 	"strings"
+	"text/template"
 )
 
 // This handles consuming a file stream,

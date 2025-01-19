@@ -74,6 +74,12 @@ func TestParseTemplateFile(t *testing.T) {
 			input:  "Hello {{{ .Name }}}, welcome!\nHello {{{ .Name }}}, welcome!",
 			output: "Hello John, welcome!\nHello John, welcome!\n",
 		},
+		{
+			name:   "Ensure comments are not removed",
+			tmpl:   map[string]any{},
+			input:  "Hihi <!-- this is a comment -->\n",
+			output: "Hihi <!-- this is a comment -->\n",
+		},
 	}
 
 	ctx := context.Background()
