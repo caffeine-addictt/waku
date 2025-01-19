@@ -36,17 +36,6 @@ brew install caffeine-addictt/tap/waku
 sudo snap install waku
 ```
 
-## Chocolately
-
-```sh
-choco install waku
-```
-
-!!! WARNING
-
-    Waku `v0.1.0` is still awaiting for approval from the Chocolatey moderators
-    after which will jump straight to the next release.
-
 ## Docker
 
 Registries:
