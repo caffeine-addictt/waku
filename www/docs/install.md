@@ -87,14 +87,14 @@ Requires Go `1.23+`.
 
 All artifacts are checksummed, and the checksum file is signed with [cosign][].
 
-1. Download the files you want, and the `checksums.txt`, `checksums.txt.pem`
-and `checksums.txt.sig` files from the [releases][] page.
+1.  Download the files you want, and the `checksums.txt`, `checksums.txt.pem`
+    and `checksums.txt.sig` files from the [releases][] page.
 
-    ```sh
-    curl -O 'https://github.com/caffeine-addictt/waku/releases/download/v0.8.0/checksums.txt'
-    ```
+        ```sh
+        curl -O 'https://github.com/caffeine-addictt/waku/releases/download/v0.8.0/checksums.txt'
+        ```
 
-1. Verify checksums signature:
+1.  Verify checksums signature:
 
     ```bash
     cosign verify-blob \
@@ -105,7 +105,7 @@ and `checksums.txt.sig` files from the [releases][] page.
       ./checksums.txt
     ```
 
-1. Verify the SHA256 checksums:
+1.  Verify the SHA256 checksums:
 
     ```bash
     sha256sum --ignore-missing -c checksums.txt

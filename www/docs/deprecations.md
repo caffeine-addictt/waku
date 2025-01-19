@@ -13,7 +13,7 @@ please update your code accordingly.
 
 This flag was deprecated in favor of the `--source` flag which works
 like `--repo` but it also accepts local directory paths. Switching
-to `--source` is __NOT BREAKING__.
+to `--source` is **NOT BREAKING**.
 
 ## Removed in v0
 

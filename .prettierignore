@@ -2,11 +2,6 @@
 template/CITATION.cff
 dist/*
 
-
-www/
-!www/mkdocs.yml
-!www/docs/static/schema.json
-
 template/
 !template/template.json
 
