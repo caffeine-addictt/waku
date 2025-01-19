@@ -26,6 +26,23 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Check tag updated
+        run: |
+          set -xe
+
+          CURRENT_VERSION=$(grep -oP 'const Version = "\K[\d\.]+' 'pkg/version/version.go' | head -n 1)
+          echo "Current version in version.go: $CURRENT_VERSION"
+
+          GIT_TAG=$(git describe --tags --abbrev=0 | sed 's/^v//')
+          echo "Git tag: $GIT_TAG"
+
+          if [ "$CURRENT_VERSION" != "$GIT_TAG" ]; then
+            echo "Version mismatch: File version ($CURRENT_VERSION) does not match Git tag ($GIT_TAG)"
+            exit 1
+          else
+            echo "Version matches: $CURRENT_VERSION"
+          fi
+
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
