@@ -11,11 +11,12 @@ import (
 )
 
 func TestParseTemplateFile(t *testing.T) {
-	tests := []struct {
+	tt := []struct {
 		name   string
 		tmpl   map[string]any
 		input  string
 		output string
+		errors bool
 	}{
 		{
 			name: "Basic replacement",
@@ -64,7 +65,8 @@ func TestParseTemplateFile(t *testing.T) {
 				"Name": "John",
 			},
 			input:  "Hello {{{ .Username }}}, welcome!",
-			output: "Hello , welcome!\n",
+			output: "",
+			errors: true,
 		},
 		{
 			name: "Valid template with multiple lines",
@@ -74,20 +76,31 @@ func TestParseTemplateFile(t *testing.T) {
 			input:  "Hello {{{ .Name }}}, welcome!\nHello {{{ .Name }}}, welcome!",
 			output: "Hello John, welcome!\nHello John, welcome!\n",
 		},
+		{
+			name:   "Ensure comments are not removed",
+			tmpl:   map[string]any{},
+			input:  "Hihi <!-- this is a comment -->\n",
+			output: "Hihi <!-- this is a comment -->\n",
+		},
 	}
 
 	ctx := context.Background()
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			reader := bufio.NewScanner(bytes.NewReader([]byte(tt.input)))
+	for _, tc := range tt {
+		t.Run(tc.name, func(t *testing.T) {
+			reader := bufio.NewScanner(bytes.NewReader([]byte(tc.input)))
 			var output bytes.Buffer
 			writer := bufio.NewWriter(&output)
 
-			err := utils.ParseTemplateFile(ctx, tt.tmpl, reader, writer)
+			err := utils.ParseTemplateFile(ctx, tc.tmpl, reader, writer)
+			if tc.errors {
+				assert.Error(t, err, "expected error")
+				return
+			}
+
 			assert.NoError(t, err, "failed to parse")
 
 			writer.Flush()
-			assert.Equal(t, tt.output, output.String(), "wrong output")
+			assert.Equal(t, tc.output, output.String(), "wrong output")
 		})
 	}
 }

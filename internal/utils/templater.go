@@ -3,8 +3,8 @@ package utils
 import (
 	"bufio"
 	"context"
-	"html/template"
 	"strings"
+	"text/template"
 )
 
 // This handles consuming a file stream,
@@ -28,7 +28,7 @@ func ParseTemplateFile(ctx context.Context, tmpl map[string]any, reader *bufio.S
 		s.WriteRune('\n')
 	}
 
-	t, err := template.New("file").Delims("{{{", "}}}").Parse(s.String())
+	t, err := template.New("file").Option("missingkey=error").Delims("{{{", "}}}").Parse(s.String())
 	if err != nil {
 		return err
 	}
