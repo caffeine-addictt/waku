@@ -115,7 +115,6 @@ func BenchmarkParseTemplateFile(b *testing.B) {
 
 	// Input strings to test different cases
 	input := "Hello {{ .Name }}, welcome to the {{{ .Place }}}. For more details, visit {{{ .Url }}}. Your project is {{{ .Project }}}."
-	inputComplex := "Hello {{{{ .Name }}}}. Are you visiting the {{{ .Place }}}? The details are on {{{ .Url }}}. {{{ .Project }}} is running well."
 
 	// Benchmark different input sizes and complexities
 	tt := []struct {
@@ -125,7 +124,6 @@ func BenchmarkParseTemplateFile(b *testing.B) {
 		{"Small input", "Hello {{{ .Name }}}"},
 		{"Medium input", input},
 		{"Large input", input + input + input},
-		{"Complex input", inputComplex},
 	}
 
 	ctx := context.Background()
