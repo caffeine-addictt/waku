@@ -11,6 +11,7 @@ import (
 
 	"github.com/caffeine-addictt/waku/cmd/cleanup"
 	"github.com/caffeine-addictt/waku/cmd/options"
+	"github.com/caffeine-addictt/waku/cmd/ui"
 	"github.com/caffeine-addictt/waku/internal/errors"
 	"github.com/caffeine-addictt/waku/internal/git"
 	"github.com/caffeine-addictt/waku/internal/license"
@@ -38,19 +39,26 @@ var NewCmd = &cobra.Command{
 		var projectRootDir string
 		var license license.License
 
-		log.Debugln("Creating name and license prompts...")
-		namePrompt := template.PromptForProjectName(&name, &projectRootDir)
-		licenseSelect, err := template.PromptForLicense(&license)
+		initialPrompts := make([]*huh.Group, 0, 2)
+		err := ui.RunWithSpinner("setting things up...", func() error {
+			log.Debugln("creating name and license prompts...")
+			namePrompt := template.PromptForProjectName(&name, &projectRootDir)
+			licenseSelect, err := template.PromptForLicense(&license)
+			if err != nil {
+				return errors.ToWakuError(err)
+			}
+
+			if namePrompt != nil {
+				initialPrompts = append(initialPrompts, huh.NewGroup(namePrompt))
+			}
+			if licenseSelect != nil {
+				initialPrompts = append(initialPrompts, huh.NewGroup(licenseSelect))
+			}
+
+			return nil
+		})
 		if err != nil {
 			return errors.ToWakuError(err)
-		}
-
-		initialPrompts := make([]*huh.Group, 0, 2)
-		if namePrompt != nil {
-			initialPrompts = append(initialPrompts, huh.NewGroup(namePrompt))
-		}
-		if licenseSelect != nil {
-			initialPrompts = append(initialPrompts, huh.NewGroup(licenseSelect))
 		}
 
 		log.Debugln("running prompts...")
@@ -58,186 +66,216 @@ var NewCmd = &cobra.Command{
 			return errors.ToWakuError(err)
 		}
 
-		log.Infof("creating project in '%s'...\n", projectRootDir)
-		if err := os.Mkdir(projectRootDir, utils.DirPerms); err != nil {
-			return errors.ToWakuError(err)
-		}
-		cleanup.ScheduleError(func() error {
-			log.Debugf("removing project dir: %s\n", projectRootDir)
-			if err := os.RemoveAll(projectRootDir); err != nil {
-				return errors.NewWakuErrorf("failed to cleanup project dir: %v", err)
+		err = ui.RunWithSpinner(fmt.Sprintf("creating project at '%s'...", projectRootDir), func() error {
+			if err := os.Mkdir(projectRootDir, utils.DirPerms); err != nil {
+				return err
 			}
+
+			cleanup.ScheduleError(func() error {
+				log.Debugf("removing project dir: %s\n", projectRootDir)
+				if err := os.RemoveAll(projectRootDir); err != nil {
+					return errors.NewWakuErrorf("failed to cleanup project dir: %v", err)
+				}
+				return nil
+			})
+
 			return nil
 		})
-
-		// Clone repo
-		tmpDir, err := options.NewOpts.GetSource()
 		if err != nil {
 			return errors.ToWakuError(err)
 		}
 
-		// Resolve dir
-		rootDir := tmpDir
-		if options.NewOpts.Directory.Value() != "" {
-			rootDir = filepath.Join(tmpDir, options.NewOpts.Directory.Value())
-			log.Debugf("resolved directory to: %s\n", rootDir)
-
-			ok, err := utils.IsDir(rootDir)
+		// Clone repo
+		var rootDir string
+		var tmpDir string
+		err = ui.RunWithSpinner("retrieving template...", func() error {
+			_tmpDir, err := options.NewOpts.GetSource()
 			if err != nil {
-				return errors.ToWakuError(err)
+				return nil
 			}
-			if !ok {
-				return errors.NewWakuErrorf("directory '%s' does not exist", options.NewOpts.Directory.Value())
+			tmpDir = _tmpDir
+
+			// Resolve dir
+			rootDir = tmpDir
+			if options.NewOpts.Directory.Value() != "" {
+				rootDir = filepath.Join(tmpDir, options.NewOpts.Directory.Value())
+				log.Debugf("resolved directory to: %s\n", rootDir)
+
+				ok, err := utils.IsDir(rootDir)
+				if err != nil {
+					return err
+				}
+				if !ok {
+					return errors.NewWakuErrorf("directory '%s' does not exist", options.NewOpts.Directory.Value())
+				}
 			}
+
+			return nil
+		})
+		if err != nil {
+			return errors.ToWakuError(err)
 		}
 
 		// Parse template.json
-		log.Infoln("Parsing config...")
-		configFilePath, tmpl, err := template.ParseConfig(rootDir)
+		var configFilePath string
+		var wakuTemplate *config.TemplateJson
+
+		err = ui.RunWithSpinner("parsing waku config...", func() error {
+			configFilePath, wakuTemplate, err = template.ParseConfig(rootDir)
+			if err != nil {
+				return err
+			}
+
+			return err
+		})
 		if err != nil {
 			return errors.ToWakuError(err)
 		}
 
-		// Resolve style to use
-		var style types.CleanString
-		var styleInfo config.TemplateStyle
-
-		if len(tmpl.Styles) == 1 {
-			for s, v := range tmpl.Styles {
-				style = s
-				styleInfo = v
-				rootDir = filepath.Join(rootDir, v.Source.String())
-				break
-			}
-		} else {
-			if err := huh.NewForm(huh.NewGroup(
-				template.PromptForStyle(tmpl.Styles, &style, &styleInfo),
-			)).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
-				return errors.ToWakuError(err)
-			}
-
-			rootDir = filepath.Join(rootDir, styleInfo.Source.String())
-		}
-		log.Debugf("resolved style to: %s\n", rootDir)
-
-		// Handle license stuff
-		licenseText, err := license.GetLicenseText()
+		// Resolve prompts
+		styleDir, styleInfo, prompts, err := resolveTemplateStylePrompts(wakuTemplate, rootDir)
 		if err != nil {
-			return errors.NewWakuErrorf("failed to get license text: %v\n", err)
+			return errors.ToWakuError(err)
 		}
 
-		// Handle prompts
-		log.Debugln("resolving prompts...")
-		extraPrompts := map[string]config.TemplatePrompt{}
-		if tmpl.Prompts != nil {
-			for _, ask := range tmpl.Prompts {
-				extraPrompts[string(ask.Key)] = ask
-			}
-		}
-		if tmpl.Styles != nil && styleInfo.Prompts != nil {
-			for _, ask := range styleInfo.Prompts {
-				extraPrompts[string(ask.Key)] = ask
-			}
-		}
-
+		var licenseText string
 		licenseTmpl := make(map[string]string, len(license.Wants))
-		for _, v := range license.Wants {
-			licenseTmpl[v] = fmt.Sprintf("Value for license %s?", v)
-			delete(extraPrompts, v)
+		err = ui.RunWithSpinner("resolving license...", func() error {
+			licenseText, err = license.GetLicenseText()
+			if err != nil {
+				return errors.NewWakuErrorf("failed to get license text: %v\n", err)
+			}
+
+			for _, v := range license.Wants {
+				licenseTmpl[v] = fmt.Sprintf("Value for license %s?", v)
+				delete(prompts, v)
+			}
+
+			return nil
+		})
+		if err != nil {
+			return errors.ToWakuError(err)
 		}
-		log.Debugf("resolved prompts to: %v\n", extraPrompts)
+		log.Debugf("resolved prompts to: %v\n", prompts)
 
-		prompts := make([]*huh.Group, 0, len(extraPrompts))
-		finalTmpl := make(map[string]any, len(extraPrompts)+len(licenseTmpl))
+		stylePromptGroups := make([]*huh.Group, 0, len(prompts))
+		finalTemplateData := make(map[string]any, len(prompts)+len(licenseTmpl))
 
-		for _, v := range extraPrompts {
-			prompts = append(prompts, huh.NewGroup(v.GetPrompt(finalTmpl)))
+		err = ui.RunWithSpinner("collecting prompts...", func() error {
+			for _, v := range prompts {
+				stylePromptGroups = append(stylePromptGroups, huh.NewGroup(v.GetPrompt(finalTemplateData)))
+			}
+			for n, v := range licenseTmpl {
+				stylePromptGroups = append(stylePromptGroups, huh.NewGroup(huh.NewText().Title(v).Validate(func(s string) error {
+					s = strings.TrimSpace(s)
+					if s == "" {
+						return fmt.Errorf("cannot be empty")
+					}
+
+					licenseTmpl[n] = s
+					finalTemplateData[n] = s
+					return nil
+				})))
+			}
+			return nil
+		})
+		if err != nil {
+			return errors.ToWakuError(err)
 		}
-		for n, v := range licenseTmpl {
-			prompts = append(prompts, huh.NewGroup(huh.NewText().Title(v).Validate(func(s string) error {
-				s = strings.TrimSpace(s)
-				if s == "" {
-					return fmt.Errorf("cannot be empty")
-				}
 
-				licenseTmpl[n] = s
-				finalTmpl[n] = s
-				return nil
-			})))
-		}
-
-		log.Debugf("resolved prompt groups to: %v\n", prompts)
-		if err := huh.NewForm(prompts...).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
+		log.Debugf("resolved prompt groups to: %v\n", stylePromptGroups)
+		if err := huh.NewForm(stylePromptGroups...).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
 			return errors.ToWakuError(err)
 		}
 
 		// Get file paths
-		log.Infoln("getting file paths...")
-		paths, err := utils.WalkDirRecursive(rootDir)
-		if err != nil {
-			return errors.ToWakuError(err)
-		}
-		log.Debugf("resolved file paths to: %v\n", paths)
+		var styleFilePaths []string
+		var configRelPath string
+		err = ui.RunWithSpinner("collecting files...", func() error {
+			styleFilePaths, err = utils.WalkDirRecursive(styleDir)
+			if err != nil {
+				return err
+			}
+			log.Debugf("resolved file paths in style: %v\n", styleFilePaths)
 
-		// get config rel path
-		configRelPath, err := filepath.Rel(tmpDir, configFilePath)
+			configRelPath, err = filepath.Rel(tmpDir, configFilePath)
+			if err != nil {
+				return err
+			}
+			log.Debugf("resolved config rel path to: %s\n", configRelPath)
+
+			return err
+		})
 		if err != nil {
 			return errors.ToWakuError(err)
 		}
-		log.Debugf("resolved config rel path to: %s\n", configRelPath)
 
 		// Handle ignores
-		log.Infoln("applying ignore rules...")
-		ignoreRules := types.NewSet(
-			".git/",
-			"LICENSE*",
-			configRelPath,
-		)
-		if tmpl.Ignore != nil {
-			ignoreRules.Union(types.Set[string](*tmpl.Ignore))
-		}
-		if tmpl.Setup != nil {
-			ignoreRules.Add(tmpl.Setup.Any)
-			ignoreRules.Add(tmpl.Setup.Linux)
-			ignoreRules.Add(tmpl.Setup.Darwin)
-			ignoreRules.Add(tmpl.Setup.Windows)
-		}
-		if tmpl.Styles != nil && styleInfo.Ignore != nil {
-			ignoreRules.Union(types.Set[string](*styleInfo.Ignore))
-
-			if styleInfo.Setup != nil {
-				ignoreRules.Add(styleInfo.Setup.Any)
-				ignoreRules.Add(styleInfo.Setup.Linux)
-				ignoreRules.Add(styleInfo.Setup.Darwin)
-				ignoreRules.Add(styleInfo.Setup.Windows)
+		var filePathsToWrite types.Set[string]
+		err = ui.RunWithSpinner("filtering files...", func() error {
+			log.Infoln("applying ignore rules...")
+			ignoreRules := types.NewSet(
+				".git/",
+				"LICENSE*",
+				configRelPath,
+			)
+			if wakuTemplate.Ignore != nil {
+				ignoreRules.Union(types.Set[string](*wakuTemplate.Ignore))
 			}
+			if wakuTemplate.Setup != nil {
+				ignoreRules.Add(wakuTemplate.Setup.Any)
+				ignoreRules.Add(wakuTemplate.Setup.Linux)
+				ignoreRules.Add(wakuTemplate.Setup.Darwin)
+				ignoreRules.Add(wakuTemplate.Setup.Windows)
+			}
+			if wakuTemplate.Styles != nil && styleInfo.Ignore != nil {
+				ignoreRules.Union(types.Set[string](*styleInfo.Ignore))
+
+				if styleInfo.Setup != nil {
+					ignoreRules.Add(styleInfo.Setup.Any)
+					ignoreRules.Add(styleInfo.Setup.Linux)
+					ignoreRules.Add(styleInfo.Setup.Darwin)
+					ignoreRules.Add(styleInfo.Setup.Windows)
+				}
+			}
+
+			// account for template.json having a '!.git/'
+			ignoreRules = template.ResolveGlobs(ignoreRules, types.NewSet(".git/", "LICENSE"))
+			log.Debugf("ignore rules applied: %v\n", ignoreRules)
+
+			filePathsToWrite = template.ResolveGlobs(types.NewSet(styleFilePaths...), ignoreRules)
+			log.Debugf("resolved files to write: %v\n", filePathsToWrite)
+
+			return nil
+		})
+		if err != nil {
+			return errors.ToWakuError(err)
 		}
-
-		// account for template.json having a '!.git/'
-		ignoreRules = template.ResolveGlobs(ignoreRules, types.NewSet(".git/", "LICENSE"))
-		log.Debugf("ignore rules applied: %v\n", ignoreRules)
-		ignoredPaths := template.ResolveGlobs(types.NewSet(paths...), ignoreRules)
-
-		log.Debugf("resolved files to write: %v\n", ignoredPaths)
 
 		// Handle writing files
-		log.Infoln("writing files...")
-		finalTmpl["Name"] = name
-		finalTmpl["License"] = license.Name
-		finalTmpl["Spdx"] = license.Spdx
-		log.Debugf("final template: %v\n", finalTmpl)
+		err = ui.RunWithSpinner("writing files...", func() error {
+			finalTemplateData["Name"] = name
+			finalTemplateData["License"] = license.Name
+			finalTemplateData["Spdx"] = license.Spdx
+			log.Debugf("final template data: %v\n", finalTemplateData)
 
-		if err := WriteFiles(rootDir, projectRootDir, ignoredPaths.ToSlice(), licenseText, finalTmpl, licenseTmpl); err != nil {
+			return WriteFiles(styleDir, projectRootDir, filePathsToWrite.ToSlice(), licenseText, finalTemplateData, licenseTmpl)
+		})
+		if err != nil {
 			return errors.NewWakuErrorf("failed to write files: %s\n", err)
 		}
 
 		if options.NewOpts.NoGit {
 			log.Infoln("skipping git initialization")
-		} else {
-			if err := git.Init(projectRootDir); err != nil {
-				fmt.Printf("failed to initialize git: %s\n", err)
-				return errors.NewWakuErrorf("failed to initialize git: %s\n", err)
-			}
+			return nil
+		}
+
+		err = ui.RunWithSpinner("initializing git...", func() error {
+			return git.Init(projectRootDir)
+		})
+		if err != nil {
+			fmt.Printf("failed to initialize git: %s\n", err)
+			return errors.NewWakuErrorf("failed to initialize git: %s\n", err)
 		}
 
 		return nil
@@ -262,6 +300,50 @@ func AddNewCmdFlags(cmd *cobra.Command) {
 		panic(err)
 	}
 	cmd.MarkFlagsMutuallyExclusive("source", "repo")
+}
+
+func resolveTemplateStylePrompts(wakuTemplate *config.TemplateJson, rootDir string) (styleRoot string, style *config.TemplateStyle, prompts map[string]config.TemplatePrompt, err error) {
+	if len(wakuTemplate.Styles) == 0 {
+		return "", nil, nil, errors.NewWakuErrorf("no styles found in")
+	}
+
+	var styleName types.CleanString
+	var styleInfo config.TemplateStyle
+	if len(wakuTemplate.Styles) == 1 {
+		for s, v := range wakuTemplate.Styles {
+			styleName = s
+			styleInfo = v
+			styleRoot = filepath.Join(rootDir, v.Source.String())
+			break
+		}
+	} else {
+		if err := huh.NewForm(huh.NewGroup(
+			template.PromptForStyle(wakuTemplate.Styles, &styleName, &styleInfo),
+		)).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
+			return "", nil, nil, err
+		}
+
+		styleRoot = filepath.Join(rootDir, styleInfo.Source.String())
+	}
+	log.Debugf("resolved style to: %s\n", rootDir)
+
+	// Handle prompts
+	prompts = make(map[string]config.TemplatePrompt, len(styleInfo.Prompts))
+	log.Debugln("resolving prompts...")
+	if wakuTemplate.Prompts != nil {
+		for _, ask := range wakuTemplate.Prompts {
+			prompts[string(ask.Key)] = ask
+		}
+	}
+	if wakuTemplate.Styles != nil && styleInfo.Prompts != nil {
+		for _, ask := range styleInfo.Prompts {
+			prompts[string(ask.Key)] = ask
+		}
+	}
+	log.Debugf("resolved style prompts to: %v\n", prompts)
+
+	style = &styleInfo
+	return
 }
 
 func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string, tmpl map[string]any, licenseTmpl map[string]string) error {
