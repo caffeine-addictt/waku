@@ -267,17 +267,22 @@ var NewCmd = &cobra.Command{
 
 		if options.NewOpts.NoGit {
 			log.Infoln("skipping git initialization")
-			return nil
+		} else {
+			err = ui.RunWithSpinner("initializing git...", func() error {
+				return git.Init(projectRootDir)
+			})
+			if err != nil {
+				fmt.Printf("failed to initialize git: %s\n", err)
+				return errors.NewWakuErrorf("failed to initialize git: %s\n", err)
+			}
 		}
 
-		err = ui.RunWithSpinner("initializing git...", func() error {
-			return git.Init(projectRootDir)
-		})
+		dirPath, err := filepath.Abs(projectRootDir)
 		if err != nil {
-			fmt.Printf("failed to initialize git: %s\n", err)
-			return errors.NewWakuErrorf("failed to initialize git: %s\n", err)
+			return errors.ToWakuError(err)
 		}
 
+		log.Printf("Project created at: %s\n", dirPath)
 		return nil
 	},
 }
