@@ -311,6 +311,7 @@ func AddNewCmdFlags(cmd *cobra.Command) {
 	cmd.Flags().VarP(&options.NewOpts.Style, "style", "S", "which style to use")
 	cmd.Flags().BoolVarP(&options.NewOpts.NoGit, "no-git", "G", options.NewOpts.NoGit, "whether to not initialize git")
 	cmd.Flags().BoolVarP(&options.NewOpts.NoLicense, "no-license", "L", options.NewOpts.NoLicense, "whether to not include a license")
+	cmd.Flags().BoolVarP(&options.NewOpts.AllowSpaces, "allow-spaces", "a", options.NewOpts.AllowSpaces, "whether to allow spaces in project name, replaced with '-' by default")
 
 	if err := cmd.Flags().MarkDeprecated("repo", "Please use --source instead."); err != nil {
 		panic(err)
