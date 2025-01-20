@@ -43,13 +43,18 @@ var NewCmd = &cobra.Command{
 		err := ui.RunWithSpinner("setting things up...", func() error {
 			log.Debugln("creating name and license prompts...")
 			namePrompt := template.PromptForProjectName(&name, &projectRootDir)
+			if namePrompt != nil {
+				initialPrompts = append(initialPrompts, huh.NewGroup(namePrompt))
+			}
+
+			if options.NewOpts.NoLicense {
+				log.Debugln("no-license is set, skipping license prompt...")
+				return nil
+			}
+
 			licenseSelect, err := template.PromptForLicense(&license)
 			if err != nil {
 				return errors.ToWakuError(err)
-			}
-
-			if namePrompt != nil {
-				initialPrompts = append(initialPrompts, huh.NewGroup(namePrompt))
 			}
 			if licenseSelect != nil {
 				initialPrompts = append(initialPrompts, huh.NewGroup(licenseSelect))
@@ -140,21 +145,24 @@ var NewCmd = &cobra.Command{
 
 		var licenseText string
 		licenseTmpl := make(map[string]string, len(license.Wants))
-		err = ui.RunWithSpinner("resolving license...", func() error {
-			licenseText, err = license.GetLicenseText()
+
+		if !options.NewOpts.NoLicense {
+			err = ui.RunWithSpinner("resolving license...", func() error {
+				licenseText, err = license.GetLicenseText()
+				if err != nil {
+					return errors.NewWakuErrorf("failed to get license text: %v\n", err)
+				}
+
+				for _, v := range license.Wants {
+					licenseTmpl[v] = fmt.Sprintf("Value for license %s?", v)
+					delete(prompts, v)
+				}
+
+				return nil
+			})
 			if err != nil {
-				return errors.NewWakuErrorf("failed to get license text: %v\n", err)
+				return errors.ToWakuError(err)
 			}
-
-			for _, v := range license.Wants {
-				licenseTmpl[v] = fmt.Sprintf("Value for license %s?", v)
-				delete(prompts, v)
-			}
-
-			return nil
-		})
-		if err != nil {
-			return errors.ToWakuError(err)
 		}
 		log.Debugf("resolved prompts to: %v\n", prompts)
 
@@ -255,8 +263,10 @@ var NewCmd = &cobra.Command{
 		// Handle writing files
 		err = ui.RunWithSpinner("writing files...", func() error {
 			finalTemplateData["Name"] = name
-			finalTemplateData["License"] = license.Name
-			finalTemplateData["Spdx"] = license.Spdx
+			if !options.NewOpts.NoLicense {
+				finalTemplateData["License"] = license.Name
+				finalTemplateData["Spdx"] = license.Spdx
+			}
 			log.Debugf("final template data: %v\n", finalTemplateData)
 
 			return WriteFiles(styleDir, projectRootDir, filePathsToWrite.ToSlice(), licenseText, finalTemplateData, licenseTmpl)
@@ -300,11 +310,13 @@ func AddNewCmdFlags(cmd *cobra.Command) {
 	cmd.Flags().VarP(&options.NewOpts.License, "license", "l", "license to use for the project")
 	cmd.Flags().VarP(&options.NewOpts.Style, "style", "S", "which style to use")
 	cmd.Flags().BoolVarP(&options.NewOpts.NoGit, "no-git", "G", options.NewOpts.NoGit, "whether to not initialize git")
+	cmd.Flags().BoolVarP(&options.NewOpts.NoLicense, "no-license", "L", options.NewOpts.NoLicense, "whether to not include a license")
 
 	if err := cmd.Flags().MarkDeprecated("repo", "Please use --source instead."); err != nil {
 		panic(err)
 	}
 	cmd.MarkFlagsMutuallyExclusive("source", "repo")
+	cmd.MarkFlagsMutuallyExclusive("license", "no-license")
 }
 
 func resolveTemplateStylePrompts(wakuTemplate *config.TemplateJson, rootDir string) (styleRoot string, style *config.TemplateStyle, prompts map[string]config.TemplatePrompt, err error) {
@@ -405,34 +417,38 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 		}()
 	}
 
-	go func() {
-		defer wg.Done()
+	if options.NewOpts.NoLicense {
+		wg.Done()
+	} else {
+		go func() {
+			defer wg.Done()
 
-		newLicenseText := utils.ParseLicenseText(licenseTmpl, licenseText)
+			newLicenseText := utils.ParseLicenseText(licenseTmpl, licenseText)
 
-		newPath := filepath.Join(projectRoot, "LICENSE")
-		log.Infof("writing to %s\n", newPath)
+			newPath := filepath.Join(projectRoot, "LICENSE")
+			log.Infof("writing to %s\n", newPath)
 
-		newFile, err := os.OpenFile(filepath.Clean(newPath), os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.FilePerms)
-		if err != nil {
-			errChan <- errors.ToWakuError(err)
-			return
-		}
-		defer newFile.Close()
-		log.Debugf("opened file for writing: %s\n", newPath)
+			newFile, err := os.OpenFile(filepath.Clean(newPath), os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.FilePerms)
+			if err != nil {
+				errChan <- errors.ToWakuError(err)
+				return
+			}
+			defer newFile.Close()
+			log.Debugf("opened file for writing: %s\n", newPath)
 
-		if _, err := newFile.WriteString(newLicenseText); err != nil {
-			errChan <- errors.NewWakuErrorf("failed to write license text at %s", newPath)
-			return
-		}
+			if _, err := newFile.WriteString(newLicenseText); err != nil {
+				errChan <- errors.NewWakuErrorf("failed to write license text at %s", newPath)
+				return
+			}
 
-		if err := newFile.Sync(); err != nil {
-			errChan <- errors.NewWakuErrorf("failed to flush buffer for %s", newPath)
-			return
-		}
+			if err := newFile.Sync(); err != nil {
+				errChan <- errors.NewWakuErrorf("failed to flush buffer for %s", newPath)
+				return
+			}
 
-		log.Debugf("wrote file: %s\n", newPath)
-	}()
+			log.Debugf("wrote file: %s\n", newPath)
+		}()
+	}
 
 	// handle canceling if anything goes wrong
 	var exitErr error

@@ -25,6 +25,7 @@ var NewOpts = NewOptions{
 	License:   *types.NewValueGuard("", cmdOpt, types.STRING),
 	Style:     *types.NewValueGuard("", cmdOpt, types.STRING),
 	NoGit:     false,
+	NoLicense: false,
 }
 
 type NewOptions struct {
@@ -53,6 +54,9 @@ type NewOptions struct {
 
 	// Whether to skip initializing git
 	NoGit bool
+
+	// Whether to skip initializing license
+	NoLicense bool
 }
 
 func cmdOpt(v string) (string, error) {
