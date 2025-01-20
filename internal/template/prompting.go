@@ -117,7 +117,10 @@ func validateProjectName(s string, name, projectRootDir *string) error {
 		return fmt.Errorf("project name cannot be empty")
 	}
 
-	pDir, err := filepath.Rel(".", strings.ReplaceAll(s, " ", "-"))
+	if !options.NewOpts.AllowSpaces {
+		s = strings.ReplaceAll(s, " ", "-")
+	}
+	pDir, err := filepath.Rel(".", s)
 	if err != nil {
 		return err
 	}
