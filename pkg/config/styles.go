@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"os"
 	"path"
 	"path/filepath"
 
@@ -54,4 +55,37 @@ type TemplateStyle struct {
 	Source  types.CleanString `json:"source" yaml:"source"`                       // The source template path
 	Labels  TemplateLabel     `json:"labels,omitempty" yaml:"labels,omitempty"`   // The repository labels
 	Prompts TemplatePrompts   `json:"prompts,omitempty" yaml:"prompts,omitempty"` // The additional prompts to use
+}
+
+// This accounts for ignores as well.
+func (t *TemplateStyle) GetStyleResources(configRoot string) ([]types.StyleResource, error) {
+	ignoreRules := types.NewSet(".git/", "LICENSE*")
+	if t.Ignore != nil {
+		ignoreRules.Union(types.Set[string](*t.Ignore))
+	}
+	ignoreRules = ignoreRules.Exclude(types.NewSet(".git/"))
+
+	paths := make([]types.StyleResource, 0, len(ignoreRules))
+
+	if err := filepath.WalkDir(configRoot, func(path string, d os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if !d.IsDir() {
+			relPath, err := filepath.Rel(root, path)
+			if err != nil {
+				return err
+			}
+			paths = append(paths, filepath.ToSlash(relPath))
+		}
+
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return paths, err
+
+	return nil, nil
 }
