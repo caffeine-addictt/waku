@@ -11,14 +11,6 @@ import (
 
 type TemplateStyles map[types.CleanString]TemplateStyle
 
-type TemplateStyle struct {
-	Setup   *TemplateSetup    `json:"setup,omitempty" yaml:"setup,omitempty"`     // Paths to executable files for post-setup
-	Ignore  *TemplateIgnore   `json:"ignore,omitempty" yaml:"ignore,omitempty"`   // The files that should be ignored when copying
-	Source  types.CleanString `json:"source" yaml:"source"`                       // The source template path
-	Labels  TemplateLabel     `json:"labels,omitempty" yaml:"labels,omitempty"`   // The repository labels
-	Prompts TemplatePrompts   `json:"prompts,omitempty" yaml:"prompts,omitempty"` // The additional prompts to use
-}
-
 func (t *TemplateStyles) Validate(root string) error {
 	for _, style := range *t {
 		// Source
@@ -54,4 +46,12 @@ func (t *TemplateStyles) Validate(root string) error {
 	}
 
 	return nil
+}
+
+type TemplateStyle struct {
+	Setup   *TemplateSetup    `json:"setup,omitempty" yaml:"setup,omitempty"`     // Paths to executable files for post-setup
+	Ignore  *TemplateIgnore   `json:"ignore,omitempty" yaml:"ignore,omitempty"`   // The files that should be ignored when copying
+	Source  types.CleanString `json:"source" yaml:"source"`                       // The source template path
+	Labels  TemplateLabel     `json:"labels,omitempty" yaml:"labels,omitempty"`   // The repository labels
+	Prompts TemplatePrompts   `json:"prompts,omitempty" yaml:"prompts,omitempty"` // The additional prompts to use
 }
