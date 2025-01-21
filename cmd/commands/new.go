@@ -15,7 +15,7 @@ import (
 	"github.com/caffeine-addictt/waku/internal/errors"
 	"github.com/caffeine-addictt/waku/internal/git"
 	"github.com/caffeine-addictt/waku/internal/license"
-	"github.com/caffeine-addictt/waku/internal/log"
+	"github.com/caffeine-addictt/waku/pkg/log"
 	"github.com/caffeine-addictt/waku/internal/template"
 	"github.com/caffeine-addictt/waku/internal/types"
 	"github.com/caffeine-addictt/waku/internal/utils"

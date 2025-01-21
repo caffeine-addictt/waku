@@ -1,7 +1,7 @@
 package commands
 
 import (
-	"github.com/caffeine-addictt/waku/internal/log"
+	"github.com/caffeine-addictt/waku/pkg/log"
 	"github.com/caffeine-addictt/waku/pkg/version"
 	"github.com/spf13/cobra"
 )
