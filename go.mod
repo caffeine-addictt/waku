@@ -5,7 +5,7 @@ go 1.23.5
 require (
 	github.com/charmbracelet/huh v0.6.0
 	github.com/go-git/go-git/v5 v5.13.2
-	github.com/goccy/go-json v0.10.4
+	github.com/goccy/go-json v0.10.5
 	github.com/muesli/mango-cobra v1.2.0
 	github.com/muesli/roff v0.1.0
 	github.com/spf13/cobra v1.8.1
