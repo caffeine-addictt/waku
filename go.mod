@@ -1,6 +1,6 @@
 module github.com/caffeine-addictt/waku
 
-go 1.23.5
+go 1.24.1
 
 require (
 	github.com/charmbracelet/huh v0.6.0
