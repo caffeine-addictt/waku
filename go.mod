@@ -14,6 +14,12 @@ require (
 )
 
 require (
+	github.com/charmbracelet/colorprofile v0.2.3-0.20250311203215-f60798e515dc // indirect
+	github.com/charmbracelet/x/cellbuf v0.0.13-0.20250311204145-2c3ea96c31dd // indirect
+	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
+)
+
+require (
 	dario.cat/mergo v1.0.1 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/ProtonMail/go-crypto v1.1.5 // indirect
@@ -23,8 +29,8 @@ require (
 	github.com/charmbracelet/bubbles v0.20.0 // indirect
 	github.com/charmbracelet/bubbletea v1.2.5-0.20241205214244-9306010a31ee // indirect
 	github.com/charmbracelet/huh/spinner v0.0.0-20250109160224-6c6b31916f8e
-	github.com/charmbracelet/lipgloss v1.0.0
-	github.com/charmbracelet/x/ansi v0.7.0 // indirect
+	github.com/charmbracelet/lipgloss v1.1.0
+	github.com/charmbracelet/x/ansi v0.8.0 // indirect
 	github.com/charmbracelet/x/exp/strings v0.0.0-20250117142827-dd310ffa7553 // indirect
 	github.com/charmbracelet/x/term v0.2.1 // indirect
 	github.com/cloudflare/circl v1.6.0 // indirect
@@ -48,7 +54,7 @@ require (
 	github.com/muesli/cancelreader v0.2.2 // indirect
 	github.com/muesli/mango v0.2.0 // indirect
 	github.com/muesli/mango-pflag v0.1.0 // indirect
-	github.com/muesli/termenv v0.15.3-0.20240618155329-98d742f6907a // indirect
+	github.com/muesli/termenv v0.16.0 // indirect
 	github.com/pjbgf/sha1cd v0.3.2 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
