@@ -44,7 +44,6 @@ func (t *TemplateStyles) Validate(root string) error {
 }
 
 type TemplateStyle struct {
-	Setup   *TemplateSetup    `json:"setup,omitempty" yaml:"setup,omitempty"`     // Paths to executable files for post-setup
 	Ignore  *TemplateIgnore   `json:"ignore,omitempty" yaml:"ignore,omitempty"`   // The files that should be ignored when copying
 	Source  types.CleanString `json:"source" yaml:"source"`                       // The source template path
 	Labels  TemplateLabel     `json:"labels,omitempty" yaml:"labels,omitempty"`   // The repository labels

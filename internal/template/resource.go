@@ -22,22 +22,10 @@ func GetStyleResources(c *config.TemplateJson, s *config.TemplateStyle, configPa
 	if c.Ignore != nil {
 		ignoreRules.Union(types.Set[string](*c.Ignore))
 	}
-	if c.Setup != nil {
-		ignoreRules.Add(c.Setup.Any)
-		ignoreRules.Add(c.Setup.Linux)
-		ignoreRules.Add(c.Setup.Darwin)
-		ignoreRules.Add(c.Setup.Windows)
-	}
 
 	// TODO: get style to prepend source dir
 	if s.Ignore != nil {
 		ignoreRules.Union(types.Set[string](*s.Ignore))
-	}
-	if s.Setup != nil {
-		ignoreRules.Add(s.Setup.Any)
-		ignoreRules.Add(s.Setup.Linux)
-		ignoreRules.Add(s.Setup.Darwin)
-		ignoreRules.Add(s.Setup.Windows)
 	}
 
 	// account for !.git/ in ignore rules
