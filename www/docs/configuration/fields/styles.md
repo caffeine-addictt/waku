@@ -3,7 +3,7 @@
 You can specify multiple styles by using the
 `styles` field in your `waku config`.
 
-The [setup](./setup.md), [ignore](./ignore.md), [labels](./labels.md)
+The [ignore](./ignore.md), [labels](./labels.md)
 and [prompts](./prompts.md) fields are merged with the
 root-level fields. When conflicting, the values from
 the chosen style will take priority and overwrite
@@ -30,7 +30,6 @@ the root-level fields when applicable.
             source: ""
 
             # These fields are optional
-            setup:
             ignore:
             labels:
             prompts:
@@ -54,7 +53,6 @@ the root-level fields when applicable.
           "source": "",
 
           // These fields are optional
-          "setup": {},
           "ignore": [],
           "labels": [],
           "prompts": [],
