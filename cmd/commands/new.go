@@ -15,11 +15,11 @@ import (
 	"github.com/caffeine-addictt/waku/internal/errors"
 	"github.com/caffeine-addictt/waku/internal/git"
 	"github.com/caffeine-addictt/waku/internal/license"
-	"github.com/caffeine-addictt/waku/pkg/log"
 	"github.com/caffeine-addictt/waku/internal/template"
 	"github.com/caffeine-addictt/waku/internal/types"
 	"github.com/caffeine-addictt/waku/internal/utils"
 	"github.com/caffeine-addictt/waku/pkg/config"
+	"github.com/caffeine-addictt/waku/pkg/log"
 	"github.com/charmbracelet/huh"
 	"github.com/spf13/cobra"
 )
@@ -219,28 +219,16 @@ var NewCmd = &cobra.Command{
 		}
 
 		// Handle ignores
-		var filePathsToWrite types.Set[string]
+		var filePathsToWrite []types.StyleResource
 		err = ui.RunWithSpinner("filtering files...", func() error {
 			log.Infoln("applying ignore rules...")
-			ignoreRules := types.NewSet(
-				".git/",
-				"LICENSE*",
-				configRelPath,
-			)
-			if wakuTemplate.Ignore != nil {
-				ignoreRules.Union(types.Set[string](*wakuTemplate.Ignore))
-			}
-			if wakuTemplate.Styles != nil && styleInfo.Ignore != nil {
-				ignoreRules.Union(types.Set[string](*styleInfo.Ignore))
+
+			sr, err := template.GetStyleResources(wakuTemplate, styleInfo, rootDir)
+			if err != nil {
+				return nil
 			}
 
-			// account for template.json having a '!.git/'
-			ignoreRules = template.ResolveGlobs(ignoreRules, types.NewSet(".git/", "LICENSE"))
-			log.Debugf("ignore rules applied: %v\n", ignoreRules)
-
-			filePathsToWrite = template.ResolveGlobs(types.NewSet(styleFilePaths...), ignoreRules)
-			log.Debugf("resolved files to write: %v\n", filePathsToWrite)
-
+			filePathsToWrite = sr
 			return nil
 		})
 		if err != nil {
@@ -256,7 +244,7 @@ var NewCmd = &cobra.Command{
 			}
 			log.Debugf("final template data: %v\n", finalTemplateData)
 
-			return WriteFiles(styleDir, projectRootDir, filePathsToWrite.ToSlice(), licenseText, finalTemplateData, licenseTmpl)
+			return WriteFiles(tmpDir, projectRootDir, filePathsToWrite, licenseText, finalTemplateData, licenseTmpl)
 		})
 		if err != nil {
 			return errors.NewWakuErrorf("failed to write files: %s\n", err)
@@ -351,43 +339,48 @@ func resolveTemplateStylePrompts(wakuTemplate *config.TemplateJson, rootDir stri
 	return
 }
 
-func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string, tmpl map[string]any, licenseTmpl map[string]string) error {
+func WriteFiles(tmpRoot, projectRoot string, paths []types.StyleResource, licenseText string, tmpl map[string]any, licenseTmpl map[string]string) error {
 	var wg sync.WaitGroup
-	wg.Add(len(paths) + 1)
+	wg.Add(len(paths))
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	errChan := make(chan error, 1)
+	errChan := make(chan error, len(paths)+1)
+	var once sync.Once
 	log.Infof("waiting for %d files to write\n", len(paths))
 
-	for _, path := range paths {
-		tmpPath := filepath.Join(tmpRoot, path)
-		newPath := filepath.Join(projectRoot, path)
-		log.Debugf("resolved %s -> %s\n", tmpPath, newPath)
+	for _, resource := range paths {
+		tmpPath := filepath.Join(tmpRoot, resource.TemplateResourceRelPath)
+		newPath := filepath.Join(projectRoot, resource.TemplatedProjectRelPath)
+		log.Debugf("resolved %s (%s) -> %s (%s)\n", tmpPath, filepath.Clean(tmpPath), newPath, filepath.Clean(newPath))
 
 		// write dirs
 		dir := filepath.Dir(newPath)
 		if dir != "." {
 			if err := os.MkdirAll(dir, utils.DirPerms); err != nil {
-				return errors.NewWakuErrorf("failed to create directory at %s: %s", dir, err)
+				return errors.
+					NewWakuErrorf("failed to create directory at %s: %s", dir, err).
+					WithMeta("resource", "%v", resource)
 			}
 		}
 
 		// write files
-		go func() {
+		go func(tmpPath, newPath string, resource types.StyleResource) {
 			defer wg.Done()
 
-			tmpFile, err := os.Open(filepath.Clean(tmpPath))
+			tmpFile, err := os.Open(tmpPath)
 			if err != nil {
+				once.Do(cancel)
 				errChan <- errors.NewWakuErrorf("failed to open file for reading at %s: %v", tmpPath, err)
 				return
 			}
 			defer tmpFile.Close()
 			log.Debugf("opened file for reading: %s\n", tmpPath)
 
-			newFile, err := os.OpenFile(filepath.Clean(newPath), os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.FilePerms)
+			newFile, err := os.OpenFile(newPath, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.FilePerms)
 			if err != nil {
+				once.Do(cancel)
 				errChan <- errors.NewWakuErrorf("failed to open file for writing at %s: %v", newPath, err)
 				return
 			}
@@ -397,17 +390,17 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 			reader := bufio.NewScanner(tmpFile)
 			writer := bufio.NewWriter(newFile)
 			if err := utils.ParseTemplateFile(ctx, tmpl, reader, writer); err != nil {
+				once.Do(cancel)
 				errChan <- errors.NewWakuErrorf("failed to parse template from %s to %s: %v", tmpPath, newPath, err)
 				return
 			}
 
 			log.Debugf("wrote file: %s\n", newPath)
-		}()
+		}(tmpPath, newPath, resource)
 	}
 
-	if options.NewOpts.NoLicense {
-		wg.Done()
-	} else {
+	if !options.NewOpts.NoLicense {
+		wg.Add(1)
 		go func() {
 			defer wg.Done()
 
@@ -418,6 +411,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 
 			newFile, err := os.OpenFile(filepath.Clean(newPath), os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.FilePerms)
 			if err != nil {
+				once.Do(cancel)
 				errChan <- errors.ToWakuError(err)
 				return
 			}
@@ -425,11 +419,13 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 			log.Debugf("opened file for writing: %s\n", newPath)
 
 			if _, err := newFile.WriteString(newLicenseText); err != nil {
+				once.Do(cancel)
 				errChan <- errors.NewWakuErrorf("failed to write license text at %s", newPath)
 				return
 			}
 
 			if err := newFile.Sync(); err != nil {
+				once.Do(cancel)
 				errChan <- errors.NewWakuErrorf("failed to flush buffer for %s", newPath)
 				return
 			}
@@ -438,18 +434,18 @@ func WriteFiles(tmpRoot, projectRoot string, paths []string, licenseText string,
 		}()
 	}
 
-	// handle canceling if anything goes wrong
-	var exitErr error
 	go func() {
-		log.Infoln("watching for errors")
-		if err := <-errChan; err != nil {
-			cancel()
-			exitErr = err
-		}
+		wg.Wait()
+		close(errChan)
 	}()
 
-	wg.Wait()
-	close(errChan)
+	log.Infoln("watching for errors")
+	var exitErr error
+	for err := range errChan {
+		if err != nil {
+			exitErr = err
+		}
+	}
 
 	log.Infoln("all files written")
 	return exitErr
