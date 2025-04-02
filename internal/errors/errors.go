@@ -1,11 +1,28 @@
 package errors
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // WakuError is an error that should be returned in
 // the CLI for logging to format messages properly
 type WakuError struct {
-	msg string
+	msg      string
+	metadata []string
+}
+
+func (e *WakuError) WithMeta(key string, format string, a ...any) *WakuError {
+	e.metadata = append(e.metadata, fmt.Sprintf("%s=%s", key, fmt.Sprintf(format, a...)))
+	return e
+}
+
+func (e *WakuError) Error() string {
+	if len(e.metadata) == 0 {
+		return e.msg
+	}
+
+	return fmt.Sprintf("[%s] %s", strings.Join(e.metadata, ", "), e.msg)
 }
 
 // NewWakuError creates a new WakuError
@@ -20,8 +37,4 @@ func ToWakuError(err error) *WakuError {
 func IsWakuError(err error) (*WakuError, bool) {
 	w, ok := err.(*WakuError)
 	return w, ok
-}
-
-func (e WakuError) Error() string {
-	return e.msg
 }
