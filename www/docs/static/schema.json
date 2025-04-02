@@ -7,9 +7,6 @@
       "description": "Allows a reference to a schema, typically a relative or absolute URI.",
       "format": "uri-reference"
     },
-    "setup": {
-      "$ref": "#/definitions/setup"
-    },
     "ignore": {
       "$ref": "#/definitions/ignore"
     },
@@ -31,9 +28,6 @@
               "description": "The path to the directory to use as a style.",
               "format": "uri-reference"
             },
-            "setup": {
-              "$ref": "#/definitions/setup"
-            },
             "ignore": {
               "$ref": "#/definitions/ignore"
             },
@@ -53,30 +47,6 @@
   "required": ["styles"],
   "additionalProperties": false,
   "definitions": {
-    "setup": {
-      "type": "object",
-      "description": "an object containing setup scripts for the template.",
-      "properties": {
-        "*": {
-          "type": "string",
-          "description": "Path to the default setup script, required."
-        },
-        "linux": {
-          "type": "string",
-          "description": "Path to the setup script for Linux."
-        },
-        "windows": {
-          "type": "string",
-          "description": "Path to the setup script for Windows."
-        },
-        "darwin": {
-          "type": "string",
-          "description": "Path to the setup script for macOS (Darwin)."
-        }
-      },
-      "required": ["*"],
-      "additionalProperties": false
-    },
     "ignore": {
       "type": "array",
       "items": {
