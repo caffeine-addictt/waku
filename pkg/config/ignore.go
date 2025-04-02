@@ -31,6 +31,11 @@ func (t *TemplateIgnore) Validate(styleSourceDir string) error {
 			return fmt.Errorf("path is not local: %s", path)
 		}
 
+		// skip globs for now (something to consider implementing in the future)
+		if strings.Contains(ignorePath, "*") {
+			return nil
+		}
+
 		fileinfo, err := os.Stat(filepath.Join(styleSourceDir, ignorePath))
 		if err != nil {
 			return fmt.Errorf("%s: %w", path, err)
