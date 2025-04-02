@@ -24,7 +24,7 @@ func GetStyleResources(c *config.TemplateJson, s *config.TemplateStyle, configPa
 	if s.Ignore != nil {
 		si := make(types.Set[string], len(*s.Ignore))
 		for path := range *s.Ignore {
-			si.Add(path)
+			si.Add(filepath.Join(s.Source.String(), path))
 		}
 
 		ignoreRules.Union(si)
@@ -34,13 +34,39 @@ func GetStyleResources(c *config.TemplateJson, s *config.TemplateStyle, configPa
 	ignoreRules = ResolveGlobs(ignoreRules, types.NewSet(".git/"))
 	log.Debugf("ignore rules: %v\n", ignoreRules)
 
+	stylePaths, err := getResourcePaths(filepath.Join(configParentDir, s.Source.String()))
+	if err != nil {
+		return nil, err
+	}
+	paths := make(types.Set[string], len(stylePaths))
+	for p := range stylePaths {
+		paths.Add(filepath.Join(s.Source.String(), p))
+	}
+	log.Debugf("unfiltered paths: %v\n", paths)
+
+	filteredPaths := ResolveGlobs(paths, ignoreRules)
+	log.Debugf("filtered paths: %v\n", filteredPaths)
+
+	resources := make([]types.StyleResource, 0, len(filteredPaths))
+	for v := range filteredPaths {
+		parts := strings.Split(v, "/")
+		resources = append(resources, types.StyleResource{
+			TemplateResourceRelPath: v,
+			TemplatedProjectRelPath: strings.Join(parts[min(len(parts), 1):], "/"),
+		})
+	}
+
+	return resources, err
+}
+
+func getResourcePaths(root string) (types.Set[string], error) {
 	paths := types.NewSet[string]()
-	err := filepath.WalkDir(configParentDir, func(path string, d os.DirEntry, err error) error {
+	err := filepath.WalkDir(root, func(path string, d os.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
 
-		relPath, err := filepath.Rel(configParentDir, path)
+		relPath, err := filepath.Rel(root, path)
 		if err != nil {
 			return err
 		}
@@ -51,9 +77,7 @@ func GetStyleResources(c *config.TemplateJson, s *config.TemplateStyle, configPa
 			return nil
 		}
 
-		if d.IsDir() {
-			paths.Add(relPath + "/")
-		} else {
+		if !d.IsDir() {
 			paths.Add(relPath)
 		}
 
@@ -63,26 +87,5 @@ func GetStyleResources(c *config.TemplateJson, s *config.TemplateStyle, configPa
 		return nil, err
 	}
 
-	log.Debugf("unfiltered paths: %v\n", paths)
-
-	filteredPaths := ResolveGlobs(paths, ignoreRules)
-	log.Debugf("filtered paths: %v\n", filteredPaths)
-
-	resources := make([]types.StyleResource, 0, len(filteredPaths))
-	for v := range filteredPaths {
-		sr := types.StyleResource{
-			StyleRelPath:            v,
-			TemplatedProjectRelPath: strings.Join(strings.Split(v, "/")[1:], "/"), // remove first dir level
-		}
-
-		if strings.HasSuffix(v, "/") {
-			sr.Kind = types.DirStyleResourceKind
-		} else {
-			sr.Kind = types.FileStyleResourceKind
-		}
-
-		resources = append(resources, sr)
-	}
-
-	return resources, err
+	return paths, nil
 }
