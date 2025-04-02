@@ -13,31 +13,31 @@ import (
 
 type TemplateIgnore types.Set[string]
 
-func (t *TemplateIgnore) Validate(root string) error {
+func (t *TemplateIgnore) Validate(styleSourceDir string) error {
 	for path := range *t {
-		dirPath := strings.TrimSpace(path)
+		ignorePath := strings.TrimSpace(path)
 
 		// handle bang
-		dirPath = strings.TrimPrefix(dirPath, "!")
+		ignorePath = strings.TrimPrefix(ignorePath, "!")
 
 		// handle glob
 		isGlob := false
-		if strings.HasSuffix(dirPath, "/*") {
+		if strings.HasSuffix(ignorePath, "/*") {
 			isGlob = true
-			dirPath = strings.TrimSuffix(dirPath, "/*")
+			ignorePath = strings.TrimSuffix(ignorePath, "/*")
 		}
 
-		if !filepath.IsLocal(dirPath) {
+		if !filepath.IsLocal(ignorePath) {
 			return fmt.Errorf("path is not local: %s", path)
 		}
 
-		fileinfo, err := os.Stat(dirPath)
+		fileinfo, err := os.Stat(filepath.Join(styleSourceDir, ignorePath))
 		if err != nil {
 			return fmt.Errorf("%s: %w", path, err)
 		}
 
 		if isGlob && !fileinfo.IsDir() {
-			return fmt.Errorf("%s: exists but is not a directory", path)
+			return fmt.Errorf("%s is not a directory", path)
 		}
 	}
 

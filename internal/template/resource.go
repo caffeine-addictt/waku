@@ -18,14 +18,16 @@ import (
 // `configParent` should be the parent directory of the config file
 func GetStyleResources(c *config.TemplateJson, s *config.TemplateStyle, configParentDir string) ([]types.StyleResource, error) {
 	ignoreRules := types.NewSet(".git/", "LICENSE*")
-
 	if c.Ignore != nil {
 		ignoreRules.Union(types.Set[string](*c.Ignore))
 	}
-
-	// TODO: get style to prepend source dir
 	if s.Ignore != nil {
-		ignoreRules.Union(types.Set[string](*s.Ignore))
+		si := make(types.Set[string], len(*s.Ignore))
+		for path := range *s.Ignore {
+			si.Add(path)
+		}
+
+		ignoreRules.Union(si)
 	}
 
 	// account for !.git/ in ignore rules

@@ -12,18 +12,18 @@ type TemplateJson struct {
 	Prompts TemplatePrompts `json:"prompts,omitempty" yaml:"prompts,omitempty"` // The additional prompts to use
 }
 
-func (t *TemplateJson) Validate(root string) error {
+func (t *TemplateJson) Validate(templateRootDir string) error {
 	if len(t.Styles) == 0 {
 		return fmt.Errorf("'styles' cannot be empty")
 	}
 
 	if t.Ignore != nil {
-		if err := t.Ignore.Validate(root); err != nil {
+		if err := t.Ignore.Validate(templateRootDir); err != nil {
 			return err
 		}
 	}
 	if t.Styles != nil {
-		if err := t.Styles.Validate(root); err != nil {
+		if err := t.Styles.Validate(templateRootDir); err != nil {
 			return err
 		}
 	}

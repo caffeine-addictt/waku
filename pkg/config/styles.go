@@ -1,41 +1,42 @@
 package config
 
 import (
-	"fmt"
 	"path"
 	"path/filepath"
 
+	"github.com/caffeine-addictt/waku/internal/errors"
 	"github.com/caffeine-addictt/waku/internal/types"
 	"github.com/caffeine-addictt/waku/internal/utils"
 )
 
 type TemplateStyles map[types.CleanString]TemplateStyle
 
-func (t *TemplateStyles) Validate(root string) error {
-	for _, style := range *t {
-		// Source
+func (t *TemplateStyles) Validate(templateRootDir string) error {
+	for name, style := range *t {
 		if !filepath.IsLocal(style.Source.String()) {
-			return fmt.Errorf("path is not local: %s", style.Source)
+			return errors.
+				NewWakuErrorf("path is not local: %s", style.Source).
+				WithMeta("style", name.String())
 		}
 
-		resolvedPath := path.Join(root, style.Source.String())
-		if resolvedPath == "." {
-			return fmt.Errorf("cannot use . as a path")
+		styleSourceDir := path.Join(templateRootDir, style.Source.String())
+		if styleSourceDir == "." {
+			return errors.NewWakuErrorf("cannot use . as a path").WithMeta("style", name.String())
 		}
 
-		ok, err := utils.IsDir(resolvedPath)
+		ok, err := utils.IsDir(styleSourceDir)
 		if err != nil {
 			return err
 		}
 
 		if !ok {
-			return fmt.Errorf("not a directory: %s", resolvedPath)
+			return errors.NewWakuErrorf("not a directory: %s", styleSourceDir).WithMeta("style", name.String())
 		}
 
 		// Others
 		if style.Ignore != nil {
-			if err := style.Ignore.Validate(root); err != nil {
-				return err
+			if err := style.Ignore.Validate(styleSourceDir); err != nil {
+				return errors.ToWakuError(err).WithMeta("style", name.String())
 			}
 		}
 	}
