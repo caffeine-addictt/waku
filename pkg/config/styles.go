@@ -33,11 +33,6 @@ func (t *TemplateStyles) Validate(root string) error {
 		}
 
 		// Others
-		if style.Setup != nil {
-			if err := style.Setup.Validate(root); err != nil {
-				return err
-			}
-		}
 		if style.Ignore != nil {
 			if err := style.Ignore.Validate(root); err != nil {
 				return err

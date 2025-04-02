@@ -230,21 +230,8 @@ var NewCmd = &cobra.Command{
 			if wakuTemplate.Ignore != nil {
 				ignoreRules.Union(types.Set[string](*wakuTemplate.Ignore))
 			}
-			if wakuTemplate.Setup != nil {
-				ignoreRules.Add(wakuTemplate.Setup.Any)
-				ignoreRules.Add(wakuTemplate.Setup.Linux)
-				ignoreRules.Add(wakuTemplate.Setup.Darwin)
-				ignoreRules.Add(wakuTemplate.Setup.Windows)
-			}
 			if wakuTemplate.Styles != nil && styleInfo.Ignore != nil {
 				ignoreRules.Union(types.Set[string](*styleInfo.Ignore))
-
-				if styleInfo.Setup != nil {
-					ignoreRules.Add(styleInfo.Setup.Any)
-					ignoreRules.Add(styleInfo.Setup.Linux)
-					ignoreRules.Add(styleInfo.Setup.Darwin)
-					ignoreRules.Add(styleInfo.Setup.Windows)
-				}
 			}
 
 			// account for template.json having a '!.git/'

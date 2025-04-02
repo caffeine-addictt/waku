@@ -1,7 +1,7 @@
 ###################
 # 1. Building stage
 ###################
-FROM golang:1.23.5 AS build-stage
+FROM golang:1.24.1 AS build-stage
 
 # Set destination for COPY
 WORKDIR /waku-cli
@@ -30,7 +30,7 @@ RUN go test -v ./...
 ###################
 # 3. Deploying
 ###################
-FROM alpine:3.21.2 AS deploy-stage
+FROM alpine:3.21.3 AS deploy-stage
 WORKDIR /app
 
 # Install git
