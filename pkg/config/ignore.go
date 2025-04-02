@@ -21,10 +21,10 @@ func (t *TemplateIgnore) Validate(styleSourceDir string) error {
 		ignorePath = strings.TrimPrefix(ignorePath, "!")
 
 		// handle glob
-		isGlob := false
-		if strings.HasSuffix(ignorePath, "/*") {
-			isGlob = true
-			ignorePath = strings.TrimSuffix(ignorePath, "/*")
+		isDir := false
+		if strings.HasSuffix(ignorePath, "/*") || strings.HasSuffix(ignorePath, "/**") || strings.HasSuffix(ignorePath, "/") {
+			isDir = true
+			ignorePath = strings.TrimSuffix(strings.TrimSuffix(strings.TrimSuffix(ignorePath, "*"), "*"), "/")
 		}
 
 		if !filepath.IsLocal(ignorePath) {
@@ -36,7 +36,7 @@ func (t *TemplateIgnore) Validate(styleSourceDir string) error {
 			return fmt.Errorf("%s: %w", path, err)
 		}
 
-		if isGlob && !fileinfo.IsDir() {
+		if isDir && !fileinfo.IsDir() {
 			return fmt.Errorf("%s is not a directory", path)
 		}
 	}
