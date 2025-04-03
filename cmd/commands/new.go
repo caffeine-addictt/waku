@@ -347,33 +347,45 @@ func WriteFiles(tmpRoot, projectRoot string, paths []types.StyleResource, licens
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	errChan := make(chan error, len(paths)+1)
-	var once sync.Once
-	log.Infof("waiting for %d files to write\n", len(paths))
-
-	for _, resource := range paths {
-		tmpPath := filepath.Join(tmpRoot, resource.TemplateResourceRelPath)
-		newPath := filepath.Join(projectRoot, resource.TemplatedProjectRelPath)
-		log.Debugf("resolved %s (%s) -> %s (%s)\n", tmpPath, filepath.Clean(tmpPath), newPath, filepath.Clean(newPath))
-
-		// write dirs
-		dir := filepath.Dir(newPath)
-		if dir != "." {
-			if err := os.MkdirAll(dir, utils.DirPerms); err != nil {
-				return errors.
-					NewWakuErrorf("failed to create directory at %s: %s", dir, err).
-					WithMeta("resource", "%v", resource)
-			}
+	errChan := make(chan error, 1)
+	writeErr := func(e *errors.WakuError) {
+		select {
+		case errChan <- e:
+		default:
 		}
+	}
 
-		// write files
-		go func(tmpPath, newPath string, resource types.StyleResource) {
+	doneChan := make(chan struct{}, 1)
+	cleanup.Schedule(func() error {
+		cancel()
+		return nil
+	})
+
+	log.Infof("waiting for %d files to write\n", len(paths))
+	for _, resource := range paths {
+		go func(resource types.StyleResource) {
 			defer wg.Done()
+
+			tmpPath := filepath.Join(tmpRoot, resource.TemplateResourceRelPath)
+			newPath := filepath.Join(projectRoot, resource.TemplatedProjectRelPath)
+			log.Debugf("resolved %s -> %s\n", tmpPath, newPath)
+
+			// write dirs
+			dir := filepath.Dir(newPath)
+			if dir != "." {
+				if err := os.MkdirAll(dir, utils.DirPerms); err != nil {
+					writeErr(errors.
+						NewWakuErrorf("failed to create directory at %s: %s", dir, err).
+						WithMeta("resource", "%v", resource))
+					return
+				}
+			}
 
 			tmpFile, err := os.Open(tmpPath)
 			if err != nil {
-				once.Do(cancel)
-				errChan <- errors.NewWakuErrorf("failed to open file for reading at %s: %v", tmpPath, err)
+				writeErr(errors.
+					NewWakuErrorf("failed to open %s for reading: %v", tmpPath, err).
+					WithMeta("resource", "%v", resource))
 				return
 			}
 			defer tmpFile.Close()
@@ -381,8 +393,9 @@ func WriteFiles(tmpRoot, projectRoot string, paths []types.StyleResource, licens
 
 			newFile, err := os.OpenFile(newPath, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.FilePerms)
 			if err != nil {
-				once.Do(cancel)
-				errChan <- errors.NewWakuErrorf("failed to open file for writing at %s: %v", newPath, err)
+				writeErr(errors.
+					NewWakuErrorf("failed to open %s for writing: %v", newPath, err).
+					WithMeta("resource", "%v", resource))
 				return
 			}
 			defer newFile.Close()
@@ -391,13 +404,14 @@ func WriteFiles(tmpRoot, projectRoot string, paths []types.StyleResource, licens
 			reader := bufio.NewScanner(tmpFile)
 			writer := bufio.NewWriter(newFile)
 			if err := utils.ParseTemplateFile(ctx, tmpl, reader, writer); err != nil {
-				once.Do(cancel)
-				errChan <- errors.NewWakuErrorf("failed to parse template from %s to %s: %v", tmpPath, newPath, err)
+				writeErr(errors.
+					NewWakuErrorf("failed to parse template: %v", err).
+					WithMeta("resource", "%v", resource))
 				return
 			}
 
 			log.Debugf("wrote file: %s\n", newPath)
-		}(tmpPath, newPath, resource)
+		}(resource)
 	}
 
 	if !options.NewOpts.NoLicense {
@@ -412,22 +426,19 @@ func WriteFiles(tmpRoot, projectRoot string, paths []types.StyleResource, licens
 
 			newFile, err := os.OpenFile(filepath.Clean(newPath), os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.FilePerms)
 			if err != nil {
-				once.Do(cancel)
-				errChan <- errors.ToWakuError(err)
+				writeErr(errors.NewWakuErrorf("failed to open %s for writing: %v", newPath, err))
 				return
 			}
 			defer newFile.Close()
 			log.Debugf("opened file for writing: %s\n", newPath)
 
 			if _, err := newFile.WriteString(newLicenseText); err != nil {
-				once.Do(cancel)
-				errChan <- errors.NewWakuErrorf("failed to write license text at %s", newPath)
+				writeErr(errors.NewWakuErrorf("failed to write license text at %s: %v", newPath, err))
 				return
 			}
 
 			if err := newFile.Sync(); err != nil {
-				once.Do(cancel)
-				errChan <- errors.NewWakuErrorf("failed to flush buffer for %s", newPath)
+				writeErr(errors.NewWakuErrorf("failed to flush buffer %s: %v", newPath, err))
 				return
 			}
 
@@ -437,17 +448,16 @@ func WriteFiles(tmpRoot, projectRoot string, paths []types.StyleResource, licens
 
 	go func() {
 		wg.Wait()
-		close(errChan)
+		close(doneChan)
 	}()
 
-	log.Infoln("watching for errors")
-	var exitErr error
-	for err := range errChan {
-		if err != nil {
-			exitErr = err
-		}
+	select {
+	case <-doneChan:
+		log.Infoln("all files written")
+		return nil
+	case err := <-errChan:
+		return err
+	case <-ctx.Done():
+		return errors.NewWakuErrorf("timed out writing files")
 	}
-
-	log.Infoln("all files written")
-	return exitErr
 }
