@@ -6,6 +6,8 @@ and refer to it throughout the development of your contribution.
 
 ## 1. Naming Conventions
 
+- **Variables:** Use lowercase with underscores (e.g. `my_variable`, `home`).
+- **Functions:** Use lowercase with underscores (e.g. `my_function`, `home`).
 - **Constants:** Use uppercase with underscores (e.g. `MY_CONSTANT`, `HOME`).
 - **Classes:** Use CamelCase (e.g. `MyClass`, `Home`).
 - **Files:** Use lowercase with hyphens (e.g. `my-file.go`, `home.go`).

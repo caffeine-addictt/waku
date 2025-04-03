@@ -46,7 +46,3 @@ Maintainers have final authority on enforcement.
 
 The No-Nonsense Code of Conduct is distributed by [Ng Jun Xiang](https://ngjx.org)
 under the [Creative Commons Attribution-ShareAlike license](https://creativecommons.org/licenses/by-sa/4.0/).
-
----
-
-Thanks for contributing to the [Waku](https://waku.ngjx.org) project!

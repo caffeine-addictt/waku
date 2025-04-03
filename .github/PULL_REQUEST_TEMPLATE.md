@@ -19,5 +19,7 @@
 ## Checklist
 
 - [ ] I have read and understood the [Contributing Guide](https://github.com/caffeine-addictt/waku/blob/main/CONTRIBUTING.md).
+- [ ] My changes follow the [Project's Code Style](https://github.com/caffeine-addictt/waku/blob/main/.github/CODESTYLE.md).
+- [ ] I have added any relevant tests.
 - [ ] I have tested the code and it is working as expected.
 - [ ] I have incremented the version number with `make bump version=vX.X.X` according to [SemVer](https://semver.org).

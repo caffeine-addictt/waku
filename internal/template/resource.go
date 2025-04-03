@@ -88,8 +88,8 @@ func GetStyleResources(c *config.TemplateJson, s *config.TemplateStyle, configPa
 		if include, ok := includePaths[v]; ok {
 			projPath = strings.TrimPrefix(v, include.Source.String()+"/")
 			if include.Directory != nil {
-                projPath = filepath.Join(include.Directory.String(), projPath)
-            }
+				projPath = filepath.Join(include.Directory.String(), projPath)
+			}
 
 			// skip if found in style list
 			expectedStyleRelPath := filepath.Join(s.Source.String(), projPath)
