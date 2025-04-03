@@ -123,11 +123,9 @@ var NewCmd = &cobra.Command{
 		}
 
 		// Parse template.json
-		var configFilePath string
 		var wakuTemplate *config.TemplateJson
-
 		err = ui.RunWithSpinner("parsing waku config...", func() error {
-			configFilePath, wakuTemplate, err = template.ParseConfig(rootDir)
+			_, wakuTemplate, err = template.ParseConfig(rootDir)
 			if err != nil {
 				return err
 			}
@@ -139,7 +137,7 @@ var NewCmd = &cobra.Command{
 		}
 
 		// Resolve prompts
-		styleDir, styleInfo, prompts, err := resolveTemplateStylePrompts(wakuTemplate, rootDir)
+		_, styleInfo, prompts, err := resolveTemplateStylePrompts(wakuTemplate, rootDir)
 		if err != nil {
 			return errors.ToWakuError(err)
 		}
@@ -197,33 +195,9 @@ var NewCmd = &cobra.Command{
 			return errors.ToWakuError(err)
 		}
 
-		// Get file paths
-		var styleFilePaths []string
-		var configRelPath string
-		err = ui.RunWithSpinner("collecting files...", func() error {
-			styleFilePaths, err = utils.WalkDirRecursive(styleDir)
-			if err != nil {
-				return err
-			}
-			log.Debugf("resolved file paths in style: %v\n", styleFilePaths)
-
-			configRelPath, err = filepath.Rel(tmpDir, configFilePath)
-			if err != nil {
-				return err
-			}
-			log.Debugf("resolved config rel path to: %s\n", configRelPath)
-
-			return err
-		})
-		if err != nil {
-			return errors.ToWakuError(err)
-		}
-
-		// Handle ignores
+		// Resolve files
 		var filePathsToWrite []types.StyleResource
-		err = ui.RunWithSpinner("filtering files...", func() error {
-			log.Infoln("applying ignore rules...")
-
+		err = ui.RunWithSpinner("collecting files...", func() error {
 			sr, err := template.GetStyleResources(wakuTemplate, styleInfo, rootDir)
 			if err != nil {
 				return nil
