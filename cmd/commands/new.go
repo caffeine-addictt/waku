@@ -355,7 +355,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []types.StyleResource, licens
 				}
 			}
 
-			tmpFile, err := os.Open(tmpPath)
+			tmpFile, err := os.Open(filepath.Clean(tmpPath))
 			if err != nil {
 				writeErr(errors.
 					NewWakuErrorf("failed to open %s for reading: %v", tmpPath, err).
@@ -365,7 +365,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []types.StyleResource, licens
 			defer tmpFile.Close()
 			log.Debugf("opened file for reading: %s\n", tmpPath)
 
-			newFile, err := os.OpenFile(newPath, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.FilePerms)
+			newFile, err := os.OpenFile(filepath.Clean(newPath), os.O_TRUNC|os.O_CREATE|os.O_WRONLY, utils.FilePerms)
 			if err != nil {
 				writeErr(errors.
 					NewWakuErrorf("failed to open %s for writing: %v", newPath, err).
