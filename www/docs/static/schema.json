@@ -31,6 +31,9 @@
             "ignore": {
               "$ref": "#/definitions/ignore"
             },
+            "includes": {
+              "$ref": "#/definitions/includes"
+            },
             "labels": {
               "$ref": "#/definitions/labels"
             },
@@ -38,13 +41,17 @@
               "$ref": "#/definitions/prompts"
             }
           },
-          "required": ["source"],
+          "required": [
+            "source"
+          ],
           "additionalProperties": false
         }
       }
     }
   },
-  "required": ["styles"],
+  "required": [
+    "styles"
+  ],
   "additionalProperties": false,
   "definitions": {
     "ignore": {
@@ -55,6 +62,46 @@
         "pattern": "^(?![ ]*$)(!?([^*?/]+/)*([^*?/]+|\\*|\\*\\*|[^*?/]+/\\*|[^*?/]+/\\*\\*))$"
       },
       "description": "A list of paths or patterns to ignore."
+    },
+    "includes": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "A directory path relative to the template root directory.",
+            "pattern": ".+",
+            "format": "uri-reference"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "source": {
+                "type": "string",
+                "description": "A directory path relative to the template root directory.",
+                "pattern": ".+",
+                "format": "uri-reference"
+              },
+              "dir": {
+                "type": "string",
+                "description": "An optional parent directory path for this include's resources when templated.",
+                "pattern": ".+",
+                "format": "uri-reference"
+              },
+              "ignore": {
+                "$ref": "#/definitions/ignore",
+                "description": "A list of paths or patterns to ignore within the included directory."
+              }
+            },
+            "required": [
+              "source"
+            ],
+            "additionalProperties": false,
+            "description": "A good way to share resources between styles. Style includes are overrided by the style main resources if they collide."
+          }
+        ]
+      },
+      "description": "A list of paths or patterns to include. Supports both string paths and objects specifying `source`, `dir`, and `ignore`."
     },
     "labels": {
       "type": "array",
@@ -75,7 +122,10 @@
             "description": "An optional description for the label."
           }
         },
-        "required": ["name", "color"],
+        "required": [
+          "name",
+          "color"
+        ],
         "additionalProperties": false
       },
       "description": "Labels with associated colors for this style."
@@ -116,7 +166,10 @@
             "description": "An optional regex to validate the value."
           }
         },
-        "required": ["key", "type"]
+        "required": [
+          "key",
+          "type"
+        ]
       },
       "additionalProperties": false,
       "description": "An optional array that defines user prompts."
