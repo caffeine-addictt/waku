@@ -1,0 +1,3 @@
+# Just for linguist to ignore these directories
+www/ linguist-vendored
+template/ linguist-vendored
