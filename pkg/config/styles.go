@@ -36,7 +36,7 @@ func (t *TemplateStyles) Validate(templateRootDir string) error {
 		// Others
 		if style.Ignore != nil {
 			if err := style.Ignore.Validate(styleSourceDir); err != nil {
-				return errors.ToWakuError(err).WithMeta("style", name.String())
+				return errors.ToWakuError(err).WithMeta("style", name.String()).WithMeta("field", "ignore")
 			}
 		}
 	}
