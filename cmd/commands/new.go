@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/caffeine-addictt/waku/cmd/cleanup"
 	"github.com/caffeine-addictt/waku/cmd/options"
@@ -343,7 +344,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []types.StyleResource, licens
 	var wg sync.WaitGroup
 	wg.Add(len(paths))
 
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
 	errChan := make(chan error, len(paths)+1)
