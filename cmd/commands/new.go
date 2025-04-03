@@ -350,7 +350,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []types.StyleResource, licens
 				if err := os.MkdirAll(dir, utils.DirPerms); err != nil {
 					writeErr(errors.
 						NewWakuErrorf("failed to create directory at %s: %s", dir, err).
-						WithMeta("resource", "%v", resource))
+						WithMetaf("resource", "%v", resource))
 					return
 				}
 			}
@@ -359,7 +359,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []types.StyleResource, licens
 			if err != nil {
 				writeErr(errors.
 					NewWakuErrorf("failed to open %s for reading: %v", tmpPath, err).
-					WithMeta("resource", "%v", resource))
+					WithMetaf("resource", "%v", resource))
 				return
 			}
 			defer tmpFile.Close()
@@ -369,7 +369,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []types.StyleResource, licens
 			if err != nil {
 				writeErr(errors.
 					NewWakuErrorf("failed to open %s for writing: %v", newPath, err).
-					WithMeta("resource", "%v", resource))
+					WithMetaf("resource", "%v", resource))
 				return
 			}
 			defer newFile.Close()
@@ -380,7 +380,7 @@ func WriteFiles(tmpRoot, projectRoot string, paths []types.StyleResource, licens
 			if err := utils.ParseTemplateFile(ctx, tmpl, reader, writer); err != nil {
 				writeErr(errors.
 					NewWakuErrorf("failed to parse template: %v", err).
-					WithMeta("resource", "%v", resource))
+					WithMetaf("resource", "%v", resource))
 				return
 			}
 
