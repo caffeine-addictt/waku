@@ -1,13 +1,13 @@
 package config
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/caffeine-addictt/waku/internal/types"
+	"github.com/goccy/go-json"
 	"gopkg.in/yaml.v3"
 )
 
