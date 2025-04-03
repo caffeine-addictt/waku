@@ -12,11 +12,11 @@ type WakuError struct {
 	metadata []string
 }
 
-func (e *WakuError) WithMeta(key string, val string) *WakuError {
+func (e *WakuError) WithMeta(key, val string) *WakuError {
 	return e.WithMetaf(key, "%s", val)
 }
 
-func (e *WakuError) WithMetaf(key string, format string, a ...any) *WakuError {
+func (e *WakuError) WithMetaf(key, format string, a ...any) *WakuError {
 	e.metadata = append(e.metadata, fmt.Sprintf("%s=%s", key, fmt.Sprintf(format, a...)))
 	return e
 }
