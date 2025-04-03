@@ -88,15 +88,21 @@ func GetStyleResources(c *config.TemplateJson, s *config.TemplateStyle, configPa
 	resources := make([]types.StyleResource, 0, len(filteredPaths))
 	for v := range filteredPaths {
 		parts := strings.Split(v, "/")
-		parts = parts[min(len(parts), 1):]
+		projPath := strings.Join(parts[min(len(parts), 1):], "/")
 
 		if dirPrepend, ok := includePaths[v]; ok {
-			parts = append([]string{dirPrepend}, parts...)
+			projPath = filepath.Join(dirPrepend, projPath)
+
+			// skip if found in style list
+			searchPath := filepath.Join(s.Source.String(), projPath)
+			if stylePaths.Contains(searchPath) {
+				continue
+			}
 		}
 
 		resources = append(resources, types.StyleResource{
 			TemplateResourceRelPath: v,
-			TemplatedProjectRelPath: strings.Join(parts, "/"),
+			TemplatedProjectRelPath: projPath,
 		})
 	}
 
