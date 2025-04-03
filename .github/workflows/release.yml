@@ -27,7 +27,7 @@ jobs:
         run: |
           set -xe
 
-          CURRENT_VERSION=$(grep -oP 'const Version = "\K[\d\.]+' 'pkg/version/version.go' | head -n 1)
+          CURRENT_VERSION=$(grep -oP 'const Version = "\K[\d\w\-\.]+' 'pkg/version/version.go' | head -n 1)
           echo "Current version in version.go: $CURRENT_VERSION"
 
           GIT_TAG=$(git describe --tags --abbrev=0 | sed 's/^v//')

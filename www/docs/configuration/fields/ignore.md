@@ -3,6 +3,8 @@
 Ignore is an array of path globs you want
 Waku to ignore when templating.
 
+## waku config
+
 === "Yaml"
 
     ```yaml

@@ -7,12 +7,12 @@ import (
 
 	"github.com/caffeine-addictt/waku/cmd/options"
 	"github.com/caffeine-addictt/waku/internal/license"
-	"github.com/caffeine-addictt/waku/internal/log"
 	"github.com/caffeine-addictt/waku/internal/searching"
 	"github.com/caffeine-addictt/waku/internal/sorting"
 	"github.com/caffeine-addictt/waku/internal/types"
 	"github.com/caffeine-addictt/waku/internal/utils"
 	"github.com/caffeine-addictt/waku/pkg/config"
+	"github.com/caffeine-addictt/waku/pkg/log"
 	"github.com/charmbracelet/huh"
 )
 
@@ -117,7 +117,10 @@ func validateProjectName(s string, name, projectRootDir *string) error {
 		return fmt.Errorf("project name cannot be empty")
 	}
 
-	pDir, err := filepath.Rel(".", strings.ToLower(strings.ReplaceAll(s, " ", "-")))
+	if !options.NewOpts.AllowSpaces {
+		s = strings.ReplaceAll(s, " ", "-")
+	}
+	pDir, err := filepath.Rel(".", s)
 	if err != nil {
 		return err
 	}

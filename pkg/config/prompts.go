@@ -110,7 +110,7 @@ func (t *TemplatePrompt) Set(s string) error {
 
 func (t *TemplatePrompt) formatValue(val string) (string, error) {
 	matches := t.Capture.FindStringSubmatch(val)
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 2 {
 		return "", fmt.Errorf("capture %s did not match '%s'", t.Capture.String(), val)
 	}
 

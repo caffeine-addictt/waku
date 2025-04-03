@@ -135,8 +135,8 @@ nav:
       - Quick Start: configuration/quick-start.md
       - Templates: configuration/templates.md
       - Fields:
-          - Setup: configuration/fields/setup.md
           - Ignore: configuration/fields/ignore.md
+          - Includes: configuration/fields/includes.md
           - Labels: configuration/fields/labels.md
           - Prompts: configuration/fields/prompts.md
           - Styles: configuration/fields/styles.md

@@ -7,9 +7,9 @@ import (
 	"github.com/caffeine-addictt/waku/cmd/cleanup"
 	e "github.com/caffeine-addictt/waku/internal/errors"
 	"github.com/caffeine-addictt/waku/internal/git"
-	"github.com/caffeine-addictt/waku/internal/log"
 	"github.com/caffeine-addictt/waku/internal/types"
 	"github.com/caffeine-addictt/waku/internal/utils"
+	"github.com/caffeine-addictt/waku/pkg/log"
 	"github.com/caffeine-addictt/waku/pkg/version"
 )
 
@@ -17,14 +17,16 @@ const defaultRepo = "https://github.com/caffeine-addictt/waku.git"
 
 // The options for the new command
 var NewOpts = NewOptions{
-	Repo:      *types.NewValueGuard("", cmdOpt, types.REPO),
-	Source:    *types.NewValueGuard("", cmdOpt, types.REPO),
-	Branch:    *types.NewValueGuard("", cmdOpt, types.BRANCH),
-	Directory: *types.NewValueGuard("", cmdOpt, types.PATH),
-	Name:      *types.NewValueGuard("", cmdOpt, types.STRING),
-	License:   *types.NewValueGuard("", cmdOpt, types.STRING),
-	Style:     *types.NewValueGuard("", cmdOpt, types.STRING),
-	NoGit:     false,
+	Repo:        *types.NewValueGuard("", cmdOpt, types.REPO),
+	Source:      *types.NewValueGuard("", cmdOpt, types.REPO),
+	Branch:      *types.NewValueGuard("", cmdOpt, types.BRANCH),
+	Directory:   *types.NewValueGuard("", cmdOpt, types.PATH),
+	Name:        *types.NewValueGuard("", cmdOpt, types.STRING),
+	License:     *types.NewValueGuard("", cmdOpt, types.STRING),
+	Style:       *types.NewValueGuard("", cmdOpt, types.STRING),
+	NoGit:       false,
+	NoLicense:   false,
+	AllowSpaces: false,
 }
 
 type NewOptions struct {
@@ -53,6 +55,13 @@ type NewOptions struct {
 
 	// Whether to skip initializing git
 	NoGit bool
+
+	// Whether to skip initializing license
+	NoLicense bool
+
+	// Whether to allow spaces in the project name
+	// This will skip replacing them with hyphens
+	AllowSpaces bool
 }
 
 func cmdOpt(v string) (string, error) {

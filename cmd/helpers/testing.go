@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"strings"
 
-	"github.com/caffeine-addictt/waku/internal/log"
+	"github.com/caffeine-addictt/waku/pkg/log"
 	"github.com/spf13/cobra"
 )
 
