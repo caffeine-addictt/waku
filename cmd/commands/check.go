@@ -2,8 +2,8 @@ package commands
 
 import (
 	"github.com/caffeine-addictt/waku/internal/errors"
-	"github.com/caffeine-addictt/waku/pkg/log"
 	"github.com/caffeine-addictt/waku/internal/template"
+	"github.com/caffeine-addictt/waku/pkg/log"
 	"github.com/spf13/cobra"
 )
 

@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/caffeine-addictt/waku/pkg/log"
 	"github.com/caffeine-addictt/waku/pkg/config"
+	"github.com/caffeine-addictt/waku/pkg/log"
 	"gopkg.in/yaml.v3"
 )
 
