@@ -3,7 +3,7 @@
 VERSION=$1
 VERSION_FILES="README.md pkg/version/version.go"
 VERSION_DIRS="www/docs scripts"
-CURRENT_VERSION=$(grep -oP 'const Version = "\K[\d\.]+' 'pkg/version/version.go' | head -n 1)
+CURRENT_VERSION=$(grep -oP 'const Version = "\K[\d\w\-\.]+' 'pkg/version/version.go' | head -n 1)
 SEMVER_REGEX=$(grep -oP "MustCompile\(\`\K.+(?=\`\))" "pkg/version/version_test.go" | head -n 1)
 
 if [[ -z "$VERSION" ]]; then
