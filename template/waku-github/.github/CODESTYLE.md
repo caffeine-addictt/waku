@@ -1,61 +1,66 @@
-# Code Style
+# Code Style Guide
 
 The following is a general guide on how to style your work so that the project
 remains consistent throughout all files. Please read this document in it's entirety
 and refer to it throughout the development of your contribution.
 
-1. [General Guidelines](#general-guidelines)
-2. [Markdown Guidelines](#markdown-guidelines)
+## 1. Naming Conventions
 
-## General Guidelines
+- **Variables:** Use lowercase with underscores (e.g. `my_variable`, `home`).
+- **Functions:** Use lowercase with underscores (e.g. `my_function`, `home`).
+- **Constants:** Use uppercase with underscores (e.g. `MY_CONSTANT`, `HOME`).
+- **Classes:** Use CamelCase (e.g. `MyClass`, `Home`).
+- **Files:** Use lowercase with hyphens (e.g. `my-file.go`, `home.go`).
 
-Listed is a example class used demonstrate general rules you should follow
-throughout the development of your contribution.
+## 2. Comments
 
-We use _Replace this with with you lint your code with_
-to ensure that code is consistent and follows our code style.
-Please ensure that your code passes linting before merging a Pull Request.
+Comments should be written to explain **why** something is done,
+not **what** is done. Avoid comments for obvious code (e.g. `i++; // Increment i`),
+good code is self-documenting.
 
-- Docstrings are to follow _Replace this with what style Docstrings should follow_.
-- Private attributes are to be prefixed with an underscore.
+The use of block comments (`/* */`) is preferred for explaining sections or
+complex logic, and single-line comments (`//`) are used for brief explanations.
 
-```text
-# Replace this with examples
-```
+## 3. Error Handling
 
-## Markdown Guidelines
+- Always handle errors explicitly, and do so gracefully.
+- Provide meaningful error messages, and avoid silent failures.
+- Log or report errors where necessary for debugging.
 
-Currently, documentation for this project resides in markdown files.
+## 4. Code Structure
 
-- Use of HTML is permitted
-- Use of HTML comments is appreciated
-- Exceedingly long lines are to be broken
-- [reference style links][reference-style-links] are not required by are appreciated
+- Avoid deep nesting of code—prefer breaking down large functions into smaller ones.
+- Each function/method should do only one thing and do it well.
+- Group related functions or variables together logically.
 
-```markdown
-<!--example markdown document-->
+## 5. Function Length
 
-# Section
+Limit the length of functions or methods. Ideally, keep them under 50 lines.
+Split large functions into smaller, more manageable ones when they grow too complex.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-sed do eiusmod tempor incididunt ut labore et dolore
-magna aliqua. Ut enim ad minim veniam, quis nostrud
-exercitation ullamco laboris nisi ut aliquip ex ea
-commodo consequat. Duis aute irure dolor in
-reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-non proident, sunt in culpa qui officia deserunt mollit
-anim id est laborum. found [Lorem Ipsum Generator]
+## 6. Avoid Hard-coding
 
-# Section 2
+- Avoid hard-coding values directly into code.
+  Use constants or configuration files where appropriate.
+- Ensure your code is flexible and can easily adapt to future changes.
 
-<ul>
-  <li> Apple
-  <li> Orange
-  <li> Pineapple
-</ul>
+## 7. Avoid Premature Optimization
 
-[Lorem Ipsum Generator]: https://loremipsum.io/generator/
-```
+Focus on clarity first; optimize later if necessary.
+If optimization is needed, profile the code first to ensure
+you're optimizing the right parts.
 
-[reference-style-links]: https://www.markdownguide.org/basic-syntax/#reference-style-links
+## 8. Code Duplication
+
+Avoid code duplication, create reusable functions or components instead.
+Break code up into functions to reduce repetition and increase readability.
+
+## 9. Security
+
+- Avoid using unsafe functions or libraries.
+- Ensure that your code is secure and protected against common vulnerabilities.
+
+## 10. Performance Considerations
+
+Write code with performance in mind, but do not sacrifice readability for optimization
+unless truly necessary. Do profile and test your code before and after optimization.
