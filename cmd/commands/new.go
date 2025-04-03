@@ -219,7 +219,7 @@ var NewCmd = &cobra.Command{
 			}
 			log.Debugf("final template data: %v\n", finalTemplateData)
 
-			return WriteFiles(tmpDir, projectRootDir, filePathsToWrite, licenseText, finalTemplateData, licenseTmpl)
+			return WriteFiles(rootDir, projectRootDir, filePathsToWrite, licenseText, finalTemplateData, licenseTmpl)
 		})
 		if err != nil {
 			return errors.NewWakuErrorf("failed to write files: %s\n", err)
