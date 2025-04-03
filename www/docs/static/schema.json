@@ -41,17 +41,13 @@
               "$ref": "#/definitions/prompts"
             }
           },
-          "required": [
-            "source"
-          ],
+          "required": ["source"],
           "additionalProperties": false
         }
       }
     }
   },
-  "required": [
-    "styles"
-  ],
+  "required": ["styles"],
   "additionalProperties": false,
   "definitions": {
     "ignore": {
@@ -93,9 +89,7 @@
                 "description": "A list of paths or patterns to ignore within the included directory."
               }
             },
-            "required": [
-              "source"
-            ],
+            "required": ["source"],
             "additionalProperties": false,
             "description": "A good way to share resources between styles. Style includes are overrided by the style main resources if they collide."
           }
@@ -122,10 +116,7 @@
             "description": "An optional description for the label."
           }
         },
-        "required": [
-          "name",
-          "color"
-        ],
+        "required": ["name", "color"],
         "additionalProperties": false
       },
       "description": "Labels with associated colors for this style."
@@ -166,10 +157,7 @@
             "description": "An optional regex to validate the value."
           }
         },
-        "required": [
-          "key",
-          "type"
-        ]
+        "required": ["key", "type"]
       },
       "additionalProperties": false,
       "description": "An optional array that defines user prompts."
