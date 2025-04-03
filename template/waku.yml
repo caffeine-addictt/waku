@@ -1,10 +1,8 @@
 # yaml-language-server: $schema=../www/docs/static/schema.json
 
 styles:
-  simple github:
-    source: simple-github
   waku github:
-    source: waku-github
+    source: github/styles/waku
     includes:
       - github/shared/dependabot-ci
       - github/shared/issues
