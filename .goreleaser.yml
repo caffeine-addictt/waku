@@ -35,16 +35,6 @@ builds:
 universal_binaries:
   - replace: false
 
-# Lets disable this for now and follow goreleaser upstream https://github.com/goreleaser/goreleaser/blob/main/.goreleaser.yaml#L67
-# upx:
-#   - ids: [default]
-#     enabled: true
-#     compress: best
-#     lzma: true
-#     brute: true
-#     goos: [linux, windows] # skip darwin (macOS 13.x Ventura is not support now)
-#     goarch: [amd64, arm64]
-
 archives:
   - name_template: >-
       {{- .ProjectName }}_
@@ -55,7 +45,7 @@ archives:
       {{- if .Arm }}v{{ .Arm }}{{ end -}}
     format_overrides:
       - goos: windows
-        format: zip
+        formats: [zip]
     builds_info:
       group: root
       owner: root
