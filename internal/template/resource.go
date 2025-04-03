@@ -49,7 +49,7 @@ func GetStyleResources(c *config.TemplateJson, s *config.TemplateStyle, configPa
 	ignoreRules = ResolveGlobs(ignoreRules, types.NewSet(".git/"))
 	log.Debugf("ignore rules: %v\n", ignoreRules)
 
-	includePaths := make(map[string]string, len(s.Includes)) // includePath: dir
+	includePaths := make(map[string]*config.TemplateInclude, len(s.Includes)) // includePath: dir
 	if s.Includes != nil {
 		for _, includePath := range s.Includes {
 			log.Infof("include path: %s\n", includePath.Source.String())
@@ -60,11 +60,7 @@ func GetStyleResources(c *config.TemplateJson, s *config.TemplateStyle, configPa
 
 			log.Debugf("resolved include paths: %v\n", inPths)
 			for p := range inPths {
-				if includePath.Directory == nil {
-					includePaths[filepath.Join(includePath.Source.String(), p)] = ""
-				} else {
-					includePaths[filepath.Join(includePath.Source.String(), p)] = includePath.Directory.String()
-				}
+				includePaths[filepath.Join(includePath.Source.String(), p)] = &includePath
 			}
 		}
 	}
@@ -87,17 +83,23 @@ func GetStyleResources(c *config.TemplateJson, s *config.TemplateStyle, configPa
 
 	resources := make([]types.StyleResource, 0, len(filteredPaths))
 	for v := range filteredPaths {
-		parts := strings.Split(v, "/")
-		projPath := strings.Join(parts[min(len(parts), 1):], "/")
+		var projPath string
 
-		if dirPrepend, ok := includePaths[v]; ok {
-			projPath = filepath.Join(dirPrepend, projPath)
+		if include, ok := includePaths[v]; ok {
+			projPath = strings.TrimPrefix(v, include.Source.String()+"/")
+			if include.Directory != nil {
+                projPath = filepath.Join(include.Directory.String(), projPath)
+            }
 
 			// skip if found in style list
-			searchPath := filepath.Join(s.Source.String(), projPath)
-			if stylePaths.Contains(searchPath) {
+			expectedStyleRelPath := filepath.Join(s.Source.String(), projPath)
+			if stylePaths.Contains(expectedStyleRelPath) {
 				continue
 			}
+		}
+
+		if projPath == "" {
+			projPath = strings.TrimPrefix(v, s.Source.String()+"/")
 		}
 
 		resources = append(resources, types.StyleResource{
