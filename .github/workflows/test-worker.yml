@@ -50,7 +50,7 @@ jobs:
     name: "Test on ${{ matrix.os }}"
     runs-on: "${{ matrix.os }}-latest"
     needs: changed-files
-    if: ${{ needs.changed-files.outputs.test-source == 'true' }}
+    if: needs.changed-files.outputs.test-source == 'true'
 
     strategy:
       fail-fast: false
