@@ -39,6 +39,11 @@ func (t *TemplateStyles) Validate(templateRootDir string) error {
 				return errors.ToWakuError(err).WithMeta("style", name.String()).WithMeta("field", "ignore")
 			}
 		}
+		if style.Include != nil {
+			if err := style.Include.Validate(templateRootDir, styleSourceDir); err != nil {
+				return errors.ToWakuError(err).WithMeta("style", name.String()).WithMeta("field", "include")
+			}
+		}
 	}
 
 	return nil
@@ -49,4 +54,5 @@ type TemplateStyle struct {
 	Source  types.CleanString `json:"source" yaml:"source"`                       // The source template path
 	Labels  TemplateLabel     `json:"labels,omitempty" yaml:"labels,omitempty"`   // The repository labels
 	Prompts TemplatePrompts   `json:"prompts,omitempty" yaml:"prompts,omitempty"` // The additional prompts to use
+	Include TemplateIncludes  `json:"include,omitempty" yaml:"include,omitempty"` // The additional includes
 }
