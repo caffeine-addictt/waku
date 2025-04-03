@@ -59,7 +59,7 @@
       "items": {
         "type": "string",
         "description": "A path or pattern to ignore. Supports glob patterns.",
-        "pattern": "^(?![ ]*$)(!?([^*?/]+/)*([^*?/]+|\\*|\\*\\*|[^*?/]+/\\*|[^*?/]+/\\*\\*))$"
+        "pattern": "^(?![ ]*$)(!?.+(/?|\\*|/\\*\\*))$"
       },
       "description": "A list of paths or patterns to ignore."
     },
