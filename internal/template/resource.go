@@ -29,7 +29,7 @@ func GetStyleResources(c *config.TemplateJson, s *config.TemplateStyle, configPa
 
 		ignoreRules.Union(si)
 	}
-	if s.Include != nil && len(s.Include) != 0 {
+	if len(s.Include) != 0 {
 		si := make(types.Set[string], len(s.Include))
 
 		for _, includePath := range s.Include {
