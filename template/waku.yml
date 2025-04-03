@@ -5,6 +5,17 @@ styles:
     source: simple-github
   waku github:
     source: waku-github
+    includes:
+      - github/shared/dependabot-ci
+      - github/shared/issues
+      - github/shared/labeler-ci
+      - github/shared/pr
+      - github/shared/release-drafter-ci
+      - github/shared/tests-ci
+      - { source: shared/coc, dir: .github }
+      - { source: shared/codestyle, dir: .github }
+      - { source: shared/security, dir: .github }
+      - shared/contributing
     prompts:
       - key: User
         type: str
