@@ -7,7 +7,7 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/caffeine-addictt/waku/internal/log"
+	"github.com/caffeine-addictt/waku/pkg/log"
 )
 
 var (

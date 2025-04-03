@@ -7,7 +7,7 @@ import (
 	"os/exec"
 
 	e "github.com/caffeine-addictt/waku/internal/errors"
-	"github.com/caffeine-addictt/waku/internal/log"
+	"github.com/caffeine-addictt/waku/pkg/log"
 )
 
 // HasGit checks if git is in PATH

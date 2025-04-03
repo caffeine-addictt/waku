@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/caffeine-addictt/waku/internal/log"
+	"github.com/caffeine-addictt/waku/pkg/log"
 )
 
 // Filenames is a list of all possible template filenames

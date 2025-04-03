@@ -31,6 +31,9 @@
             "ignore": {
               "$ref": "#/definitions/ignore"
             },
+            "includes": {
+              "$ref": "#/definitions/includes"
+            },
             "labels": {
               "$ref": "#/definitions/labels"
             },
@@ -52,9 +55,47 @@
       "items": {
         "type": "string",
         "description": "A path or pattern to ignore. Supports glob patterns.",
-        "pattern": "^(?![ ]*$)(!?([^*?/]+/)*([^*?/]+|\\*|\\*\\*|[^*?/]+/\\*|[^*?/]+/\\*\\*))$"
+        "pattern": "^(?![ ]*$)(!?.+(/?|\\*|/\\*\\*))$"
       },
       "description": "A list of paths or patterns to ignore."
+    },
+    "includes": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "A directory path relative to the template root directory.",
+            "pattern": ".+",
+            "format": "uri-reference"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "source": {
+                "type": "string",
+                "description": "A directory path relative to the template root directory.",
+                "pattern": ".+",
+                "format": "uri-reference"
+              },
+              "dir": {
+                "type": "string",
+                "description": "An optional parent directory path for this include's resources when templated.",
+                "pattern": ".+",
+                "format": "uri-reference"
+              },
+              "ignore": {
+                "$ref": "#/definitions/ignore",
+                "description": "A list of paths or patterns to ignore within the included directory."
+              }
+            },
+            "required": ["source"],
+            "additionalProperties": false,
+            "description": "A good way to share resources between styles. Style includes are overrided by the style main resources if they collide."
+          }
+        ]
+      },
+      "description": "A list of paths or patterns to include. Supports both string paths and objects specifying `source`, `dir`, and `ignore`."
     },
     "labels": {
       "type": "array",

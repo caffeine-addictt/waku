@@ -7,37 +7,76 @@ import (
 	"strings"
 
 	"github.com/caffeine-addictt/waku/internal/types"
+	"github.com/goccy/go-json"
+	"gopkg.in/yaml.v3"
 )
 
 type TemplateIgnore types.Set[string]
 
-func (t *TemplateIgnore) Validate(root string) error {
+func (t *TemplateIgnore) Validate(styleSourceDir string) error {
 	for path := range *t {
-		dirPath := strings.TrimSpace(path)
+		ignorePath := strings.TrimSpace(path)
 
 		// handle bang
-		dirPath = strings.TrimPrefix(dirPath, "!")
+		ignorePath = strings.TrimPrefix(ignorePath, "!")
 
 		// handle glob
-		isGlob := false
-		if strings.HasSuffix(dirPath, "/*") {
-			isGlob = true
-			dirPath = strings.TrimSuffix(dirPath, "/*")
+		isDir := false
+		if strings.HasSuffix(ignorePath, "/*") || strings.HasSuffix(ignorePath, "/**") || strings.HasSuffix(ignorePath, "/") {
+			isDir = true
+			ignorePath = strings.TrimSuffix(strings.TrimSuffix(strings.TrimSuffix(ignorePath, "*"), "*"), "/")
 		}
 
-		if !filepath.IsLocal(dirPath) {
+		if !filepath.IsLocal(ignorePath) {
 			return fmt.Errorf("path is not local: %s", path)
 		}
 
-		fileinfo, err := os.Stat(dirPath)
+		// skip globs for now (something to consider implementing in the future)
+		if strings.Contains(ignorePath, "*") {
+			return nil
+		}
+
+		fileinfo, err := os.Stat(filepath.Join(styleSourceDir, ignorePath))
 		if err != nil {
 			return fmt.Errorf("%s: %w", path, err)
 		}
 
-		if isGlob && !fileinfo.IsDir() {
-			return fmt.Errorf("%s: exists but is not a directory", path)
+		if isDir && !fileinfo.IsDir() {
+			return fmt.Errorf("%s is not a directory", path)
 		}
 	}
 
 	return nil
+}
+
+// UnmarshalJSON unmarshals a JSON array into a set
+func (t *TemplateIgnore) UnmarshalJSON(data []byte) error {
+	var items []string
+	if err := json.Unmarshal(data, &items); err != nil {
+		return err
+	}
+	*t = TemplateIgnore(types.NewSet(items...))
+	return nil
+}
+
+// MarshalJSON marshals a set into a JSON array
+func (t TemplateIgnore) MarshalJSON() ([]byte, error) {
+	s := types.Set[string](t)
+	return json.Marshal(s.ToSlice())
+}
+
+// UnmarshalYAML unmarshals a YAML string into a set
+func (t *TemplateIgnore) UnmarshalYAML(node *yaml.Node) error {
+	var items []string
+	if err := node.Decode(&items); err != nil {
+		return err
+	}
+	*t = TemplateIgnore(types.NewSet(items...))
+	return nil
+}
+
+// MarshalYAML marshals a set into a YAML string
+func (t TemplateIgnore) MarshalYAML() (interface{}, error) {
+	s := types.Set[string](t)
+	return s.ToSlice(), nil
 }

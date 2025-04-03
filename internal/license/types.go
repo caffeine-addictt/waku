@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/caffeine-addictt/waku/internal/log"
+	"github.com/caffeine-addictt/waku/pkg/log"
 	"github.com/goccy/go-json"
 )
 
