@@ -39,8 +39,8 @@ func (t *TemplateStyles) Validate(templateRootDir string) error {
 				return errors.ToWakuError(err).WithMeta("style", name.String()).WithMeta("field", "ignore")
 			}
 		}
-		if style.Include != nil {
-			if err := style.Include.Validate(templateRootDir, styleSourceDir); err != nil {
+		if style.Includes != nil {
+			if err := style.Includes.Validate(templateRootDir, styleSourceDir); err != nil {
 				return errors.ToWakuError(err).WithMeta("style", name.String()).WithMeta("field", "include")
 			}
 		}
@@ -50,9 +50,9 @@ func (t *TemplateStyles) Validate(templateRootDir string) error {
 }
 
 type TemplateStyle struct {
-	Ignore  *TemplateIgnore   `json:"ignore,omitempty" yaml:"ignore,omitempty"`   // The files that should be ignored when copying
-	Source  types.CleanString `json:"source" yaml:"source"`                       // The source template path
-	Labels  TemplateLabel     `json:"labels,omitempty" yaml:"labels,omitempty"`   // The repository labels
-	Prompts TemplatePrompts   `json:"prompts,omitempty" yaml:"prompts,omitempty"` // The additional prompts to use
-	Include TemplateIncludes  `json:"include,omitempty" yaml:"include,omitempty"` // The additional includes
+	Ignore   *TemplateIgnore   `json:"ignore,omitempty" yaml:"ignore,omitempty"`     // The files that should be ignored when copying
+	Source   types.CleanString `json:"source" yaml:"source"`                         // The source template path
+	Labels   TemplateLabel     `json:"labels,omitempty" yaml:"labels,omitempty"`     // The repository labels
+	Prompts  TemplatePrompts   `json:"prompts,omitempty" yaml:"prompts,omitempty"`   // The additional prompts to use
+	Includes TemplateIncludes  `json:"includes,omitempty" yaml:"includes,omitempty"` // The additional includes
 }

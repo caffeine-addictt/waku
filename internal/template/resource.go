@@ -29,10 +29,10 @@ func GetStyleResources(c *config.TemplateJson, s *config.TemplateStyle, configPa
 
 		ignoreRules.Union(si)
 	}
-	if len(s.Include) != 0 {
-		si := make(types.Set[string], len(s.Include))
+	if len(s.Includes) != 0 {
+		si := make(types.Set[string], len(s.Includes))
 
-		for _, includePath := range s.Include {
+		for _, includePath := range s.Includes {
 			if includePath.Ignore == nil {
 				continue
 			}
@@ -49,9 +49,9 @@ func GetStyleResources(c *config.TemplateJson, s *config.TemplateStyle, configPa
 	ignoreRules = ResolveGlobs(ignoreRules, types.NewSet(".git/"))
 	log.Debugf("ignore rules: %v\n", ignoreRules)
 
-	includePaths := make(map[string]string, len(s.Include)) // includePath: dir
-	if s.Include != nil {
-		for _, includePath := range s.Include {
+	includePaths := make(map[string]string, len(s.Includes)) // includePath: dir
+	if s.Includes != nil {
+		for _, includePath := range s.Includes {
 			log.Infof("include path: %s\n", includePath.Source.String())
 			inPths, err := getResourcePaths(filepath.Join(configParentDir, includePath.Source.String()))
 			if err != nil {
