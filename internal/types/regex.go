@@ -3,17 +3,16 @@ package types
 import (
 	"regexp"
 
-	"github.com/goccy/go-json"
-	"gopkg.in/yaml.v3"
+	"github.com/caffeine-addictt/waku/internal/config"
 )
 
 type RegexString struct {
 	*regexp.Regexp
 }
 
-func (r *RegexString) UnmarshalJSON(data []byte) error {
+func (r *RegexString) unmarshal(cfg config.ConfigType, data []byte) error {
 	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	if err := cfg.Unmarshal(data, &s); err != nil {
 		return err
 	}
 
@@ -26,17 +25,10 @@ func (r *RegexString) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (r *RegexString) UnmarshalYAML(node *yaml.Node) error {
-	var s string
-	if err := node.Decode(&s); err != nil {
-		return err
-	}
+func (r *RegexString) UnmarshalYAML(data []byte) error {
+	return r.unmarshal(config.YamlConfig{}, data)
+}
 
-	re, err := regexp.Compile(s)
-	if err != nil {
-		return err
-	}
-
-	r.Regexp = re
-	return nil
+func (r *RegexString) UnmarshalJSON(data []byte) error {
+	return r.unmarshal(config.JsonConfig{}, data)
 }

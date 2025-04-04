@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/caffeine-addictt/waku/internal/types"
+	"github.com/goccy/go-yaml"
 	"github.com/stretchr/testify/assert"
-	"gopkg.in/yaml.v3"
 )
 
 var hexColorTT = []struct {

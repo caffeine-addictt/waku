@@ -1,8 +1,7 @@
 package types
 
 import (
-	"github.com/goccy/go-json"
-	"gopkg.in/yaml.v3"
+	"github.com/caffeine-addictt/waku/internal/config"
 )
 
 // A set implementation using map under the hood.
@@ -99,32 +98,18 @@ func (s *Set[T]) Exclude(s2 Set[T]) Set[T] {
 	return s3
 }
 
-// UnmarshalJSON unmarshals a JSON array into a set
-func (s *Set[T]) UnmarshalJSON(data []byte) error {
+func (s *Set[T]) marshal(c config.ConfigType) ([]byte, error) { return c.Marshal(s.ToSlice()) }
+func (s *Set[T]) unmarshal(c config.ConfigType, data []byte) error {
 	var items []T
-	if err := json.Unmarshal(data, &items); err != nil {
+	if err := c.Unmarshal(data, &items); err != nil {
 		return err
 	}
 	*s = NewSet(items...)
 	return nil
 }
 
-// MarshalJSON marshals a set into a JSON array
-func (s Set[T]) MarshalJSON() ([]byte, error) {
-	return json.Marshal(s.ToSlice())
-}
+func (s *Set[T]) UnmarshalJSON(data []byte) error { return s.unmarshal(config.JsonConfig{}, data) }
+func (s Set[T]) MarshalJSON() ([]byte, error)     { return s.marshal(config.JsonConfig{}) }
 
-// UnmarshalYAML unmarshals a YAML string into a set
-func (s *Set[T]) UnmarshalYAML(node *yaml.Node) error {
-	var items []T
-	if err := node.Decode(&items); err != nil {
-		return err
-	}
-	*s = NewSet(items...)
-	return nil
-}
-
-// MarshalYAML marshals a set into a YAML string
-func (s Set[T]) MarshalYAML() (interface{}, error) {
-	return s.ToSlice(), nil
-}
+func (s *Set[T]) UnmarshalYAML(data []byte) error { return s.unmarshal(config.YamlConfig{}, data) }
+func (s Set[T]) MarshalYAML() ([]byte, error)     { return s.marshal(config.YamlConfig{}) }

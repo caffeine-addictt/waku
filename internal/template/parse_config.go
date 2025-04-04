@@ -8,7 +8,7 @@ import (
 
 	"github.com/caffeine-addictt/waku/pkg/config"
 	"github.com/caffeine-addictt/waku/pkg/log"
-	"gopkg.in/yaml.v3"
+	"github.com/goccy/go-yaml"
 )
 
 func ParseConfig(filePath string) (string, *config.TemplateJson, error) {
