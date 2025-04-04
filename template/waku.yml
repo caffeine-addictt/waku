@@ -1,5 +1,8 @@
 # yaml-language-server: $schema=../www/docs/static/schema.json
 
+# asss
+test: &test github/shared/dependabot-ci
+
 styles:
   waku github:
     source: github/styles/waku
@@ -42,6 +45,19 @@ styles:
         ask: Additional issue assignees by GitHub username
         capture: "^\\s*@?(.*?)\\s*$"
         validate: ".*"
+
+  minimal github:
+    source: github/styles/minimal
+    includes:
+      - *test
+      - github/shared/labeler-ci
+      # - github/shared/dependabot-ci
+      # - github/shared/pr
+      # - github/shared/tests-ci
+      # - { source: shared/coc, dir: .github }
+      # - { source: shared/codestyle, dir: .github }
+      # - { source: shared/security, dir: .github }
+      # - shared/contributing
 
 labels:
   - name: "Type: CI"
