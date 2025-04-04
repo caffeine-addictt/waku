@@ -6,9 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/caffeine-addictt/waku/internal/config"
 	"github.com/caffeine-addictt/waku/internal/types"
-	"github.com/goccy/go-json"
-	"gopkg.in/yaml.v3"
 )
 
 type TemplateIgnore types.Set[string]
@@ -49,34 +48,26 @@ func (t *TemplateIgnore) Validate(styleSourceDir string) error {
 	return nil
 }
 
-// UnmarshalJSON unmarshals a JSON array into a set
+func (t *TemplateIgnore) unmarshall(cfg config.ConfigType, data []byte) error {
+	var items []string
+	if err := cfg.Unmarshal(data, &items); err != nil {
+		return err
+	}
+	*t = TemplateIgnore(types.NewSet(items...))
+	return nil
+}
+
+func (t *TemplateIgnore) marshal(cfg config.ConfigType) ([]byte, error) {
+	s := types.Set[string](*t)
+	return cfg.Marshal(s.ToSlice())
+}
+
 func (t *TemplateIgnore) UnmarshalJSON(data []byte) error {
-	var items []string
-	if err := json.Unmarshal(data, &items); err != nil {
-		return err
-	}
-	*t = TemplateIgnore(types.NewSet(items...))
-	return nil
+	return t.unmarshall(config.JsonConfig{}, data)
 }
+func (t *TemplateIgnore) MarshalJSON() ([]byte, error) { return t.marshal(config.JsonConfig{}) }
 
-// MarshalJSON marshals a set into a JSON array
-func (t TemplateIgnore) MarshalJSON() ([]byte, error) {
-	s := types.Set[string](t)
-	return json.Marshal(s.ToSlice())
+func (t *TemplateIgnore) UnmarshalYAML(data []byte) error {
+	return t.unmarshall(config.YamlConfig{}, data)
 }
-
-// UnmarshalYAML unmarshals a YAML string into a set
-func (t *TemplateIgnore) UnmarshalYAML(node *yaml.Node) error {
-	var items []string
-	if err := node.Decode(&items); err != nil {
-		return err
-	}
-	*t = TemplateIgnore(types.NewSet(items...))
-	return nil
-}
-
-// MarshalYAML marshals a set into a YAML string
-func (t TemplateIgnore) MarshalYAML() (interface{}, error) {
-	s := types.Set[string](t)
-	return s.ToSlice(), nil
-}
+func (t *TemplateIgnore) MarshalYAML() ([]byte, error) { return t.marshal(config.YamlConfig{}) }

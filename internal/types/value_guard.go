@@ -4,8 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/goccy/go-json"
-	"gopkg.in/yaml.v3"
+	"github.com/caffeine-addictt/waku/internal/config"
 )
 
 // A value guard to validate values being set
@@ -79,28 +78,22 @@ func (v *ValueGuard[T]) String() string {
 	return fmt.Sprintf("%v", v.value)
 }
 
+func (v *ValueGuard[T]) marshal(cfg config.ConfigType) ([]byte, error) { return cfg.Marshal(v.value) }
+func (v *ValueGuard[T]) unmarshal(cfg config.ConfigType, data []byte) error {
+	var tmp T
+	if err := cfg.Unmarshal(data, &tmp); err != nil {
+		return err
+	}
+
+	return v.Set(tmp)
+}
+
 func (v *ValueGuard[T]) UnmarshalJSON(data []byte) error {
-	var tmp T
-	if err := json.Unmarshal(data, &tmp); err != nil {
-		return err
-	}
-
-	return v.Set(tmp)
+	return v.unmarshal(config.JsonConfig{}, data)
 }
+func (v ValueGuard[T]) MarshalJSON() ([]byte, error) { return v.marshal(config.JsonConfig{}) }
 
-func (v ValueGuard[T]) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
+func (v *ValueGuard[T]) UnmarshalYAML(data []byte) error {
+	return v.unmarshal(config.YamlConfig{}, data)
 }
-
-func (v *ValueGuard[T]) UnmarshalYAML(node *yaml.Node) error {
-	var tmp T
-	if err := node.Decode(&tmp); err != nil {
-		return err
-	}
-
-	return v.Set(tmp)
-}
-
-func (v ValueGuard[T]) MarshalYAML() (interface{}, error) {
-	return v.value, nil
-}
+func (v ValueGuard[T]) MarshalYAML() ([]byte, error) { return v.marshal(config.YamlConfig{}) }

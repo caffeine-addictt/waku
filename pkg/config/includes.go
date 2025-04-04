@@ -5,11 +5,10 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/caffeine-addictt/waku/internal/config"
 	"github.com/caffeine-addictt/waku/internal/errors"
 	"github.com/caffeine-addictt/waku/internal/types"
 	"github.com/caffeine-addictt/waku/internal/utils"
-	"github.com/goccy/go-json"
-	"gopkg.in/yaml.v3"
 )
 
 type (
@@ -85,50 +84,36 @@ func (t *TemplateIncludes) Validate(templateRootDir, styleSourceDir string) erro
 	return nil
 }
 
+func (t *TemplateInclude) unmarshal(cfg config.ConfigType, data []byte) error {
+	var ti mockTemplateInclude
+	err := cfg.Unmarshal(data, &ti)
+	if err != nil {
+		var tiAlt types.CleanString
+		err2 := cfg.Unmarshal(data, &tiAlt)
+		if err2 != nil {
+			return stderrors.Join(err2, err)
+		}
+
+		ti.Source = tiAlt
+	}
+
+	*t = TemplateInclude(ti)
+	return nil
+}
+
+func (t *TemplateInclude) marshal(cfg config.ConfigType) ([]byte, error) {
+	if t.Ignore == nil {
+		return cfg.Marshal(t.Source)
+	}
+	return cfg.Marshal(mockTemplateInclude(*t))
+}
+
 func (t *TemplateInclude) UnmarshalJSON(data []byte) error {
-	var ti mockTemplateInclude
-	err := json.Unmarshal(data, &ti)
-	if err != nil {
-		var tiAlt types.CleanString
-		err2 := json.Unmarshal(data, &tiAlt)
-		if err2 != nil {
-			return stderrors.Join(err2, err)
-		}
-
-		ti.Source = tiAlt
-	}
-
-	*t = TemplateInclude(ti)
-	return nil
+	return t.unmarshal(config.JsonConfig{}, data)
 }
+func (t TemplateInclude) MarshalJSON() ([]byte, error) { return t.marshal(config.JsonConfig{}) }
 
-func (t TemplateInclude) MarshalJSON() ([]byte, error) {
-	if t.Ignore == nil {
-		return json.Marshal(t.Source)
-	}
-	return json.Marshal(mockTemplateInclude(t))
+func (t *TemplateInclude) UnmarshalYAML(data []byte) error {
+	return t.unmarshal(config.YamlConfig{}, data)
 }
-
-func (t *TemplateInclude) UnmarshalYAML(node *yaml.Node) error {
-	var ti mockTemplateInclude
-	err := node.Decode(&ti)
-	if err != nil {
-		var tiAlt types.CleanString
-		err2 := node.Decode(&tiAlt)
-		if err2 != nil {
-			return stderrors.Join(err2, err)
-		}
-
-		ti.Source = tiAlt
-	}
-
-	*t = TemplateInclude(ti)
-	return nil
-}
-
-func (t TemplateInclude) MarshalYAML() (interface{}, error) {
-	if t.Ignore == nil {
-		return t.Source, nil
-	}
-	return mockTemplateInclude(t), nil
-}
+func (t TemplateInclude) MarshalYAML() ([]byte, error) { return t.marshal(config.YamlConfig{}) }

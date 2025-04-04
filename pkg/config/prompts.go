@@ -5,10 +5,9 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/caffeine-addictt/waku/internal/config"
 	"github.com/caffeine-addictt/waku/internal/types"
 	"github.com/charmbracelet/huh"
-	"github.com/goccy/go-json"
-	"gopkg.in/yaml.v3"
 )
 
 // The type of the prompt response
@@ -27,25 +26,29 @@ var (
 	DefaultTemplatePromptValidate types.RegexString = types.RegexString{Regexp: regexp.MustCompile(`.+`)}
 )
 
-// TemplatePrompts are the additional things that are formatted
-// into the template.
-type TemplatePrompts []TemplatePrompt
+type (
+	// TemplatePrompts are the additional things that are formatted
+	// into the template.
+	TemplatePrompts []TemplatePrompt
 
-// TemplatePrompts are the additional things that are formatted
-// into the template.
-//
-// They prompt keys are case sensitive
-// and Pacal case is recommended.
-type TemplatePrompt struct {
-	value     any
-	Format    *string            `json:"fmt,omitempty" yaml:"fmt,omitempty"`
-	Separator *string            `json:"sep,omitempty" yaml:"sep,omitempty"`
-	Capture   *types.RegexString `json:"capture,omitempty" yaml:"capture,omitempty"`
-	Validate  *types.RegexString `json:"validate,omitempty" yaml:"validate,omitempty"`
-	Key       types.CleanString  `json:"key" yaml:"key"`
-	Ask       types.CleanString  `json:"ask,omitempty" yaml:"ask,omitempty"`
-	Type      TemplatePromptType `json:"type" yaml:"type"`
-}
+	// TemplatePrompts are the additional things that are formatted
+	// into the template.
+	//
+	// They prompt keys are case sensitive
+	// and Pacal case is recommended.
+	TemplatePrompt struct {
+		value     any
+		Format    *string            `json:"fmt,omitempty" yaml:"fmt,omitempty"`
+		Separator *string            `json:"sep,omitempty" yaml:"sep,omitempty"`
+		Capture   *types.RegexString `json:"capture,omitempty" yaml:"capture,omitempty"`
+		Validate  *types.RegexString `json:"validate,omitempty" yaml:"validate,omitempty"`
+		Key       types.CleanString  `json:"key" yaml:"key"`
+		Ask       types.CleanString  `json:"ask,omitempty" yaml:"ask,omitempty"`
+		Type      TemplatePromptType `json:"type" yaml:"type"`
+	}
+
+	mockTemplatePrompt TemplatePrompt
+)
 
 // FormattedAsk returns the formatted string for the prompt
 func (t *TemplatePrompt) FormattedAsk() string {
@@ -141,73 +144,56 @@ func (t *TemplatePrompt) formatValue(val string) (string, error) {
 	return l, nil
 }
 
-func unmarshalTemplatePrompt(t *TemplatePrompt) error {
+func (t *TemplatePrompt) unmarshal(cfg config.ConfigType, data []byte) error {
+	var mock mockTemplatePrompt
+	if err := cfg.Unmarshal(data, &mock); err != nil {
+		return err
+	}
+
+	tp := TemplatePrompt(mock)
+
 	// type
-	t.Type = TemplatePromptType(strings.ToLower(string(t.Type)))
-	switch t.Type {
+	tp.Type = TemplatePromptType(strings.ToLower(string(tp.Type)))
+	switch tp.Type {
 	case TemplatePromptTypeString, TemplatePromptTypeArray:
 	default:
-		return fmt.Errorf("%s is not a valid prompt type", t.Type)
+		return fmt.Errorf("%s is not a valid prompt type", tp.Type)
 	}
 
 	// sep
-	if t.Separator == nil {
+	if tp.Separator == nil {
 		d := string(DefaultTemplatePromptSeparator)
-		t.Separator = &d
+		tp.Separator = &d
 	}
 
 	// capture
-	if t.Capture == nil {
-		t.Capture = &DefaultTemplatePromptCapture
-	} else if t.Capture.NumSubexp() != 1 {
-		return fmt.Errorf("capture %s must have 1 sub-expression", t.Capture.String())
+	if tp.Capture == nil {
+		tp.Capture = &DefaultTemplatePromptCapture
+	} else if tp.Capture.NumSubexp() != 1 {
+		return fmt.Errorf("capture %s must have 1 sub-expression", tp.Capture.String())
 	}
 
 	// format
-	if t.Format == nil {
+	if tp.Format == nil {
 		d := string(DefaultTemplatePromptFormat)
-		t.Format = &d
-	} else if strings.Count(*t.Format, "*")-strings.Count(*t.Format, "\\*") < 1 {
-		return fmt.Errorf("fmt value '%s' must have at least 1 *", *t.Format)
+		tp.Format = &d
+	} else if strings.Count(*tp.Format, "*")-strings.Count(*tp.Format, "\\*") < 1 {
+		return fmt.Errorf("fmt value '%s' must have at least 1 *", *tp.Format)
 	}
 
 	// validate
-	if t.Validate == nil {
-		t.Validate = &DefaultTemplatePromptValidate
+	if tp.Validate == nil {
+		tp.Validate = &DefaultTemplatePromptValidate
 	}
 
+	*t = tp
 	return nil
 }
 
-type templatePromptAlias TemplatePrompt
-
-func (t *TemplatePrompt) UnmarshalYAML(node *yaml.Node) error {
-	var s templatePromptAlias
-	if err := node.Decode(&s); err != nil {
-		return err
-	}
-
-	ss := TemplatePrompt(s)
-	if err := unmarshalTemplatePrompt(&ss); err != nil {
-		return err
-	}
-
-	*t = ss
-	return nil
+func (t *TemplatePrompt) UnmarshalYAML(data []byte) error {
+	return t.unmarshal(config.YamlConfig{}, data)
 }
 
 func (t *TemplatePrompt) UnmarshalJSON(data []byte) error {
-	var s templatePromptAlias
-
-	if err := json.Unmarshal(data, &s); err != nil {
-		return err
-	}
-
-	ss := TemplatePrompt(s)
-	if err := unmarshalTemplatePrompt(&ss); err != nil {
-		return err
-	}
-
-	*t = ss
-	return nil
+	return t.unmarshal(config.JsonConfig{}, data)
 }
