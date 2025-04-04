@@ -2,11 +2,6 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
-    "$schema": {
-      "type": "string",
-      "description": "Allows a reference to a schema, typically a relative or absolute URI.",
-      "format": "uri-reference"
-    },
     "ignore": {
       "$ref": "#/definitions/ignore"
     },
@@ -48,7 +43,7 @@
     }
   },
   "required": ["styles"],
-  "additionalProperties": false,
+  "additionalProperties": true,
   "definitions": {
     "ignore": {
       "type": "array",
