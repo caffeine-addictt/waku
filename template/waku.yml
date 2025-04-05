@@ -21,12 +21,20 @@ docs-url-ask: &docs-url-ask
 gh-user-ask: &gh-user-ask
   key: User
   type: str
-  ask: Your GitHub username
+  ask: |
+    Your GitHub username
+
+    https://github.com/my-username/repo
+    >                  ~~~~~~~~~~~
 
 gh-repo-ask: &gh-repo-ask
   key: Repo
   type: str
-  ask: Your GitHub repository name
+  ask: |
+    Your GitHub repository name
+
+    https://github.com/my-username/repo
+    >                              ~~~~
 
 gh-assignees-ask: &gh-assignees-ask
   key: Assignees
