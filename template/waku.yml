@@ -1,5 +1,41 @@
 # yaml-language-server: $schema=../www/docs/static/schema.json
 
+# reusable
+email-ask: &email-ask
+  key: Email
+  type: str
+  ask: Your email address
+  validate: "^.+@.+\\..+$"
+
+project-description-ask: &project-description-ask
+  key: Description
+  type: str
+  ask: A brief description of your project
+
+docs-url-ask: &docs-url-ask
+  key: Docs
+  type: str
+  ask: The documentation URL of your project (leave empty if none)
+  validate: ".*"
+
+gh-user-ask: &gh-user-ask
+  key: User
+  type: str
+  ask: Your GitHub username
+
+gh-repo-ask: &gh-repo-ask
+  key: Repo
+  type: str
+  ask: Your GitHub repository name
+
+gh-assignees-ask: &gh-assignees-ask
+  key: Assignees
+  type: arr
+  ask: Additional issue assignees by GitHub username
+  capture: "^\\s*@?(.*?)\\s*$"
+  validate: ".*"
+
+# config
 styles:
   waku github:
     source: styles/waku-gh
@@ -15,33 +51,12 @@ styles:
       - { source: shared/security, dir: .github }
       - shared/contributing
     prompts:
-      - key: User
-        type: str
-        ask: Your GitHub username
-
-      - key: Email
-        type: str
-        ask: Your email address
-        validate: "^.+@.+\\..+$"
-
-      - key: Repo
-        type: str
-        ask: Your GitHub repository name
-
-      - key: Description
-        type: str
-        ask: A brief description of your project
-
-      - key: Docs
-        type: str
-        ask: The documentation URL of your project (leave empty if none)
-        validate: ".*"
-
-      - key: Assignees
-        type: arr
-        ask: Additional issue assignees by GitHub username
-        capture: "^\\s*@?(.*?)\\s*$"
-        validate: ".*"
+      - *email-ask
+      - *gh-assignees-ask
+      - *project-description-ask
+      - *gh-user-ask
+      - *gh-repo-ask
+      - *docs-url-ask
 
 labels:
   - name: "Type: CI"
