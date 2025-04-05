@@ -38,13 +38,13 @@ type (
 	// and Pacal case is recommended.
 	TemplatePrompt struct {
 		value     any
-		Format    *string            `json:"fmt,omitempty" yaml:"fmt,omitempty"`
-		Separator *string            `json:"sep,omitempty" yaml:"sep,omitempty"`
-		Capture   *types.RegexString `json:"capture,omitempty" yaml:"capture,omitempty"`
-		Validate  *types.RegexString `json:"validate,omitempty" yaml:"validate,omitempty"`
-		Key       types.CleanString  `json:"key" yaml:"key"`
-		Ask       types.CleanString  `json:"ask,omitempty" yaml:"ask,omitempty"`
-		Type      TemplatePromptType `json:"type" yaml:"type"`
+		Format    *string                `json:"fmt,omitempty" yaml:"fmt,omitempty"`
+		Separator *string                `json:"sep,omitempty" yaml:"sep,omitempty"`
+		Capture   *types.RegexString     `json:"capture,omitempty" yaml:"capture,omitempty"`
+		Validate  *types.RegexString     `json:"validate,omitempty" yaml:"validate,omitempty"`
+		Key       types.CleanString      `json:"key" yaml:"key"`
+		Ask       types.PermissiveString `json:"ask,omitempty" yaml:"ask,omitempty"`
+		Type      TemplatePromptType     `json:"type" yaml:"type"`
 	}
 
 	mockTemplatePrompt TemplatePrompt
@@ -56,14 +56,18 @@ func (t *TemplatePrompt) FormattedAsk() string {
 
 	if s == "" {
 		s = t.Key.String()
-	}
-
-	if !strings.HasSuffix(s, "?") {
-		s += "?"
+		if !strings.HasSuffix(s, "?") {
+			s += "?"
+		}
 	}
 
 	if t.Type == TemplatePromptTypeArray {
-		s += fmt.Sprintf(" [separated by '%s']", *t.Separator)
+		arrMsg := fmt.Sprintf("[separated by '%s']", *t.Separator)
+		if strings.ContainsRune(arrMsg, '\n') {
+			s += "\n\n" + arrMsg
+		} else {
+			s += " " + arrMsg
+		}
 	}
 
 	return s

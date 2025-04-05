@@ -65,7 +65,7 @@ type NewOptions struct {
 }
 
 func cmdOpt(v string) (string, error) {
-	return utils.CleanString(v), nil
+	return utils.CleanStringStrict(v), nil
 }
 
 // TO be invoked before a command is ran
