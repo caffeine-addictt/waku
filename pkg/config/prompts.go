@@ -56,10 +56,9 @@ func (t *TemplatePrompt) FormattedAsk() string {
 
 	if s == "" {
 		s = t.Key.String()
-	}
-
-	if !strings.HasSuffix(s, "?") {
-		s += "?"
+		if !strings.HasSuffix(s, "?") {
+			s += "?"
+		}
 	}
 
 	if t.Type == TemplatePromptTypeArray {
