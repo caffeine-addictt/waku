@@ -2,7 +2,7 @@
 
 styles:
   waku github:
-    source: github/styles/waku
+    source: styles/waku-gh
     includes:
       - github/shared/dependabot-ci
       - github/shared/issues
