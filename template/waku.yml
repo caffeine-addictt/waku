@@ -4,12 +4,12 @@ styles:
   waku github:
     source: styles/waku-gh
     includes:
-      - github/shared/dependabot-ci
-      - github/shared/issues
-      - github/shared/labeler-ci
-      - github/shared/pr
-      - github/shared/release-drafter-ci
-      - github/shared/tests-ci
+      - github/dependabot-ci
+      - github/issues
+      - github/labeler-ci
+      - github/pr
+      - github/release-drafter-ci
+      - github/tests-ci
       - { source: shared/coc, dir: .github }
       - { source: shared/codestyle, dir: .github }
       - { source: shared/security, dir: .github }
