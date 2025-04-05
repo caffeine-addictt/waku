@@ -30,7 +30,7 @@ func StringStartsWith(s, look string) bool {
 // Invokes CleanString with terminal-specific operators
 // like ;|&$.
 func EscapeTermString(s string) string {
-	return CleanString(s, '|', '&', ';', '`', '$')
+	return CleanStringStrict(s, '|', '&', ';', '`', '$')
 }
 
 // Invokes CleanString to prevent regex
@@ -48,11 +48,16 @@ func CleanStringNoRegex(s string) string {
 	return builder.String()
 }
 
+// The stricter version of CleanString()
+func CleanStringStrict(s string, othersToEscape ...rune) string {
+	return CleanString(s, append(othersToEscape, '\n')...)
+}
+
 // Escapes the given string from common escape sequences
 // in 0(n) time, no regex.
 //
 //	\x1b[31mfoo\x1b[0m -> foo
-//	\n\r\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0B\x0C\x0E\x0F\x7f -> empty
+//	\r\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0B\x0C\x0E\x0F\x7f -> empty
 func CleanString(s string, othersToEscape ...rune) string {
 	var newS strings.Builder
 
@@ -85,7 +90,7 @@ func CleanString(s string, othersToEscape ...rune) string {
 			continue
 
 		case '\x00', '\x01', '\x02', '\x03', '\x04', '\x05', '\x06', '\x07', // Control characters
-			'\x08', '\x0B', '\x0C', '\x0E', '\x0F', '\n', '\r',
+			'\x08', '\x0B', '\x0C', '\x0E', '\x0F', '\r',
 			'\x7f': // Delete character
 			i++
 			continue

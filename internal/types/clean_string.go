@@ -13,7 +13,7 @@ type CleanString string
 
 // Trims the string and cleans it
 func (s *CleanString) Clean() {
-	*s = CleanString(utils.CleanString(strings.TrimSpace(string(*s))))
+	*s = CleanString(utils.CleanStringStrict(strings.TrimSpace(string(*s))))
 }
 
 func (s *CleanString) String() string {
@@ -26,7 +26,7 @@ func (s *CleanString) unmarshal(cfg config.ConfigType, data []byte) error {
 		return err
 	}
 
-	tmp = utils.CleanString(strings.TrimSpace(tmp))
+	tmp = utils.CleanStringStrict(strings.TrimSpace(tmp))
 	if tmp == "" {
 		return fmt.Errorf("invalid string: %s", string(tmp))
 	}
