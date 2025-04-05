@@ -62,7 +62,12 @@ func (t *TemplatePrompt) FormattedAsk() string {
 	}
 
 	if t.Type == TemplatePromptTypeArray {
-		s += fmt.Sprintf(" [separated by '%s']", *t.Separator)
+		arrMsg := fmt.Sprintf("[separated by '%s']", *t.Separator)
+		if strings.ContainsRune(arrMsg, '\n') {
+			s += "\n\n" + arrMsg
+		} else {
+			s += " " + arrMsg
+		}
 	}
 
 	return s
