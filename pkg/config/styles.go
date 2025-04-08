@@ -13,11 +13,12 @@ type (
 	TemplateStyles map[types.CleanString]TemplateStyle
 
 	TemplateStyle struct {
-		Ignore   *TemplateIgnore   `json:"ignore,omitempty" yaml:"ignore,omitempty"`     // The files that should be ignored when copying
-		Source   types.CleanString `json:"source" yaml:"source"`                         // The source template path
-		Labels   TemplateLabel     `json:"labels,omitempty" yaml:"labels,omitempty"`     // The repository labels
-		Prompts  TemplatePrompts   `json:"prompts,omitempty" yaml:"prompts,omitempty"`   // The additional prompts to use
-		Includes TemplateIncludes  `json:"includes,omitempty" yaml:"includes,omitempty"` // The additional includes
+		Ignore    *TemplateIgnore   `json:"ignore,omitempty" yaml:"ignore,omitempty"`       // The files that should be ignored when copying
+		Source    types.CleanString `json:"source" yaml:"source"`                           // The source template path
+		Labels    TemplateLabel     `json:"labels,omitempty" yaml:"labels,omitempty"`       // The repository labels
+		Prompts   TemplatePrompts   `json:"prompts,omitempty" yaml:"prompts,omitempty"`     // The additional prompts to use
+		Includes  TemplateIncludes  `json:"includes,omitempty" yaml:"includes,omitempty"`   // The additional includes
+		Variables TemplateVariables `json:"variables,omitempty" yaml:"variables,omitempty"` // The additional variables
 	}
 )
 
@@ -44,6 +45,9 @@ func (t *TemplateStyles) Validate(templateRootDir string) error {
 		}
 
 		// Others
+		if err := style.Variables.Validate(); err != nil {
+			return errors.ToWakuError(err).WithMeta("style", name.String()).WithMeta("field", "variables")
+		}
 		if style.Ignore != nil {
 			if err := style.Ignore.Validate(styleSourceDir); err != nil {
 				return errors.ToWakuError(err).WithMeta("style", name.String()).WithMeta("field", "ignore")

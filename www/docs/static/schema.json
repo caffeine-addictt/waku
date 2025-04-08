@@ -34,6 +34,9 @@
             },
             "prompts": {
               "$ref": "#/definitions/prompts"
+            },
+            "variables": {
+              "$ref": "#/definitions/variables"
             }
           },
           "required": ["source"],
@@ -122,16 +125,14 @@
         "type": "object",
         "properties": {
           "key": {
-            "type": "string",
-            "description": "A case-sensitive key formatted in template files"
+            "$ref": "#/definitions/tmpl-key"
           },
           "capture": {
             "type": "string",
             "description": "Regex capture group used to extract the value from the user input. Only the first group is used. Defaults to text stripping leading and trailing whitespace."
           },
           "sep": {
-            "type": "string",
-            "description": "The separator between values. Defaults to ','. This has no effect when type is 'str'."
+            "$ref": "#/definitions/var-sep"
           },
           "fmt": {
             "type": "string",
@@ -155,10 +156,42 @@
       "additionalProperties": false,
       "description": "An optional array that defines user prompts."
     },
+    "variables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "$ref": "#/definitions/tmpl-key"
+          },
+          "type": {
+            "$ref": "#/definitions/var-type"
+          },
+          "sep": {
+            "$ref": "#/definitions/var-sep"
+          },
+          "format": {
+            "type": "string",
+            "description": "How the value(s) will be formatted individually. Supports go templating from prompt asks."
+          }
+        },
+        "additionalProperties": false,
+        "description": "An optional object that defines variables to use in templates. Supports go templating from prompt asks."
+      }
+    },
     "var-type": {
       "type": "string",
       "description": "The type of prompt. Defaults to 'str'.",
       "pattern": "^(str|arr)$"
+    },
+    "var-sep": {
+      "type": "string",
+      "description": "The separator between values. Defaults to ','. This has no effect when type is 'str'."
+    },
+    "tmpl-key": {
+      "type": "string",
+      "minLength": 1,
+      "description": "A case-sensitive key formatted in template files"
     }
   }
 }
