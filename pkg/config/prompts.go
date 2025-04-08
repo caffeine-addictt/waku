@@ -11,8 +11,7 @@ import (
 )
 
 const (
-	DefaultTemplatePromptSeparator string = " "
-	DefaultTemplatePromptFormat    string = "*"
+	DefaultTemplatePromptFormat string = "*"
 )
 
 var (
@@ -157,7 +156,7 @@ func (t *TemplatePrompt) unmarshal(cfg config.ConfigType, data []byte) error {
 
 	// sep
 	if tp.Separator == nil {
-		d := string(DefaultTemplatePromptSeparator)
+		d := string(DEFAULT_SEPARATOR_CHAR)
 		tp.Separator = &d
 	}
 
