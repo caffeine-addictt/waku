@@ -16,24 +16,19 @@ styles:
       - shared/contributing
     prompts:
       - key: User
-        type: str
         ask: Your GitHub username
 
       - key: Email
-        type: str
         ask: Your email address
         validate: "^.+@.+\\..+$"
 
       - key: Repo
-        type: str
         ask: Your GitHub repository name
 
       - key: Description
-        type: str
         ask: A brief description of your project
 
       - key: Docs
-        type: str
         ask: The documentation URL of your project (leave empty if none)
         validate: ".*"
 

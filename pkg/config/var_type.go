@@ -15,6 +15,18 @@ const (
 	TemplateVarTypeArray  TemplateVarType = "arr"
 )
 
+func (t *TemplateVarType) Validate() error {
+	switch *t {
+	case TemplateVarTypeString, TemplateVarTypeArray:
+	case "":
+		*t = TemplateVarTypeString
+	default:
+		return fmt.Errorf("%s is not a valid prompt type", *t)
+	}
+
+	return nil
+}
+
 func (t *TemplateVarType) unmarshal(cfg config.ConfigType, data []byte) error {
 	var str string
 	err := cfg.Unmarshal(data, &str)

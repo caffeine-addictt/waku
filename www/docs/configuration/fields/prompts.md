@@ -30,8 +30,8 @@ Prompts are additionally `asks` for templating.
           # user is split based on `sep`, allowing you
           # to do iteration with `{{{ range .MyKey }}}{{{ end }}}`.
           #
-          # (required)
-            type: ""
+          # (optional)
+            type: "str"
 
           # Ask is the prompt that will be shown to the user.
           # (optional)

@@ -150,6 +150,11 @@ func (t *TemplatePrompt) unmarshal(cfg config.ConfigType, data []byte) error {
 
 	tp := TemplatePrompt(mock)
 
+	// type
+	if err := tp.Type.Validate(); err != nil {
+		return err
+	}
+
 	// sep
 	if tp.Separator == nil {
 		d := string(DefaultTemplatePromptSeparator)
