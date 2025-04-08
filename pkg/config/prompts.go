@@ -10,13 +10,7 @@ import (
 	"github.com/charmbracelet/huh"
 )
 
-// The type of the prompt response
-type TemplatePromptType string
-
 const (
-	TemplatePromptTypeString TemplatePromptType = "str"
-	TemplatePromptTypeArray  TemplatePromptType = "arr"
-
 	DefaultTemplatePromptSeparator string = " "
 	DefaultTemplatePromptFormat    string = "*"
 )
@@ -155,14 +149,6 @@ func (t *TemplatePrompt) unmarshal(cfg config.ConfigType, data []byte) error {
 	}
 
 	tp := TemplatePrompt(mock)
-
-	// type
-	tp.Type = TemplatePromptType(strings.ToLower(string(tp.Type)))
-	switch tp.Type {
-	case TemplatePromptTypeString, TemplatePromptTypeArray:
-	default:
-		return fmt.Errorf("%s is not a valid prompt type", tp.Type)
-	}
 
 	// sep
 	if tp.Separator == nil {
