@@ -66,6 +66,15 @@ styles:
       - *gh-repo-ask
       - *docs-url-ask
 
+  minimal:
+    source: styles/minimal
+    includes:
+      - shared/coc
+      - shared/codestyle
+      - shared/contributing
+    prompts:
+      - *project-description-ask
+
 labels:
   - name: "Type: CI"
     color: "#54b2ff"
