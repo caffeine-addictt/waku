@@ -143,19 +143,22 @@
             "description": "The text used to ask for a value from the user. This is otherwise inferred from `key`."
           },
           "type": {
-            "type": "string",
-            "description": "The type of prompt. Defaults to 'str'.",
-            "pattern": "^(str|arr)$"
+            "$ref": "#/definitions/var-type"
           },
           "validate": {
             "type": "string",
             "description": "An optional regex to validate the value."
           }
         },
-        "required": ["key", "type"]
+        "required": ["key"]
       },
       "additionalProperties": false,
       "description": "An optional array that defines user prompts."
+    },
+    "var-type": {
+      "type": "string",
+      "description": "The type of prompt. Defaults to 'str'.",
+      "pattern": "^(str|arr)$"
     }
   }
 }

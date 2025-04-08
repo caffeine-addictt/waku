@@ -10,13 +10,7 @@ import (
 	"github.com/charmbracelet/huh"
 )
 
-// The type of the prompt response
-type TemplatePromptType string
-
 const (
-	TemplatePromptTypeString TemplatePromptType = "str"
-	TemplatePromptTypeArray  TemplatePromptType = "arr"
-
 	DefaultTemplatePromptSeparator string = " "
 	DefaultTemplatePromptFormat    string = "*"
 )
@@ -44,7 +38,7 @@ type (
 		Validate  *types.RegexString     `json:"validate,omitempty" yaml:"validate,omitempty"`
 		Key       types.CleanString      `json:"key" yaml:"key"`
 		Ask       types.PermissiveString `json:"ask,omitempty" yaml:"ask,omitempty"`
-		Type      TemplatePromptType     `json:"type" yaml:"type"`
+		Type      TemplateVarType        `json:"type" yaml:"type"`
 	}
 
 	mockTemplatePrompt TemplatePrompt
@@ -61,7 +55,7 @@ func (t *TemplatePrompt) FormattedAsk() string {
 		}
 	}
 
-	if t.Type == TemplatePromptTypeArray {
+	if t.Type == TemplateVarTypeArray {
 		arrMsg := fmt.Sprintf("[separated by '%s']", *t.Separator)
 		if strings.ContainsRune(arrMsg, '\n') {
 			s += "\n\n" + arrMsg
@@ -87,7 +81,7 @@ func (t *TemplatePrompt) GetPrompt(f map[string]any) *huh.Text {
 // Set sets the value provided by the user
 func (t *TemplatePrompt) Set(s string) error {
 	switch t.Type {
-	case TemplatePromptTypeString:
+	case TemplateVarTypeString:
 		val, err := t.formatValue(s)
 		if err != nil {
 			return err
@@ -95,7 +89,7 @@ func (t *TemplatePrompt) Set(s string) error {
 
 		t.value = val
 
-	case TemplatePromptTypeArray:
+	case TemplateVarTypeArray:
 		vals := strings.Split(s, *t.Separator)
 		for i, v := range vals {
 			val, err := t.formatValue(v)
@@ -157,11 +151,8 @@ func (t *TemplatePrompt) unmarshal(cfg config.ConfigType, data []byte) error {
 	tp := TemplatePrompt(mock)
 
 	// type
-	tp.Type = TemplatePromptType(strings.ToLower(string(tp.Type)))
-	switch tp.Type {
-	case TemplatePromptTypeString, TemplatePromptTypeArray:
-	default:
-		return fmt.Errorf("%s is not a valid prompt type", tp.Type)
+	if err := tp.Type.Validate(); err != nil {
+		return err
 	}
 
 	// sep
