@@ -11,8 +11,7 @@ import (
 )
 
 const (
-	DefaultTemplatePromptSeparator string = " "
-	DefaultTemplatePromptFormat    string = "*"
+	DefaultTemplatePromptFormat string = "*"
 )
 
 var (
@@ -151,13 +150,17 @@ func (t *TemplatePrompt) unmarshal(cfg config.ConfigType, data []byte) error {
 	tp := TemplatePrompt(mock)
 
 	// type
-	if err := tp.Type.Validate(); err != nil {
-		return err
+	switch tp.Type {
+	case TemplateVarTypeString, TemplateVarTypeArray:
+	case "":
+		tp.Type = TemplateVarTypeString
+	default:
+		return fmt.Errorf("%s is not a valid prompt type", tp.Type)
 	}
 
 	// sep
 	if tp.Separator == nil {
-		d := string(DefaultTemplatePromptSeparator)
+		d := string(DEFAULT_SEPARATOR_CHAR)
 		tp.Separator = &d
 	}
 

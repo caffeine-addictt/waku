@@ -148,7 +148,7 @@ Prompts are additionally `asks` for templating.
           // By default, Waku uses the capture value as is.
           //
           // (optional)
-          "format": "*"
+          "fmt": "*"
         }
       ]
     }
