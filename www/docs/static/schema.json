@@ -125,14 +125,17 @@
         "type": "object",
         "properties": {
           "key": {
-            "$ref": "#/definitions/tmpl-key"
+            "type": "string",
+            "minLength": 1,
+            "description": "A case-sensitive key formatted in template files"
           },
           "capture": {
             "type": "string",
             "description": "Regex capture group used to extract the value from the user input. Only the first group is used. Defaults to text stripping leading and trailing whitespace."
           },
           "sep": {
-            "$ref": "#/definitions/var-sep"
+            "type": "string",
+            "description": "The separator between values. Defaults to ' '. This has no effect when type is 'str'."
           },
           "fmt": {
             "type": "string",
@@ -162,36 +165,31 @@
         "type": "object",
         "properties": {
           "key": {
-            "$ref": "#/definitions/tmpl-key"
+            "type": "string",
+            "minLength": 1,
+            "description": "A case-sensitive key formatted in template files. Will be exposed in {{{ .Varaibles.* }}}."
+          },
+          "fmt": {
+            "type": "string",
+            "description": "The value to set for this variable. Will be exposed in {{{ .Varaibles.* }}}."
+          },
+          "sep": {
+            "type": "string",
+            "description": "The separator between values. Defaults to ' '. This has no effect when type is 'str'."
           },
           "type": {
             "$ref": "#/definitions/var-type"
-          },
-          "sep": {
-            "$ref": "#/definitions/var-sep"
-          },
-          "format": {
-            "type": "string",
-            "description": "How the value(s) will be formatted individually. Supports go templating from prompt asks."
           }
         },
-        "additionalProperties": false,
-        "description": "An optional object that defines variables to use in templates. Supports go templating from prompt asks."
-      }
+        "required": ["key", "fmt"]
+      },
+      "additionalProperties": false,
+      "description": "An optional array that defines variables."
     },
     "var-type": {
       "type": "string",
       "description": "The type of prompt. Defaults to 'str'.",
       "pattern": "^(str|arr)$"
-    },
-    "var-sep": {
-      "type": "string",
-      "description": "The separator between values. Defaults to ','. This has no effect when type is 'str'."
-    },
-    "tmpl-key": {
-      "type": "string",
-      "minLength": 1,
-      "description": "A case-sensitive key formatted in template files"
     }
   }
 }
