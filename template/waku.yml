@@ -14,6 +14,9 @@ styles:
       - { source: shared/codestyle, dir: .github }
       - { source: shared/security, dir: .github }
       - shared/contributing
+    variables:
+      - key: repo
+        fmt: https://github.com/{{{ .User }}}/{{{ .Repo }}}.git
     prompts:
       - key: User
         ask: Your GitHub username
