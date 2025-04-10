@@ -23,7 +23,7 @@ type (
 		value     any
 		Separator *string                `json:"sep,omitempty" yaml:"sep,omitempty"`
 		Key       types.CleanString      `json:"key" yaml:"key"`
-		Format    types.PermissiveString `json:"format" yaml:"format"`
+		Format    types.PermissiveString `json:"fmt" yaml:"fmt"`
 		Type      TemplateVarType        `json:"type" yaml:"type"`
 	}
 	mockTemplateVariable TemplateVariable
