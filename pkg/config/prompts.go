@@ -150,8 +150,12 @@ func (t *TemplatePrompt) unmarshal(cfg config.ConfigType, data []byte) error {
 	tp := TemplatePrompt(mock)
 
 	// type
-	if err := tp.Type.Validate(); err != nil {
-		return err
+	switch tp.Type {
+	case TemplateVarTypeString, TemplateVarTypeArray:
+	case "":
+		tp.Type = TemplateVarTypeString
+	default:
+		return fmt.Errorf("%s is not a valid prompt type", tp.Type)
 	}
 
 	// sep
