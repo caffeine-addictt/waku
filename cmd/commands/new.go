@@ -216,6 +216,9 @@ var NewCmd = &cobra.Command{
 			if !options.NewOpts.NoLicense {
 				finalTemplateData["License"] = license.Name
 				finalTemplateData["Spdx"] = license.Spdx
+			} else {
+				finalTemplateData["License"] = ""
+				finalTemplateData["Spdx"] = ""
 			}
 			log.Debugf("final template data: %v\n", finalTemplateData)
 
