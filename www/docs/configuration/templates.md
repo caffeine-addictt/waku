@@ -13,8 +13,9 @@
 You can use them in your styles by having `{{{ .Key }}}`
 in your files.
 
-| Key        | Description                                    |
-| ---------- | ---------------------------------------------- |
-| `.Name`    | the project name                               |
-| `.License` | the project license text (i.e. MIT License)    |
-| `.Spdx`    | the project license SPDX identifier (i.e. MIT) |
+| Key          | Description                                                         |
+| ------------ | ------------------------------------------------------------------- |
+| `.Name`      | the project name                                                    |
+| `.License`   | the project license text (i.e. MIT License)                         |
+| `.Spdx`      | the project license SPDX identifier (i.e. MIT)                      |
+| `.Variables` | an object containing all defined [variables](./fields/variables.md) |

@@ -3,8 +3,8 @@
 You can specify multiple styles by using the
 `styles` field in your `waku config`.
 
-The [ignore](./ignore.md), [includes](./includes.md), [labels](./labels.md)
-and [prompts](./prompts.md) fields are merged with the
+The [ignore](./ignore.md), [includes](./includes.md), [labels](./labels.md), [prompts](./prompts.md)
+and [variables](./variables.md) fields are merged with the
 root-level fields. When conflicting, the values from
 the chosen style will take priority and overwrite
 the root-level fields when applicable.
@@ -32,6 +32,7 @@ the root-level fields when applicable.
         includes:
         labels:
         prompts:
+        variables:
     ```
 
 === "Json"
@@ -56,6 +57,7 @@ the root-level fields when applicable.
           "includes": [],
           "labels": [],
           "prompts": [],
+          "variables": [],
         }
       }
     }
