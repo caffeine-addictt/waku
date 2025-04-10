@@ -195,6 +195,27 @@ var NewCmd = &cobra.Command{
 			return errors.ToWakuError(err)
 		}
 
+		// Resolve variables
+		err = ui.RunWithSpinner("resolving variables...", func() error {
+			finalTemplateData["Name"] = name
+			if !options.NewOpts.NoLicense {
+				finalTemplateData["License"] = license.Name
+				finalTemplateData["Spdx"] = license.Spdx
+			}
+
+			t := make(map[string]any, len(styleInfo.Variables))
+			for _, v := range styleInfo.Variables {
+				if err := v.Set(finalTemplateData); err != nil {
+					return errors.NewWakuErrorf("failed to set variable: %v", err)
+				}
+				t[v.Key.String()] = v.Value()
+			}
+			finalTemplateData["Variables"] = t
+
+			log.Debugf("final template data: %v\n", finalTemplateData)
+			return nil
+		})
+
 		// Resolve files
 		var filePathsToWrite []types.StyleResource
 		err = ui.RunWithSpinner("collecting files...", func() error {
@@ -212,13 +233,6 @@ var NewCmd = &cobra.Command{
 
 		// Handle writing files
 		err = ui.RunWithSpinner("writing files...", func() error {
-			finalTemplateData["Name"] = name
-			if !options.NewOpts.NoLicense {
-				finalTemplateData["License"] = license.Name
-				finalTemplateData["Spdx"] = license.Spdx
-			}
-			log.Debugf("final template data: %v\n", finalTemplateData)
-
 			return WriteFiles(rootDir, projectRootDir, filePathsToWrite, licenseText, finalTemplateData, licenseTmpl)
 		})
 		if err != nil {
