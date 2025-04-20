@@ -18,6 +18,30 @@ docs-url-ask: &docs-url-ask
   ask: The documentation URL of your project (leave empty if none)
   validate: ".*"
 
+getting-started-ask: &getting-started-ask
+  key: GettingStarted
+  type: str
+  validate: ".*"
+  ask: |
+    A getting started guide for your project.
+
+    Some ideas include:
+    - A basic setup guide
+    - An example of usage
+    - A list of common problems
+
+# separated by \n\n
+features-ask: &features-ask
+  key: Features
+  type: arr
+  ask: |
+    Features?
+
+    What is the selling point of your project?
+  capture: "^\\s*(.*?)\\s*$"
+  validate: ".*"
+  sep: \n\n
+
 gh-user-ask: &gh-user-ask
   key: User
   type: str
@@ -65,6 +89,17 @@ styles:
       - *gh-user-ask
       - *gh-repo-ask
       - *docs-url-ask
+
+  minimal:
+    source: styles/minimal
+    includes:
+      - shared/coc
+      - shared/codestyle
+      - shared/contributing
+    prompts:
+      - *project-description-ask
+      - *features-ask
+      - *getting-started-ask
 
 labels:
   - name: "Type: CI"
