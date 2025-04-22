@@ -20,14 +20,14 @@ const (
 // need to hit the endpoint once per session.
 var Licenses *[]License
 
-func GetLicenseFetchUrl() string {
-	var url string
+func GetLicenseFetchUrl() (url string) {
 	if options.NewOpts.Branch.Value() != "" {
 		url = fmt.Sprintf(BASE_URL, options.NewOpts.Branch.Value())
 	} else {
-		url = fmt.Sprintf(BASE_URL, "v"+version.Version)
+		url = fmt.Sprintf(BASE_URL, version.GetBranch())
 	}
-	return url
+
+	return
 }
 
 // GetLicenses returns the list of licenses from the GitHub API
