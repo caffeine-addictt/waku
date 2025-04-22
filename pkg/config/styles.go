@@ -9,7 +9,18 @@ import (
 	"github.com/caffeine-addictt/waku/internal/utils"
 )
 
-type TemplateStyles map[types.CleanString]TemplateStyle
+type (
+	TemplateStyles map[types.CleanString]TemplateStyle
+
+	TemplateStyle struct {
+		Ignore    *TemplateIgnore   `json:"ignore,omitempty" yaml:"ignore,omitempty"`       // The files that should be ignored when copying
+		Source    types.CleanString `json:"source" yaml:"source"`                           // The source template path
+		Labels    TemplateLabel     `json:"labels,omitempty" yaml:"labels,omitempty"`       // The repository labels
+		Prompts   TemplatePrompts   `json:"prompts,omitempty" yaml:"prompts,omitempty"`     // The additional prompts to use
+		Includes  TemplateIncludes  `json:"includes,omitempty" yaml:"includes,omitempty"`   // The additional includes
+		Variables TemplateVariables `json:"variables,omitempty" yaml:"variables,omitempty"` // The additional variables
+	}
+)
 
 func (t *TemplateStyles) Validate(templateRootDir string) error {
 	for name, style := range *t {
@@ -47,12 +58,4 @@ func (t *TemplateStyles) Validate(templateRootDir string) error {
 	}
 
 	return nil
-}
-
-type TemplateStyle struct {
-	Ignore   *TemplateIgnore   `json:"ignore,omitempty" yaml:"ignore,omitempty"`     // The files that should be ignored when copying
-	Source   types.CleanString `json:"source" yaml:"source"`                         // The source template path
-	Labels   TemplateLabel     `json:"labels,omitempty" yaml:"labels,omitempty"`     // The repository labels
-	Prompts  TemplatePrompts   `json:"prompts,omitempty" yaml:"prompts,omitempty"`   // The additional prompts to use
-	Includes TemplateIncludes  `json:"includes,omitempty" yaml:"includes,omitempty"` // The additional includes
 }

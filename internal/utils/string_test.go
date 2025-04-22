@@ -93,7 +93,7 @@ func TestCleaningString(t *testing.T) {
 		rule  string
 		extra []rune
 	}{
-		{"\r\n", "", "clean up newlines", []rune{}},
+		{"\r\n", "\n", "clean up only \r", []rune{}},
 		{"\x00", "", "clean up null bytes", []rune{}},
 		{"\x01\x02\x03\x04\x05\x06\x07\x08\x0B\x0C\x0E\x0F", "", "clean up control characters", []rune{}},
 		{"\x7f", "", "clean up DEL", []rune{}},
@@ -102,7 +102,7 @@ func TestCleaningString(t *testing.T) {
 		{"\x1b[", "", "clean up uncontinued ANSI", []rune{}},
 		{"\x1b[0mfoo", "foo", "clean up ANSI", []rune{}},
 		{"\x1b[31mfoo\x1b[0m", "foo", "clean up ANSI", []rune{}},
-		{"\x1b[31mfoo\nbar\x1b[0m", "foobar", "clean up ANSI", []rune{}},
+		{"\x1b[31mfoo\nbar\x1b[0m", "foo\nbar", "clean up ANSI", []rune{}},
 		{"\x1b[0;25;42mfoo\x1b[0m", "foo", "clean up ANSI", []rune{}},
 		{"\x1b[0;25;42mfoo\x1b[0m", "foo", "clean up ANSI with multiple codes", []rune{}},
 		{"abcde", "", "ignore extra runes passed too", []rune{'a', 'b', 'c', 'd', 'e'}},

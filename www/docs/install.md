@@ -87,29 +87,29 @@ Requires Go `1.23+`.
 
 All artifacts are checksummed, and the checksum file is signed with [cosign][].
 
-1.  Download the files you want, and the `checksums.txt`, `checksums.txt.pem`
-    and `checksums.txt.sig` files from the [releases][] page.
+1. Download the files you want, and the `checksums.txt`, `checksums.txt.pem`
+   and `checksums.txt.sig` files from the [releases][] page.
 
-        ```sh
-        curl -O 'https://github.com/caffeine-addictt/waku/releases/download/v0.9.0/checksums.txt'
-        ```
+   ```sh
+   curl -O 'https://github.com/caffeine-addictt/waku/releases/download/v0.9.2/checksums.txt'
+   ```
 
-1.  Verify checksums signature:
+1. Verify checksums signature:
 
-    ```bash
-    cosign verify-blob \
-      --certificate-identity 'https://github.com/caffeine-addictt/waku/.github/workflows/release.yml@refs/tags/v0.9.0' \
-      --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' \
-      --cert 'https://github.com/caffeine-addictt/waku/releases/download/v0.9.0/checksums.txt.pem' \
-      --signature 'https://github.com/caffeine-addictt/waku/releases/download/v0.9.0/checksums.txt.sig' \
-      ./checksums.txt
-    ```
+   ```sh
+   cosign verify-blob \
+     --certificate-identity 'https://github.com/caffeine-addictt/waku/.github/workflows/release.yml@refs/tags/v0.9.2' \
+     --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' \
+     --cert 'https://github.com/caffeine-addictt/waku/releases/download/v0.9.2/checksums.txt.pem' \
+     --signature 'https://github.com/caffeine-addictt/waku/releases/download/v0.9.2/checksums.txt.sig' \
+     ./checksums.txt
+   ```
 
-1.  Verify the SHA256 checksums:
+1. Verify the SHA256 checksums:
 
-    ```bash
-    sha256sum --ignore-missing -c checksums.txt
-    ```
+   ```sh
+   sha256sum --ignore-missing -c checksums.txt
+   ```
 
 ### Docker images
 
@@ -119,7 +119,7 @@ Verify the signature:
 
 ```sh
 cosign verify \
-  --certificate-identity 'https://github.com/caffeine-addictt/waku/.github/workflows/release.yml@refs/tags/v0.9.0' \
+  --certificate-identity 'https://github.com/caffeine-addictt/waku/.github/workflows/release.yml@refs/tags/v0.9.2' \
   --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' \
   caffeinec/waku
 ```

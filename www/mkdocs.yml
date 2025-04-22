@@ -139,6 +139,7 @@ nav:
           - Includes: configuration/fields/includes.md
           - Labels: configuration/fields/labels.md
           - Prompts: configuration/fields/prompts.md
+          - Variables: configuration/fields/variables.md
           - Styles: configuration/fields/styles.md
   - Resources:
       - Sponsors: sponsors.md

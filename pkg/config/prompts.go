@@ -10,15 +10,8 @@ import (
 	"github.com/charmbracelet/huh"
 )
 
-// The type of the prompt response
-type TemplatePromptType string
-
 const (
-	TemplatePromptTypeString TemplatePromptType = "str"
-	TemplatePromptTypeArray  TemplatePromptType = "arr"
-
-	DefaultTemplatePromptSeparator string = " "
-	DefaultTemplatePromptFormat    string = "*"
+	DefaultTemplatePromptFormat string = "*"
 )
 
 var (
@@ -38,13 +31,13 @@ type (
 	// and Pacal case is recommended.
 	TemplatePrompt struct {
 		value     any
-		Format    *string            `json:"fmt,omitempty" yaml:"fmt,omitempty"`
-		Separator *string            `json:"sep,omitempty" yaml:"sep,omitempty"`
-		Capture   *types.RegexString `json:"capture,omitempty" yaml:"capture,omitempty"`
-		Validate  *types.RegexString `json:"validate,omitempty" yaml:"validate,omitempty"`
-		Key       types.CleanString  `json:"key" yaml:"key"`
-		Ask       types.CleanString  `json:"ask,omitempty" yaml:"ask,omitempty"`
-		Type      TemplatePromptType `json:"type" yaml:"type"`
+		Format    *string                `json:"fmt,omitempty" yaml:"fmt,omitempty"`
+		Separator *string                `json:"sep,omitempty" yaml:"sep,omitempty"`
+		Capture   *types.RegexString     `json:"capture,omitempty" yaml:"capture,omitempty"`
+		Validate  *types.RegexString     `json:"validate,omitempty" yaml:"validate,omitempty"`
+		Key       types.CleanString      `json:"key" yaml:"key"`
+		Ask       types.PermissiveString `json:"ask,omitempty" yaml:"ask,omitempty"`
+		Type      TemplateVarType        `json:"type" yaml:"type"`
 	}
 
 	mockTemplatePrompt TemplatePrompt
@@ -56,14 +49,18 @@ func (t *TemplatePrompt) FormattedAsk() string {
 
 	if s == "" {
 		s = t.Key.String()
+		if !strings.HasSuffix(s, "?") {
+			s += "?"
+		}
 	}
 
-	if !strings.HasSuffix(s, "?") {
-		s += "?"
-	}
-
-	if t.Type == TemplatePromptTypeArray {
-		s += fmt.Sprintf(" [separated by '%s']", *t.Separator)
+	if t.Type == TemplateVarTypeArray {
+		arrMsg := fmt.Sprintf("[separated by '%s']", *t.Separator)
+		if strings.ContainsRune(arrMsg, '\n') {
+			s += "\n\n" + arrMsg
+		} else {
+			s += " " + arrMsg
+		}
 	}
 
 	return s
@@ -83,7 +80,7 @@ func (t *TemplatePrompt) GetPrompt(f map[string]any) *huh.Text {
 // Set sets the value provided by the user
 func (t *TemplatePrompt) Set(s string) error {
 	switch t.Type {
-	case TemplatePromptTypeString:
+	case TemplateVarTypeString:
 		val, err := t.formatValue(s)
 		if err != nil {
 			return err
@@ -91,7 +88,7 @@ func (t *TemplatePrompt) Set(s string) error {
 
 		t.value = val
 
-	case TemplatePromptTypeArray:
+	case TemplateVarTypeArray:
 		vals := strings.Split(s, *t.Separator)
 		for i, v := range vals {
 			val, err := t.formatValue(v)
@@ -153,16 +150,17 @@ func (t *TemplatePrompt) unmarshal(cfg config.ConfigType, data []byte) error {
 	tp := TemplatePrompt(mock)
 
 	// type
-	tp.Type = TemplatePromptType(strings.ToLower(string(tp.Type)))
 	switch tp.Type {
-	case TemplatePromptTypeString, TemplatePromptTypeArray:
+	case TemplateVarTypeString, TemplateVarTypeArray:
+	case "":
+		tp.Type = TemplateVarTypeString
 	default:
 		return fmt.Errorf("%s is not a valid prompt type", tp.Type)
 	}
 
 	// sep
 	if tp.Separator == nil {
-		d := string(DefaultTemplatePromptSeparator)
+		d := string(DEFAULT_SEPARATOR_CHAR)
 		tp.Separator = &d
 	}
 

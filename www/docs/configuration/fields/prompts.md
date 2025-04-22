@@ -30,8 +30,8 @@ Prompts are additionally `asks` for templating.
           # user is split based on `sep`, allowing you
           # to do iteration with `{{{ range .MyKey }}}{{{ end }}}`.
           #
-          # (required)
-            type: ""
+          # (optional)
+            type: "str"
 
           # Ask is the prompt that will be shown to the user.
           # (optional)
@@ -148,7 +148,7 @@ Prompts are additionally `asks` for templating.
           // By default, Waku uses the capture value as is.
           //
           // (optional)
-          "format": "*"
+          "fmt": "*"
         }
       ]
     }
