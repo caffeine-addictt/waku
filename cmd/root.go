@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"runtime/debug"
 
 	"github.com/caffeine-addictt/waku/cmd/cleanup"
 	"github.com/caffeine-addictt/waku/cmd/commands"
@@ -58,11 +57,11 @@ func Execute() {
 	func() {
 		defer func() {
 			if r := recover(); r != nil {
-				log.Errorf("recovered from panic: %v\n", r)
 				cleanup.Cleanup()
 				cleanup.CleanupError()
-				debug.PrintStack()
-				os.Exit(1)
+
+				_ = log.SetLevel(log.TRACE) // force stack
+				log.Fatalf("%v\n", r)
 			}
 		}()
 
@@ -72,21 +71,16 @@ func Execute() {
 	cleanup.Cleanup()
 	if err != nil {
 		cleanup.CleanupError()
-		log.Errorf("%v\n", err)
 
-		if _, ok := errors.IsWakuError(err); !ok {
-			cmd, _, err := RootCmd.Find(os.Args[1:])
-			if err != nil {
-				log.Errorf("failed to find subcommand's usage: %v\n", err)
-			} else {
-				fmt.Fprintln(os.Stderr, cmd.UsageString())
-			}
+		if _, ok := errors.IsWakuError(err); ok {
+			log.Fatalf("%v\n", err)
 		}
 
-		if log.GetLevel() == log.TRACE {
-			debug.PrintStack()
+		cmd, _, err := RootCmd.Find(os.Args[1:])
+		if err != nil {
+			log.Fatalf("%v\n", err)
+		} else {
+			log.Fatalln(cmd.UsageString())
 		}
-
-		os.Exit(1)
 	}
 }

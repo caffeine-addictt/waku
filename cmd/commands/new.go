@@ -35,7 +35,7 @@ var NewCmd = &cobra.Command{
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		return options.NewOpts.Validate()
 	},
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Run: func(cmd *cobra.Command, args []string) {
 		var name string
 		var projectRootDir string
 		var license license.License
@@ -64,12 +64,12 @@ var NewCmd = &cobra.Command{
 			return nil
 		})
 		if err != nil {
-			return errors.ToWakuError(err)
+			log.Fatalln(errors.ToWakuError(err))
 		}
 
 		log.Debugln("running prompts...")
 		if err := huh.NewForm(initialPrompts...).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
-			return errors.ToWakuError(err)
+			log.Fatalln(errors.ToWakuError(err))
 		}
 
 		err = ui.RunWithSpinner(fmt.Sprintf("creating project at '%s'...", projectRootDir), func() error {
@@ -88,7 +88,7 @@ var NewCmd = &cobra.Command{
 			return nil
 		})
 		if err != nil {
-			return errors.ToWakuError(err)
+			log.Fatalln(errors.ToWakuError(err))
 		}
 
 		// Clone repo
@@ -119,7 +119,7 @@ var NewCmd = &cobra.Command{
 			return nil
 		})
 		if err != nil {
-			return errors.ToWakuError(err)
+			log.Fatalln(errors.ToWakuError(err))
 		}
 
 		// Parse template.json
@@ -133,13 +133,13 @@ var NewCmd = &cobra.Command{
 			return err
 		})
 		if err != nil {
-			return errors.ToWakuError(err)
+			log.Fatalln(errors.ToWakuError(err))
 		}
 
 		// Resolve prompts
 		_, styleInfo, prompts, err := resolveTemplateStylePrompts(wakuTemplate, rootDir)
 		if err != nil {
-			return errors.ToWakuError(err)
+			log.Fatalln(errors.ToWakuError(err))
 		}
 
 		var licenseText string
@@ -160,7 +160,7 @@ var NewCmd = &cobra.Command{
 				return nil
 			})
 			if err != nil {
-				return errors.ToWakuError(err)
+				log.Fatalln(errors.ToWakuError(err))
 			}
 		}
 		log.Debugf("resolved prompts to: %v\n", prompts)
@@ -187,12 +187,12 @@ var NewCmd = &cobra.Command{
 			return nil
 		})
 		if err != nil {
-			return errors.ToWakuError(err)
+			log.Fatalln(errors.ToWakuError(err))
 		}
 
 		log.Debugf("resolved prompt groups to: %v\n", stylePromptGroups)
 		if err := huh.NewForm(stylePromptGroups...).WithAccessible(options.GlobalOpts.Accessible).Run(); err != nil {
-			return errors.ToWakuError(err)
+			log.Fatalln(errors.ToWakuError(err))
 		}
 
 		// Resolve variables
@@ -231,7 +231,7 @@ var NewCmd = &cobra.Command{
 			return nil
 		})
 		if err != nil {
-			return errors.ToWakuError(err)
+			log.Fatalln(errors.ToWakuError(err))
 		}
 
 		// Handle writing files
@@ -239,7 +239,7 @@ var NewCmd = &cobra.Command{
 			return WriteFiles(rootDir, projectRootDir, filePathsToWrite, licenseText, finalTemplateData, licenseTmpl)
 		})
 		if err != nil {
-			return errors.NewWakuErrorf("failed to write files: %s\n", err)
+			log.Fatalln(errors.NewWakuErrorf("failed to write files: %s\n", err))
 		}
 
 		if options.NewOpts.NoGit {
@@ -250,17 +250,16 @@ var NewCmd = &cobra.Command{
 			})
 			if err != nil {
 				fmt.Printf("failed to initialize git: %s\n", err)
-				return errors.NewWakuErrorf("failed to initialize git: %s\n", err)
+				log.Fatalln(errors.NewWakuErrorf("failed to initialize git: %s\n", err))
 			}
 		}
 
 		dirPath, err := filepath.Abs(projectRootDir)
 		if err != nil {
-			return errors.ToWakuError(err)
+			log.Fatalln(errors.ToWakuError(err))
 		}
 
 		log.Printf("Project created at: %s\n", dirPath)
-		return nil
 	},
 }
 

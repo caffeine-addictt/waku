@@ -13,16 +13,14 @@ var HealthcheckCmd = &cobra.Command{
 	Args:          cobra.NoArgs,
 	SilenceUsage:  true,
 	SilenceErrors: true,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Run: func(cmd *cobra.Command, args []string) {
 		ok, err := git.HasGit()
 		if err != nil {
-			return errors.ToWakuError(err)
+			log.Fatalln(errors.ToWakuError(err))
 		}
 
 		if !ok {
 			log.Warnln("Git not found in $PATH, Waku will fallback to go-git. Authentication may not work as expected.")
 		}
-
-		return nil
 	},
 }

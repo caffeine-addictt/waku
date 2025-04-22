@@ -15,7 +15,7 @@ var CheckCmd = &cobra.Command{
 	Args:          cobra.MaximumNArgs(1),
 	SilenceErrors: true,
 	SilenceUsage:  true,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Run: func(cmd *cobra.Command, args []string) {
 		var filePath string
 		if len(args) == 1 {
 			filePath = args[0]
@@ -25,10 +25,9 @@ var CheckCmd = &cobra.Command{
 
 		log.Debugf("checking if %s is a valid template\n", filePath)
 		if _, _, err := template.ParseConfig(filePath); err != nil {
-			return errors.ToWakuError(err)
+			log.Fatalln(errors.ToWakuError(err))
 		}
 
 		log.Println("Seems ok!")
-		return nil
 	},
 }
