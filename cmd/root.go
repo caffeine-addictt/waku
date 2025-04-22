@@ -52,6 +52,15 @@ func init() {
 
 // The main entry point for the command line tool
 func Execute() {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Errorf("recovered from panic: %v\n", r)
+			cleanup.Cleanup()
+			cleanup.CleanupError()
+			debug.PrintStack()
+			os.Exit(1)
+		}
+	}()
 	cleanup.On()
 
 	err := RootCmd.Execute()
