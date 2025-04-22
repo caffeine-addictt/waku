@@ -1,15 +1,83 @@
 # yaml-language-server: $schema=../www/docs/static/schema.json
 
+# reusable
+email-ask: &email-ask
+  key: Email
+  type: str
+  ask: Your email address
+  validate: "^.+@.+\\..+$"
+
+project-description-ask: &project-description-ask
+  key: Description
+  type: str
+  ask: A brief description of your project
+
+docs-url-ask: &docs-url-ask
+  key: Docs
+  type: str
+  ask: The documentation URL of your project (leave empty if none)
+  validate: ".*"
+
+getting-started-ask: &getting-started-ask
+  key: GettingStarted
+  type: str
+  validate: ".*"
+  ask: |
+    A getting started guide for your project.
+
+    Some ideas include:
+    - A basic setup guide
+    - An example of usage
+    - A list of common problems
+
+# separated by \n\n
+features-ask: &features-ask
+  key: Features
+  type: arr
+  ask: |
+    Features?
+
+    What is the selling point of your project?
+  capture: "^\\s*(.*?)\\s*$"
+  validate: ".*"
+  sep: \n\n
+
+gh-user-ask: &gh-user-ask
+  key: User
+  type: str
+  ask: |
+    Your GitHub username
+
+    https://github.com/my-username/repo
+    >                  ~~~~~~~~~~~
+
+gh-repo-ask: &gh-repo-ask
+  key: Repo
+  type: str
+  ask: |
+    Your GitHub repository name
+
+    https://github.com/my-username/repo
+    >                              ~~~~
+
+gh-assignees-ask: &gh-assignees-ask
+  key: Assignees
+  type: arr
+  ask: Additional issue assignees by GitHub username
+  capture: "^\\s*@?(.*?)\\s*$"
+  validate: ".*"
+
+# config
 styles:
   waku github:
-    source: github/styles/waku
+    source: styles/waku-gh
     includes:
-      - github/shared/dependabot-ci
-      - github/shared/issues
-      - github/shared/labeler-ci
-      - github/shared/pr
-      - github/shared/release-drafter-ci
-      - github/shared/tests-ci
+      - github/dependabot-ci
+      - github/issues
+      - github/labeler-ci
+      - github/pr
+      - github/release-drafter-ci
+      - github/tests-ci
       - { source: shared/coc, dir: .github }
       - { source: shared/codestyle, dir: .github }
       - { source: shared/security, dir: .github }
@@ -18,28 +86,23 @@ styles:
       - key: repo
         fmt: https://github.com/{{{ .User }}}/{{{ .Repo }}}.git
     prompts:
-      - key: User
-        ask: Your GitHub username
+      - *email-ask
+      - *gh-assignees-ask
+      - *project-description-ask
+      - *gh-user-ask
+      - *gh-repo-ask
+      - *docs-url-ask
 
-      - key: Email
-        ask: Your email address
-        validate: "^.+@.+\\..+$"
-
-      - key: Repo
-        ask: Your GitHub repository name
-
-      - key: Description
-        ask: A brief description of your project
-
-      - key: Docs
-        ask: The documentation URL of your project (leave empty if none)
-        validate: ".*"
-
-      - key: Assignees
-        type: arr
-        ask: Additional issue assignees by GitHub username
-        capture: "^\\s*@?(.*?)\\s*$"
-        validate: ".*"
+  minimal:
+    source: styles/minimal
+    includes:
+      - shared/coc
+      - shared/codestyle
+      - shared/contributing
+    prompts:
+      - *project-description-ask
+      - *features-ask
+      - *getting-started-ask
 
 labels:
   - name: "Type: CI"
