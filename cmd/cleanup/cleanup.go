@@ -38,6 +38,12 @@ func ScheduleError(fn func() error) {
 
 // Runs all cleanup functions
 func Cleanup() {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Errorf("recovered from panic: %v\n", r)
+		}
+	}()
+
 	cleanupRwLock.Lock()
 	defer cleanupRwLock.Unlock()
 
@@ -53,6 +59,12 @@ func Cleanup() {
 
 // Runs all error cleanup functions
 func CleanupError() {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Errorf("recovered from panic: %v\n", r)
+		}
+	}()
+
 	errorRwLock.Lock()
 	defer errorRwLock.Unlock()
 

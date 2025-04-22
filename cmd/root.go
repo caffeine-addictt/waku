@@ -54,9 +54,22 @@ func init() {
 func Execute() {
 	cleanup.On()
 
-	err := RootCmd.Execute()
-	cleanup.Cleanup()
+	var err error
+	func() {
+		defer func() {
+			if r := recover(); r != nil {
+				log.Errorf("recovered from panic: %v\n", r)
+				cleanup.Cleanup()
+				cleanup.CleanupError()
+				debug.PrintStack()
+				os.Exit(1)
+			}
+		}()
 
+		err = RootCmd.Execute()
+	}()
+
+	cleanup.Cleanup()
 	if err != nil {
 		cleanup.CleanupError()
 		log.Errorf("%v\n", err)
