@@ -91,17 +91,17 @@ All artifacts are checksummed, and the checksum file is signed with [cosign][].
    and `checksums.txt.sig` files from the [releases][] page.
 
    ```sh
-   curl -O 'https://github.com/caffeine-addictt/waku/releases/download/v0.9.2/checksums.txt'
+   curl -O 'https://github.com/caffeine-addictt/waku/releases/download/v0.9.3/checksums.txt'
    ```
 
 1. Verify checksums signature:
 
    ```sh
    cosign verify-blob \
-     --certificate-identity 'https://github.com/caffeine-addictt/waku/.github/workflows/release.yml@refs/tags/v0.9.2' \
+     --certificate-identity 'https://github.com/caffeine-addictt/waku/.github/workflows/release.yml@refs/tags/v0.9.3' \
      --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' \
-     --cert 'https://github.com/caffeine-addictt/waku/releases/download/v0.9.2/checksums.txt.pem' \
-     --signature 'https://github.com/caffeine-addictt/waku/releases/download/v0.9.2/checksums.txt.sig' \
+     --cert 'https://github.com/caffeine-addictt/waku/releases/download/v0.9.3/checksums.txt.pem' \
+     --signature 'https://github.com/caffeine-addictt/waku/releases/download/v0.9.3/checksums.txt.sig' \
      ./checksums.txt
    ```
 
@@ -119,7 +119,7 @@ Verify the signature:
 
 ```sh
 cosign verify \
-  --certificate-identity 'https://github.com/caffeine-addictt/waku/.github/workflows/release.yml@refs/tags/v0.9.2' \
+  --certificate-identity 'https://github.com/caffeine-addictt/waku/.github/workflows/release.yml@refs/tags/v0.9.3' \
   --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' \
   caffeinec/waku
 ```
