@@ -6,7 +6,7 @@ require (
 	github.com/charmbracelet/huh v0.7.0
 	github.com/go-git/go-git/v5 v5.16.0
 	github.com/goccy/go-json v0.10.5
-	github.com/goccy/go-yaml v1.17.1
+	github.com/goccy/go-yaml v1.18.0
 	github.com/muesli/mango-cobra v1.2.0
 	github.com/muesli/roff v0.1.0
 	github.com/spf13/cobra v1.9.1
