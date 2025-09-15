@@ -7,7 +7,7 @@ require (
 	github.com/go-git/go-git/v5 v5.16.2
 	github.com/goccy/go-json v0.10.5
 	github.com/goccy/go-yaml v1.18.0
-	github.com/muesli/mango-cobra v1.2.0
+	github.com/muesli/mango-cobra v1.3.0
 	github.com/muesli/roff v0.1.0
 	github.com/spf13/cobra v1.10.1
 	github.com/stretchr/testify v1.11.1
