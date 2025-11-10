@@ -1,7 +1,7 @@
 ###################
 # 1. Building stage
 ###################
-FROM golang:1.25.3 AS build-stage
+FROM golang:1.25.4 AS build-stage
 
 # Set destination for COPY
 WORKDIR /waku-cli
