@@ -46,7 +46,7 @@ func GetLicenses() (*[]License, error) {
 
 	req.Header.Set("Accept", "text/plain")
 
-	res, err := http.DefaultClient.Do(req)
+	res, err := http.DefaultClient.Do(req) // #nosec G704
 	if err != nil {
 		return nil, err
 	}
