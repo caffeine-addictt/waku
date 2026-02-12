@@ -218,6 +218,9 @@ var NewCmd = &cobra.Command{
 			log.Debugf("final template data: %v\n", finalTemplateData)
 			return nil
 		})
+		if err != nil {
+			log.Fatalln(errors.ToWakuError(err))
+		}
 
 		// Resolve files
 		var filePathsToWrite []types.StyleResource
