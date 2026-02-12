@@ -40,6 +40,7 @@ as well as check for vulnerabilities.
 
 ```sh
 make test
+make security
 ```
 
 During development, you can also run the following:

@@ -80,8 +80,12 @@ jobs:
 
       - name: Test
         run: |
-          set -xe
           make test
+
+      - name: Security
+        continue-on-error: true
+        run: |
+          make security
 
   check:
     if: always()
