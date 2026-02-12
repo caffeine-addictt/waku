@@ -167,11 +167,11 @@
           "key": {
             "type": "string",
             "minLength": 1,
-            "description": "A case-sensitive key formatted in template files. Will be exposed in {{{ .Varaibles.* }}}."
+            "description": "A case-sensitive key formatted in template files. Will be exposed in {{{ .Variables.* }}}."
           },
           "fmt": {
             "type": "string",
-            "description": "The value to set for this variable. Will be exposed in {{{ .Varaibles.* }}}."
+            "description": "The value to set for this variable. Will be exposed in {{{ .Variables.* }}}."
           },
           "sep": {
             "type": "string",
