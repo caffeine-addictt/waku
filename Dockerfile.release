@@ -1,11 +1,13 @@
 FROM alpine:3.23.3
 WORKDIR /app
 
+ARG TARGETPLATFORM
+
 # Install git
 RUN apk add --update --no-cache git tini
 
 # Add waku binaries
-COPY waku_*.apk /tmp/
+COPY $TARGETPLATFORM/waku_*.apk /tmp/
 RUN apk add --no-cache --allow-untrusted /tmp/waku_*.apk
 
 RUN adduser -D waku
