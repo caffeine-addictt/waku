@@ -109,89 +109,43 @@ aurs:
       email: bot@goreleaser.com
     url_template: "https://github.com/caffeine-addictt/waku/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
 
-dockers:
-  - image_templates:
-      - "caffeinec/waku:{{ .Tag }}-amd64"
-      - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}-amd64"
-    skip_push: false
+dockers_v2:
+  - images:
+      - "caffeinec/waku"
+      - "ghcr.io/caffeine-addictt/waku"
+    tags:
+      - "v{{ .Version }}"
+      - "{{ if .IsNightly }}nightly{{ end }}"
+      - "{{ if not .IsNightly }}latest{{ end }}"
     dockerfile: Dockerfile.release
-    use: buildx
-    build_flag_templates:
-      - "--pull"
-      - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/caffeine-addictt/waku/main/README.md"
-      - "--label=io.artifacthub.package.logo-url=https://waku.ngjx.org/static/logo.png"
-      - '--label=io.artifacthub.package.maintainers=[{"name":"Jun Xiang","email":"contact@ngjx.org"}]'
-      - "--label=io.artifacthub.package.license=AGPL-3.0"
-      - "--label=org.opencontainers.image.description=A simple template repository generator. Lets make starting new projects feel like a breeze again!"
-      - "--label=org.opencontainers.image.created={{.Date}}"
-      - "--label=org.opencontainers.image.name={{.ProjectName}}"
-      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
-      - "--label=org.opencontainers.image.version={{.Version}}"
-      - "--label=org.opencontainers.image.source={{.GitURL}}"
-      - "--platform=linux/amd64"
-
-  - image_templates:
-      - "caffeinec/waku:{{ .Tag }}-arm64"
-      - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}-arm64"
-    skip_push: false
-    dockerfile: Dockerfile.release
-    use: buildx
-    goarch: arm64
-    build_flag_templates:
-      - "--pull"
-      - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/caffeine-addictt/waku/main/README.md"
-      - "--label=io.artifacthub.package.logo-url=https://waku.ngjx.org/static/logo.png"
-      - '--label=io.artifacthub.package.maintainers=[{"name":"Jun Xiang","email":"contact@ngjx.org"}]'
-      - "--label=io.artifacthub.package.license=AGPL-3.0"
-      - "--label=org.opencontainers.image.description=A simple template repository generator. Lets make starting new projects feel like a breeze again!"
-      - "--label=org.opencontainers.image.created={{.Date}}"
-      - "--label=org.opencontainers.image.name={{.ProjectName}}"
-      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
-      - "--label=org.opencontainers.image.version={{.Version}}"
-      - "--label=org.opencontainers.image.source={{.GitURL}}"
-      - "--platform=linux/arm64"
-
-docker_manifests:
-  - name_template: "caffeinec/waku:{{ .Tag }}"
-    image_templates:
-      - "caffeinec/waku:{{ .Tag }}-amd64"
-      - "caffeinec/waku:{{ .Tag }}-arm64"
-  - name_template: "ghcr.io/caffeine-addictt/waku:{{ .Tag }}"
-    image_templates:
-      - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}-amd64"
-      - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}-arm64"
-
-  - name_template: "{{ if not .Prerelease }}caffeinec/waku:latest{{ end }}"
-    image_templates:
-      - "caffeinec/waku:{{ .Tag }}-amd64"
-      - "caffeinec/waku:{{ .Tag }}-arm64"
-  - name_template: "{{ if not .Prerelease }}caffeinec/waku:v{{ .Major }}{{ end }}"
-    image_templates:
-      - "caffeinec/waku:{{ .Tag }}-amd64"
-      - "caffeinec/waku:{{ .Tag }}-arm64"
-
-  - name_template: "{{ if not .Prerelease }}ghcr.io/caffeine-addictt/waku:latest{{ end }}"
-    image_templates:
-      - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}-amd64"
-      - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}-arm64"
-  - name_template: "{{ if not .Prerelease }}ghcr.io/caffeine-addictt/waku:v{{ .Major }}{{ end }}"
-    image_templates:
-      - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}-amd64"
-      - "ghcr.io/caffeine-addictt/waku:{{ .Tag }}-arm64"
+    labels:
+      "io.artifacthub.package.readme-url": "https://raw.githubusercontent.com/caffeine-addictt/waku/main/README.md"
+      "io.artifacthub.package.logo-url": "https://waku.ngjx.org/static/logo.png"
+      "io.artifacthub.package.maintainers": '[{"name":"Jun Xiang","email":"contact@ngjx.org"}]'
+      "io.artifacthub.package.license": "AGPL-3.0"
+      "org.opencontainers.image.description": "A simple template repository generator. Lets make starting new projects feel like a breeze again!"
+      "org.opencontainers.image.created": "{{.Date}}"
+      "org.opencontainers.image.name": "{{.ProjectName}}"
+      "org.opencontainers.image.revision": "{{.FullCommit}}"
+      "org.opencontainers.image.version": "{{.Version}}"
+      "org.opencontainers.image.source": "{{.GitURL}}"
+    annotations:
+      "org.opencontainers.image.description": "Make starting new projects feel like a breeze again"
 
 nfpms:
   - maintainer: Jun Xiang <contact@ngjx.org>
     description: A simple template repository generator. Lets make starting new projects feel like a breeze again!
     homepage: "https://github.com/caffeine-addictt/waku"
     license: AGPL-3.0
-    formats: [rpm, apk, termux.deb, deb, archlinux]
+    formats: [apk, deb, archlinux]
     dependencies: [git]
 
-brews:
+homebrew_casks:
   - homepage: "https://github.com/caffeine-addictt/waku"
     license: "AGPL-3.0"
     skip_upload: auto
     directory: Formula/waku
+    name: waku
     repository:
       owner: caffeine-addictt
       name: homebrew-tap
@@ -202,15 +156,14 @@ brews:
       email: bot@goreleaser.com
     commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
     description: "A simple template repository generator. Lets make starting new projects feel like a breeze again!"
+    completions:
+      bash: completions/waku.bash
+      zsh: completions/waku.zsh
+      fish: completions/waku.fish
+    manpages:
+      - man/waku.1.gz
     dependencies:
-      - git
-    test: |
-      system "#{bin}/waku version"
-    extra_install: |-
-      bash_completion.install "completions/waku.bash" => "waku"
-      zsh_completion.install "completions/waku.zsh" => "_waku"
-      fish_completion.install "completions/waku.fish"
-      man1.install "manpages/waku.1.gz"
+      - cask: git
 
 snapcrafts:
   - name_template: "{{ .ProjectName }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
