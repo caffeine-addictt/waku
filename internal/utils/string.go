@@ -77,15 +77,11 @@ func CleanString(s string, othersToEscape ...rune) string {
 			if i < len(s) && s[i] == '[' {
 				i++
 
-			ANSI:
 				for i < len(s) {
-					r2, size2 := utf8.DecodeRuneInString(s[i:])
-					switch r2 {
-					case 'm', 'A', 'B', 'C', 'D', 'H', 'f', 'J', 'K', 'c', 'n', 's', 'u':
-						i += size2
-						break ANSI
-					default:
-						i += size2
+					c := s[i]
+					i++
+					if c >= 0x40 && c <= 0x7E { // CSI (ECMA-48 standard)
+						break
 					}
 				}
 			}
