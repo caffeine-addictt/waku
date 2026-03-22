@@ -3,6 +3,7 @@ package utils
 import (
 	"strings"
 	"unicode"
+	"unicode/utf8"
 )
 
 // MultilineString provides a
@@ -19,7 +20,7 @@ func StringStartsWith(s, look string) bool {
 	}
 
 	target := min(len(s), len(look))
-	for i := 0; i < target; i++ {
+	for i := range target {
 		if s[i] != look[i] {
 			return false
 		}
@@ -48,12 +49,12 @@ func CleanStringNoRegex(s string) string {
 	return builder.String()
 }
 
-// The stricter version of CleanString()
+// CleanStringStrict is the stricter version of CleanString()
 func CleanStringStrict(s string, othersToEscape ...rune) string {
 	return CleanString(s, append(othersToEscape, '\n')...)
 }
 
-// Escapes the given string from common escape sequences
+// CleanString escapes the given string from common escape sequences
 // in 0(n) time, no regex.
 //
 //	\x1b[31mfoo\x1b[0m -> foo
@@ -61,46 +62,43 @@ func CleanStringStrict(s string, othersToEscape ...rune) string {
 func CleanString(s string, othersToEscape ...rune) string {
 	var newS strings.Builder
 
-	esc := make(map[byte]struct{}, len(othersToEscape))
+	esc := make(map[rune]struct{}, len(othersToEscape))
 	for _, v := range othersToEscape {
-		esc[byte(v)] = struct{}{}
+		esc[v] = struct{}{}
 	}
 
-	var i int
-	for i < len(s) {
-		switch s[i] {
-		case '\x1b': // handle ANSI escape sequences
-			i++
+	for i := 0; i < len(s); {
+		r, size := utf8.DecodeRuneInString(s[i:])
+
+		switch r {
+		case '\x1b': // ANSI escape
+			i += size
 
 			if i < len(s) && s[i] == '[' {
 				i++
 
-				seek := true
-				for i < len(s) && seek {
-					switch s[i] {
-					case 'm', 'A', 'B', 'C', 'D', 'H', 'f', 'J', 'K', 'c', 'n', 's', 'u':
-						seek = false
-					default:
-						i++
+				for i < len(s) {
+					c := s[i]
+					i++
+					if c >= 0x40 && c <= 0x7E { // CSI (ECMA-48 standard)
+						break
 					}
 				}
-
-				i++
 			}
 			continue
 
 		case '\x00', '\x01', '\x02', '\x03', '\x04', '\x05', '\x06', '\x07', // Control characters
 			'\x08', '\x0B', '\x0C', '\x0E', '\x0F', '\r',
 			'\x7f': // Delete character
-			i++
+			i += size
 			continue
 		}
 
-		if _, ok := esc[s[i]]; !ok {
-			newS.WriteByte(s[i])
+		if _, ok := esc[r]; !ok {
+			newS.WriteRune(r)
 		}
 
-		i++
+		i += size
 	}
 
 	return newS.String()
