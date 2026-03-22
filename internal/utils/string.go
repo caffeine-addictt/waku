@@ -20,7 +20,7 @@ func StringStartsWith(s, look string) bool {
 	}
 
 	target := min(len(s), len(look))
-	for i := 0; i < target; i++ {
+	for i := range target {
 		if s[i] != look[i] {
 			return false
 		}
